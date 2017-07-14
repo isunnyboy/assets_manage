@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+i_device_acess,i_device_acess,model_assets_management_equipment_info,,1,1,1,1
+i_equipment_storage_acess,i_equipment_storage_acess,model_assets_management_equipment_storage,,1,1,1,1
+i_store_examine_acess,i_store_examine_acess,model_assets_management_entry_store_examine,,1,1,1,1
+
