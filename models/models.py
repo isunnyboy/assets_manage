@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import fields,api,exceptions,models
-from myaddons.assets_manage.functions import func
+import func
 
 class equipment_info(models.Model):
     _name ='assets_management.equipment_info'
