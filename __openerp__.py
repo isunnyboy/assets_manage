@@ -29,11 +29,15 @@
         'views/assets_management_newRequest.xml',
         'views/assets_management_view.xml',
         'views/assets_management_menu.xml',
-        # 'views/assets_management_menu.xml',
+        'views/assets_management_link.xml',
 
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo.xml',
+    ],
+    'application': True,
+    'qweb': [
+        'static/src/xml/assets_manage.xml',
     ],
 }
