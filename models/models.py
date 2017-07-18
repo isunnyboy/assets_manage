@@ -13,15 +13,6 @@ class equipment_info(models.Model):
     # asset_number = fields.Char(string=u"资产编号", )
     unit_type = fields.Char(string=u"设备型号", required=True)
     equipment_source = fields.Char(string=u"设备来源", required=True)
-    # equipment_status = fields.Selection([
-    #     (u'完好', u'完好'),
-    #     (u'故障', u'故障'),
-    #     # (u'库存', u"库存"),
-    #     # (u'故障', u"故障"),
-    #     # (u'专用', u"专用"),
-    #     # (u'待报废', u"待报废"),
-    #     # (u'暂存', u"暂存"),
-    # ], string=u"设备可用性", required=True)
     equipment_use = fields.Selection([
         (u'公共备件', u"公共备件"),
         (u'专用备件', u"专用备件"),
@@ -44,6 +35,7 @@ class equipment_info(models.Model):
         (u'归还', u'归还'),
     ], string='状态', default=u'待入库',readonly=True)
     owner = fields.Many2one('res.users', string=u"归属人", required=True)
+    # owner_compute =
     company = fields.Boolean(string=u"是否公司资产")
     note = fields.Char(string=u"备注")
     area = fields.Char(string=u"存放地址")
@@ -65,9 +57,55 @@ class equipment_info(models.Model):
 
     # New Add
     bar_code = fields.Char(string=u"条码号", required=True)
+
     got_count = fields.Integer(string=u"领用次数", readonly=True)
     lend_count = fields.Integer(string=u"借用次数", readonly=True)
     devUse_user_id = fields.Many2one('res.users', string='设备使用人', default=None)  # 领用、借用
+
+    #控制非编辑人员不可编辑
+    can_edit = fields.Boolean(string='button操作：当前操作人员是否是否可以编辑',default=True)
+
+    sn_compute = fields.Char(string=u"序列号", compute="_dev_compute")
+    firms_compute = fields.Char(string=u"设备厂商", compute="_dev_compute")
+    device_type_compute = fields.Char(string=u"设备类型", compute="_dev_compute")
+    unit_type_compute = fields.Char(string=u"设备型号", compute="_dev_compute")
+    equipment_source_compute = fields.Char(string=u"设备来源", compute="_dev_compute")
+    equipment_use_compute = fields.Char(string=u"设备用途", compute="_dev_compute")
+    company_compute = fields.Boolean(string=u"是否公司资产", compute="_dev_compute")
+    note_compute = fields.Char(string=u"备注", compute="_dev_compute")
+    area_compute = fields.Char(string=u"存放地址", compute="_dev_compute")
+    floor_compute = fields.Char(string=u"库房楼层", compute="_dev_compute")
+    cabinet_number_compute = fields.Char(string=u"货架编号", compute="_dev_compute")
+    seat_compute = fields.Char(string=u"货架位置", compute="_dev_compute")
+    bar_code_compute = fields.Char(string=u"条码号", compute="_dev_compute")
+
+    def _dev_compute(self):
+        self.sn_compute = self.sn
+        self.firms_compute = self.firms
+        self.device_type_compute = self.device_type
+        self.unit_type_compute = self.unit_type
+        self.equipment_source_compute = self.equipment_source
+        self.equipment_use_compute = self.equipment_use
+        self.company_compute = self.company
+        self.note_compute = self.note
+        self.area_compute = self.area
+        self.floor_compute = self.floor
+        self.cabinet_number_compute = self.cabinet_number
+        self.seat_compute = self.seat
+        self.bar_code_compute = self.bar_code
+
+    # @api.constrains('user_editID')
+    # def _checkCanEdit(self):
+    #     print '-----------------_checkCanEdit - ----------------'
+    #     flag = False
+    #     ids = str(self.user_editID).split(',')
+    #     for id in ids:
+    #         if str(self.env.user.id) == id:
+    #             flag = True
+    #             break
+    #     if flag == False:
+    #         raise exceptions.ValidationError("Can not Edit !")
+
 
     _sql_constraints = [
         ('SN UNIQUE',
@@ -173,6 +211,7 @@ class equipment_storage(models.Model):
         print len(devices)
         for device in devices:
             device.dev_state = u'流程中'
+            device.can_edit = True
         #     print device.dev_state
         # print  fields.Date.today()
         dates = fields.Date.today().split('-')
@@ -225,6 +264,7 @@ class equipment_storage(models.Model):
         for sn in(self.SN):
             # print sn.dev_state
             self.owners |= sn.owner
+            sn.can_edit = True
         # print self.owners
 
         #3.设备归属人只有一个的情况，多个归属人暂时没有处理
@@ -294,9 +334,14 @@ class equipment_storage(models.Model):
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #5.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 2-2.资产管理员【退回】操作
     @api.multi
@@ -320,9 +365,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+
         #4.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 3-1.资产归属人【同意】操作
     @api.multi
@@ -336,7 +386,7 @@ class equipment_storage(models.Model):
 
         # 2.创建审批流程日志文档
         self.env['assets_management.entry_store_examine'].create(
-            {'approver_id': self.approver_id.id, 'result': u'submit', 'store_id': self.id, 'app_state': lambda self:fields.Datetime.now(),'reason':self.opinion_bak})
+            {'approver_id': self.approver_id.id, 'result': u'agree', 'store_id': self.id, 'app_state': lambda self:fields.Datetime.now(),'reason':self.opinion_bak})
 
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
@@ -369,9 +419,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #5.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 3-2.资产归属人【退回】操作
     @api.multi
@@ -395,9 +450,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+
         #4.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 4-1.MA部门主管【同意】操作
     @api.multi
@@ -444,9 +504,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #5.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 4-2.MA部门主管【退回】操作
     @api.multi
@@ -470,9 +535,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+
         #4.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 5-1.资产管理员检测【同意】操作
     @api.multi
@@ -520,13 +590,15 @@ class equipment_storage(models.Model):
         devs = self.SN
         for dev in devs:
             dev.dev_state = u'库存'
+            # 5-Plus.将入库设备可编辑状态更新为 不可编辑
+            dev.can_edit = False
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
         #6.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
     # 5-2.资产管理员检测【退回】操作
     @api.multi
@@ -550,9 +622,14 @@ class equipment_storage(models.Model):
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
+        # # 3-Plus.将入库设备可编辑状态更新为 编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+
         #4.返回到代办tree界面
-        treeviews = self.get_todo_assets_storing()
-        return treeviews
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 
 class entry_store_examine(models.Model):
     _name='assets_management.entry_store_examine'

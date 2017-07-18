@@ -27,9 +27,9 @@
                      </group>
 
                     <footer>
-                        <button name="subscribe" type="object"
-                                string="保存为草稿" class="oe_highlight"/>
-                        or
+                        <!--<button name="subscribe" type="object"-->
+                                <!--string="保存为草稿" class="oe_highlight"/>-->
+                        <!--or-->
                         <button special="cancel" string="取消提单"/>
                     </footer>
                 </form>

@@ -36,6 +36,17 @@
         <!--<field name="perm_create" eval="0"/>-->
         <!--<field name="perm_unlink" eval="0"/>-->
     <!--</record>-->
+    <!--团队备件负责人 和 备件管理员 可以创建及编辑 设备的-->
+    <record id="i_device_rule" model="ir.rule">
+        <field name="name">设备创建及修改</field>
+        <field name="model_id" ref="model_assets_management_equipment_info"/>
+        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
+        <field name="groups" eval="[(4,ref('assets_management_group_dev_admin')),(4,ref('assets_management_group_dev_responsibility'))]"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
     <record id="i_device_store_rule" model="ir.rule">
         <field name="name">入库申请</field>
         <field name="model_id" ref="model_assets_management_equipment_storage"/>

@@ -14,7 +14,9 @@ openerp.assets_manage=function(instance){
 
             if(this.model == "assets_management.equipment_storage"){
                 var user_id = data.user_id[0] || data.user_id,
+
                 login_user_id = instance.session.uid;
+//                console.log(user_id,login_user_id)
                 if(user_id != login_user_id){
                     instance.assets_manage.enabled = true;
                 }
