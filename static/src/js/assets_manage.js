@@ -6,23 +6,60 @@ openerp.assets_manage=function(instance){
         _lt=instance.web._lt,
         QWeb=instance.web.qweb;
     instance.assets_manage={
-        enabled:false
+        enabled:false,
+        SN_list:null
     };
 
-    //获取当前视图中申请人的id和登陆人id做对比
     instance.web.FormView.include({
+        //获取当前视图中申请人的id和登陆人id做对比
         load_record:function(data){
 
             if(this.model == "assets_management.equipment_storage"){
+                instance.assets_manage.enabled = false;
                 var user_id = data.user_id[0] || data.user_id,
                 login_user_id = instance.session.uid;
-                console.log(data);
                 if(user_id != login_user_id || data.state != "demander"){
                     instance.assets_manage.enabled = true;
                 }
+                instance.assets_manage.SN_list = data.SN;
             }
 
             return this._super.apply(this, arguments);
+        },
+
+        //当删除关联关系并保存时改变设备的状态
+        on_button_save:function(e){
+
+            if(this.model == "assets_management.equipment_storage"){
+                var self = this;
+                $(e.target).attr("disabled", true);
+                return this.save().done(function(result) {
+                    self.trigger("save", result);
+                    self.reload().then(function() {
+                        self.to_view_mode();
+                        var menu = instance.webclient.menu;
+                        if (menu) {
+                            menu.do_reload_needaction();
+                        }
+                    });
+
+                    //找出保存前后的差异
+                    var ids = [];
+                    $.each(instance.assets_manage['SN_list'],function(i,v){
+                        if(self.datarecord["SN"].indexOf(v)<0){
+                            ids.push(v);
+                        }
+                    });
+                    self.rpc("/web/test",{
+                        "ids":ids
+                    });
+
+                }).always(function(){
+                    $(e.target).attr("disabled", false);
+                });
+            }else{
+                this._super.apply(this, arguments);
+            }
         }
     });
 
@@ -57,7 +94,10 @@ openerp.assets_manage=function(instance){
                     this.self_status = v;
                 }else{
                     if(this.self_status != v){
-                        $("a.oe_breadcrumb_item").trigger("click")
+                        this.self_status = false;
+                        setTimeout(function(){
+                            $("a.oe_vm_switch_list").trigger("click");
+                        },200);
                     }
                 }
             }
