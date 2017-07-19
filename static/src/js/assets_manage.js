@@ -21,14 +21,14 @@ openerp.assets_manage=function(instance){
                 if(user_id != login_user_id || data.state != "demander"){
                     instance.assets_manage.enabled = true;
                 }
-                instance.assets_manage.SN_list = data.SN;
+                //instance.assets_manage.SN_list = data.SN;
             }
 
             return this._super.apply(this, arguments);
         },
 
-        //当删除关联关系并保存时改变设备的状态
-        on_button_save:function(e){
+        //当删除关联关系并保存时改变设备的状态(暂时不需要)
+        /*on_button_save:function(e){
 
             if(this.model == "assets_management.equipment_storage"){
                 var self = this;
@@ -45,8 +45,10 @@ openerp.assets_manage=function(instance){
 
                     //找出保存前后的差异
                     var ids = [];
+                    console.log(self);
+                    debugger;
                     $.each(instance.assets_manage['SN_list'],function(i,v){
-                        if(self.datarecord["SN"].indexOf(v)<0){
+                        if(self.datarecord["SN"].indexOf(v) < 0){
                             ids.push(v);
                         }
                     });
@@ -60,7 +62,7 @@ openerp.assets_manage=function(instance){
             }else{
                 this._super.apply(this, arguments);
             }
-        }
+        }*/
     });
 
     //用来控制是否放开添加功能
