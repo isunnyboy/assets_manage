@@ -7,7 +7,7 @@ openerp.assets_manage=function(instance){
         QWeb=instance.web.qweb;
     instance.assets_manage={
         enabled:false,
-        SN_list:null
+        //SN_list:null
     };
 
     instance.web.FormView.include({
