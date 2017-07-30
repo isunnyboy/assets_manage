@@ -14,7 +14,7 @@ openerp.assets_manage=function(instance){
         //获取当前视图中申请人的id和登陆人id做对比
         load_record:function(data){
 
-            if(this.model == "assets_management.equipment_storage"){
+            if(this.model == "assets_management.equipment_storage" || this.model == "assets_management.equipment_lend"|| this.model == "assets_management.back_to_store" || this.model == "assets_management.equipment_get"){
                 instance.assets_manage.enabled = false;
                 var user_id = data.user_id[0] || data.user_id,
                 login_user_id = instance.session.uid;
@@ -91,7 +91,7 @@ openerp.assets_manage=function(instance){
         self_status:false,
         set_value:function(v){
             //根据需求删除
-            if(this.view.model == "assets_management.equipment_storage"){
+            if(this.view.model == "assets_management.equipment_storage" || this.view.model == "assets_management.equipment_lend" || this.view.model == "assets_management.back_to_store" || this.view.model == "assets_management.equipment_get"){
                 if(!this.self_status){
                     this.self_status = v;
                 }else{

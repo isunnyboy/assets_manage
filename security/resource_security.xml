@@ -1,97 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-<data noupdate="0">
-    <record model="res.groups" id="base.group_user">
-        <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
-    </record>
-    <!--<record model="ir.module.category" id="module_category_assetsmanagement">-->
-        <!--<field name="name">assetsmanagement</field>-->
-        <!--<field name="sequence">1</field>-->
-    <!--</record>-->
+    <data noupdate="0">
+        <record model="res.groups" id="base.group_user">
+            <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
+        </record>
+        <!--<record model="ir.module.category" id="module_category_assetsmanagement">-->
+            <!--<field name="name">assetsmanagement</field>-->
+            <!--<field name="sequence">1</field>-->
+        <!--</record>-->
 
-    <record model="res.groups" id="assets_management_group_dev_admin">
-        <field name="name">备件管理员</field>
-        <field name="category_id" ref="base.module_category_assetsmanagement"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">备件管理员</field>
-    </record>
-    <record model="res.groups" id="assets_management_group_dev_responsibility">
-        <field name="name">团队备件负责人</field>
-        <field name="category_id" ref="base.module_category_assetsmanagement"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">团队备件负责人</field>
-    </record>
-    <record model="res.groups" id="assets_management_group_dev_admin_manager">
-        <field name="name">备件管理团队领导</field>
-        <field name="category_id" ref="base.module_category_assetsmanagement"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">备件管理团队领导</field>
-    </record>
-    <!--<record id="device_get_rule" model="ir.rule">-->
-        <!--<field name="name">领用申请</field>-->
-        <!--<field name="model_id" ref="model_asset_management_equipment_get"/>-->
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <!--<field name="perm_write" eval="1"/>-->
-        <!--<field name="perm_read" eval="0"/>-->
-        <!--<field name="perm_create" eval="0"/>-->
-        <!--<field name="perm_unlink" eval="0"/>-->
-    <!--</record>-->
-    <!--团队备件负责人 和 备件管理员 可以创建及编辑 设备的-->
-    <record id="i_device_rule" model="ir.rule">
-        <field name="name">设备创建及修改</field>
-        <field name="model_id" ref="model_assets_management_equipment_info"/>
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <field name="groups" eval="[(4,ref('assets_management_group_dev_admin')),(4,ref('assets_management_group_dev_responsibility'))]"/>
-        <field name="perm_write" eval="1"/>
-        <field name="perm_read" eval="1"/>
-        <field name="perm_create" eval="1"/>
-        <field name="perm_unlink" eval="0"/>
-    </record>
-    <record id="i_device_store_rule" model="ir.rule">
-        <field name="name">入库申请</field>
-        <field name="model_id" ref="model_assets_management_equipment_storage"/>
-        <field name="domain_force">[('approver_id','=',user.id)]</field>
-        <field name="perm_write" eval="1"/>
-        <field name="perm_read" eval="0"/>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
-    </record>
-    <record id="i_device_store_examin_rule" model="ir.rule">
-        <field name="name">入库流程记录</field>
-        <field name="model_id" ref="model_assets_management_entry_store_examine"/>
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <field name="perm_write" eval="0"/>
-        <field name="perm_read" eval="0"/>
-        <field name="perm_create" eval="1"/>
-        <field name="perm_unlink" eval="0"/>
-    </record>
-    <!--<record id="device_lend_rule" model="ir.rule">-->
-        <!--<field name="name">借用申请</field>-->
-        <!--<field name="model_id" ref="model_asset_management_equipment_lend"/>-->
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <!--<field name="perm_write" eval="1"/>-->
-        <!--<field name="perm_read" eval="0"/>-->
-        <!--<field name="perm_create" eval="0"/>-->
-        <!--<field name="perm_unlink" eval="0"/>-->
-    <!--</record>-->
-    <!--<record id="device_apply_rule" model="ir.rule">-->
-        <!--<field name="name">IT环境申请</field>-->
-        <!--<field name="model_id" ref="model_asset_management_equipment_it_apply"/>-->
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <!--<field name="perm_write" eval="1"/>-->
-        <!--<field name="perm_read" eval="0"/>-->
-        <!--<field name="perm_create" eval="0"/>-->
-        <!--<field name="perm_unlink" eval="0"/>-->
-    <!--</record>-->
-      <!--<record id="device_back_rule" model="ir.rule">-->
-        <!--<field name="name">归还申请</field>-->
-        <!--<field name="model_id" ref="model_assets_management_back_to_store"/>-->
-        <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
-        <!--<field name="perm_write" eval="1"/>-->
-        <!--<field name="perm_read" eval="0"/>-->
-        <!--<field name="perm_create" eval="0"/>-->
-        <!--<field name="perm_unlink" eval="0"/>-->
-    <!--</record>-->
+        <record model="res.groups" id="assets_management_group_dev_admin">
+            <field name="name">备件管理员</field>
+            <field name="category_id" ref="base.module_category_assetsmanagement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">备件管理员</field>
+        </record>
+        <record model="res.groups" id="assets_management_group_dev_responsibility">
+            <field name="name">团队备件负责人</field>
+            <field name="category_id" ref="base.module_category_assetsmanagement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">团队备件负责人</field>
+        </record>
+        <record model="res.groups" id="assets_management_group_dev_admin_manager">
+            <field name="name">备件管理团队领导</field>
+            <field name="category_id" ref="base.module_category_assetsmanagement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">备件管理团队领导</field>
+        </record>
 
+        <!--团队备件负责人 和 备件管理员 可以创建及编辑 设备的-->
+        <record id="i_device_rule" model="ir.rule">
+            <field name="name">设备创建及修改</field>
+            <field name="model_id" ref="model_assets_management_equipment_info"/>
+            <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
+            <field name="groups" eval="[(4,ref('assets_management_group_dev_admin')),(4,ref('assets_management_group_dev_responsibility'))]"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="i_device_store_rule" model="ir.rule">
+            <field name="name">入库申请</field>
+            <field name="model_id" ref="model_assets_management_equipment_storage"/>
+            <field name="domain_force">[('approver_id','=',user.id)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <record id="i_device_store_examin_rule" model="ir.rule">
+            <field name="name">入库流程记录</field>
+            <field name="model_id" ref="model_assets_management_entry_store_examine"/>
+            <!--<field name="domain_force">[('approver_id','=',user.id)]</field>-->
+            <field name="perm_write" eval="0"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <record id="device_lend_rule" model="ir.rule">
+            <field name="name">借用申请</field>
+            <field name="model_id" ref="model_assets_management_equipment_lend"/>
+            <field name="domain_force">[('approver_id','=',user.id)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="device_back_rule" model="ir.rule">
+            <field name="name">归还申请</field>
+            <field name="model_id" ref="model_assets_management_back_to_store"/>
+            <field name="domain_force">[('approver_id','=',user.id)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="device_get_rule" model="ir.rule">
+            <field name="name">领用申请</field>
+            <field name="model_id" ref="model_assets_management_equipment_get"/>
+            <field name="domain_force">[('approver_id','=',user.id)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
     </data>
 </openerp>

@@ -2,4 +2,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 i_device_acess,i_device_acess,model_assets_management_equipment_info,,1,1,1,1
 i_equipment_storage_acess,i_equipment_storage_acess,model_assets_management_equipment_storage,,1,1,1,1
 i_store_examine_acess,i_store_examine_acess,model_assets_management_entry_store_examine,,1,1,1,1
-
+i_equipment_lent_acess,i_equipment_lent_acess,model_assets_management_equipment_lend,,1,1,1,1
+i_lent_examine_acess,i_lent_examine_acess,model_assets_management_lend_examine,,1,1,1,1
+i_equipment_back_acess,i_equipment_back_acess,model_assets_management_back_to_store,,1,1,1,1
+i_back_examine_acess,i_back_examine_acess,model_assets_management_back_examine,,1,1,1,1
+i_equipment_get_acess,i_equipment_get_acess,model_assets_management_equipment_get,,1,1,1,1
+i_get_get_acess,i_get_examine_acess,model_assets_management_get_examine,,1,1,1,1

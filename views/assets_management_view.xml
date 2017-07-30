@@ -1,73 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!--**************设备信息 Begin**************-->
-        <!--设备入库待办-->
+        <!--******************************************设备信息 Begin******************************************-->
+        <!--设备入库-待入库-Tree-->
+        <record model="ir.ui.view" id="instore_assets_management_toStore_tree_view">
+            <field name="name">toStore_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <!--<field name="device_name" string = "设备名称"/>-->
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
+                    <!--<field name="equipment_status" string = "设备可用性"/>-->
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="dev_state" string="状态"/>
+                    <field name="write_date" string="时间"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <!--设备入库待办专用-Form 视图-->
         <record model="ir.ui.view" id="instore_assets_management_for_storing_form_view">
-            <field name="name">equipment.form</field>
+            <field name="name">设备信息</field>
             <field name="model" >assets_management.equipment_info</field>
             <field name="arch" type="xml">
                 <form string="equipment Form" create="false" edit="false" delete="false">
-                    <group invisible="True"> <field name="can_edit" /></group>
+                    <group > <field name="can_edit" invisible="True"/></group>
                     <group attrs="{'invisible':[('can_edit','!=',True)]}">
                         <group >
-                                <field name="sn" string = "序列号OK"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="firms" string = "设备厂商"/>
-                                <field name="device_type" string = "设备类型"/>
-                                <!--<field name="asset_number" string = "资产编号"/>-->
-                                <field name="unit_type" string = "设备型号"/>
-                                <field name="equipment_source" string = "设备来源"/>
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="equipment_use" string = "设备用途"/>
-                                <field name="owner" string = "归属人"/>
-                                <!--<field name="user_id" string = "createPerson"/>-->
-                                <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
                         </group>
                         <group>
-                                <field name="company" string = "公司资产" />
-                                <field name="note" string = "备注"/>
-                                <field name="floor" string = "库房楼层"/>
-                                <!--<field name="area" string = "存放区域"/>-->
-                                <field name="seat" string = "货架位置"/>
-                                <!--<field name="machine_room" string = "存放机房"/>-->
-                                <field name="cabinet_number" string = "货架编号"/>
-                                <!--<field name="start_u_post" string = "起始U位"/>-->
-                                <field name="dev_state" string="设备状态"/>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"/>
                         </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
                     </group>
                     <group attrs="{'invisible':[('can_edit','=',True)]}">
                         <group >
-                                <field name="sn_compute" string = "序列号OK"/>
-                                <field name="bar_code_compute" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="firms_compute" string = "设备厂商"/>
-                                <field name="device_type_compute" string = "设备类型"/>
-                                <!--<field name="asset_number" string = "资产编号"/>-->
-                                <field name="unit_type_compute" string = "设备型号"/>
-                                <field name="equipment_source_compute" string = "设备来源"/>
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="equipment_use_compute" string = "设备用途"/>
-                                <!--<field name="owner" string = "归属人"/>-->
-                                <!--<field name="user_id" string = "createPerson"/>-->
-                                <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                            <field name="sn_compute" string = "序列号"/>
+                            <field name="bar_code_compute" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms_compute" string = "设备厂商"/>
+                            <field name="device_type_compute" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type_compute" string = "设备型号"/>
+                            <!--<field name="equipment_source_compute" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use_compute" string = "设备用途"/>
+                            <field name="dev_integrality_compute" string = "设备完整性"/>
+                            <field name="owner_compute" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
                         </group>
                         <group>
-                                <field name="company_compute" string = "公司资产" />
-                                <field name="note_compute" string = "备注"/>
-                                <field name="floor_compute" string = "库房楼层"/>
-                                <!--<field name="area" string = "存放区域"/>-->
-                                <field name="seat_compute" string = "货架位置"/>
-                                <!--<field name="machine_room" string = "存放机房"/>-->
-                                <field name="cabinet_number_compute" string = "货架编号"/>
-                                <!--<field name="start_u_post" string = "起始U位"/>-->
-                                <field name="dev_state" string="设备状态"/>
+                            <field name="company_compute" string = "公司资产" />
+                            <!--<field name="note_compute" string = "备注"/>-->
+                            <field name="floor_compute" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat_compute" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number_compute" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state_compute" string="设备状态"/>
                         </group>
+                    </group>
+                    <group col="4">
+                        <field name="note_compute" string = "备注" colspan="4"  readonly="True"/>
                     </group>
                 </form>
             </field>
         </record>
+        <!--设备借用待办专用-Form 视图-->
+        <record model="ir.ui.view" id="lent_assets_management_for_lent_form_view">
+            <field name="name">设备信息</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form" create="false" edit="false" delete="false">
+                    <!--<group > <field name="can_edit" invisible="True"/></group>-->
+                    <group>
+                        <group >
+                            <field name="sn" string = "序列号" readonly="True"/>
+                            <field name="bar_code" string = "条码号"  readonly="True"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"  readonly="True"/>
+                            <field name="device_type" string = "设备类型"  readonly="True"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"  readonly="True"/>
+                            <!--<field name="equipment_source" string = "设备来源"  readonly="True"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"  readonly="True"/>
+                            <field name="dev_integrality" string = "设备完整性" readonly="True"/>
+                            <field name="owner" string = "归属人"  readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产"  readonly="True"/>
+                            <!--<field name="note" string = "备注"  readonly="True"/>-->
+                            <field name="floor" string = "库房楼层"  readonly="True"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"  readonly="True"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"  readonly="True"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"  readonly="True"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--设备归还待办专用-Form 视图-->
+        <record model="ir.ui.view" id="back_assets_management_for_back_form_view">
+            <field name="name">设备信息OK</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form" create="false" edit="false" delete="false">
+                    <!--<group > <field name="can_edit" invisible="True"/></group>-->
+                    <group>
+                        <group >
+                            <field name="sn" string = "序列号OK" readonly="True"/>
+                            <field name="bar_code" string = "条码号"  readonly="True"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"  readonly="True"/>
+                            <field name="device_type" string = "设备类型"  readonly="True"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"  readonly="True"/>
+                            <!--<field name="equipment_source" string = "设备来源"  readonly="True"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"  readonly="True"/>
+                            <field name="dev_integrality" string = "设备完整性" readonly="True"/>
+                            <field name="owner" string = "归属人"  readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产"  readonly="True"/>
+                            <!--<field name="note" string = "备注"  readonly="True"/>-->
+                            <field name="floor" string = "库房楼层"  readonly="True"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"  readonly="True"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"  readonly="True"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"  readonly="True"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--设备领用待办专用-Form 视图-->
+        <record model="ir.ui.view" id="get_assets_management_for_get_form_view">
+            <field name="name">设备信息OK</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form" create="false" edit="false" delete="false">
+                    <!--<group > <field name="can_edit" invisible="True"/></group>-->
+                    <group>
+                        <group >
+                            <field name="sn" string = "序列号OK" readonly="True"/>
+                            <field name="bar_code" string = "条码号"  readonly="True"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"  readonly="True"/>
+                            <field name="device_type" string = "设备类型"  readonly="True"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"  readonly="True"/>
+                            <!--<field name="equipment_source" string = "设备来源"  readonly="True"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"  readonly="True"/>
+                            <field name="dev_integrality" string = "设备完整性" readonly="True"/>
+                            <field name="owner" string = "归属人"  readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产"  readonly="True"/>
+                            <!--<field name="note" string = "备注"  readonly="True"/>-->
+                            <field name="floor" string = "库房楼层"  readonly="True"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"  readonly="True"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"  readonly="True"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"  readonly="True"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
         <!--库存设备信息 所有人可见-->
         <record model="ir.ui.view" id="instore_assets_management_tree_view">
             <field name="name">all_equipment.tree</field>
@@ -79,7 +229,7 @@
                     <!--<field name="device_name" string = "设备名称"/>-->
                     <field name="unit_type" string = "设备型号"/>
                     <field name="firms" string = "设备厂商"/>
-                    <field name="equipment_source" string = "设备来源"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
@@ -94,33 +244,41 @@
             <field name="model" >assets_management.equipment_info</field>
             <field name="arch" type="xml">
                 <form string="equipment Form" create="false" edit="false" delete="false">
+                    <!--<button name="%(new_assets_storing_action)d" type="action" string="领用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>-->
+                    <button name="%(new_assets_lent_action)d" type="action" string="借用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>
+                    <button name="%(new_assets_get_action)d" type="action" string="领用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>
+                    <!--<field name="state" widget="statusbar"/>-->
                     <group>
                         <group>
-                                <field name="sn" string = "序列号C"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="firms" string = "设备厂商"/>
-                                <field name="device_type" string = "设备类型"/>
-                                <!--<field name="asset_number" string = "资产编号"/>-->
-                                <field name="unit_type" string = "设备型号"/>
-                                <field name="equipment_source" string = "设备来源"/>
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="equipment_use" string = "设备用途"/>
-                                <field name="owner" string = "归属人"/>
-                                <!--<field name="user_id" string = "createPerson"/>-->
-                                <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
                         </group>
                         <group>
-                                <field name="company" string = "公司资产" />
-                                <field name="note" string = "备注"/>
-                                <field name="floor" string = "库房楼层"/>
-                                <!--<field name="area" string = "存放区域"/>-->
-                                <field name="seat" string = "货架位置"/>
-                                <!--<field name="machine_room" string = "存放机房"/>-->
-                                <field name="cabinet_number" string = "货架编号"/>
-                                <!--<field name="start_u_post" string = "起始U位"/>-->
-                                <field name="dev_state" string="设备状态"/>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"/>
                         </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
                     </group>
                 </form>
             </field>
@@ -137,7 +295,7 @@
                     <!--<field name="device_name" string = "设备名称"/>-->
                     <field name="unit_type" string = "设备型号"/>
                     <field name="firms" string = "设备厂商"/>
-                    <field name="equipment_source" string = "设备来源"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
@@ -153,40 +311,306 @@
             <field name="arch" type="xml">
                 <form string="equipment Form" >
                     <header>
-                        <button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight" />
+                        <button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'待入库')]}"/>
                     </header>
                     <group>
                         <group>
-                                <field name="sn" string = "序列号B"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="firms" string = "设备厂商"/>
-                                <field name="device_type" string = "设备类型"/>
-                                <!--<field name="asset_number" string = "资产编号"/>-->
-                                <field name="unit_type" string = "设备型号"/>
-                                <field name="equipment_source" string = "设备来源"/>
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="equipment_use" string = "设备用途"/>
-                                <field name="owner" string = "归属人"/>
-                                <!--<field name="user_id" string = "createPerson"/>-->
-                                <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
                         </group>
                         <group>
-                                <field name="company" string = "公司资产" />
-                                <field name="note" string = "备注"/>
-                                <field name="floor" string = "库房楼层"/>
-                                <!--<field name="area" string = "存放区域"/>-->
-                                <field name="seat" string = "货架位置"/>
-                                <!--<field name="machine_room" string = "存放机房"/>-->
-                                <field name="cabinet_number" string = "货架编号"/>
-                                <!--<field name="start_u_post" string = "起始U位"/>-->
-                                <field name="dev_state" string="状态"/>
-                                <!--<field name="state" string="提交状态"/>-->
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
                         </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
                     </group>
                 </form>
             </field>
         </record>
+
+        <!--全部借用设备====备件管理员-->
+        <record model="ir.ui.view" id="all_lent_assets_management_tree_view">
+            <field name="name">all_lent_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <!--<field name="device_name" string = "设备名称"/>-->
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
+                    <!--<field name="equipment_status" string = "设备可用性"/>-->
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="dev_state" string="状态"/>
+                    <field name="write_date" string="时间"/>
+                    <field name="devUse_user_id" string="借用人"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="all_lent_assets_management_form_view">
+            <field name="name">my_lent_equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form"  create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <field name="devUse_user_id" string="借用人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--====我借用的设备====-->
+        <record model="ir.ui.view" id="my_lent_assets_management_tree_view">
+            <field name="name">my_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <!--<field name="device_name" string = "设备名称"/>-->
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
+                    <!--<field name="equipment_status" string = "设备可用性"/>-->
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="dev_state" string="状态"/>
+                    <field name="write_date" string="时间"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="my_lent_tostore_assets_management_form_view">
+            <field name="name">my_equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form"  create="false" edit="false" delete="false">
+                    <group > <field name="use_state" invisible="True"/></group>
+                    <header>
+                        <button name="%(new_assets_back_action)d" type="action" string="归还" class="oe_highlight" attrs="{'invisible':['|',('dev_state','!=',u'借用'),('use_state','!=',u'haveLent')]}"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--全部领用设备====备件管理员-->
+        <record model="ir.ui.view" id="all_get_assets_management_tree_view">
+            <field name="name">all_get_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <!--<field name="device_name" string = "设备名称"/>-->
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
+                    <!--<field name="equipment_status" string = "设备可用性"/>-->
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="dev_state" string="状态"/>
+                    <field name="write_date" string="时间"/>
+                    <field name="devUse_user_id" string="领用人"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="all_get_assets_management_form_view">
+            <field name="name">my_get_equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form"  create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <field name="devUse_user_id" string="领用人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--====我领用的设备====-->
+        <record model="ir.ui.view" id="my_get_assets_management_tree_view">
+            <field name="name">my_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <!--<field name="device_name" string = "设备名称"/>-->
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
+                    <!--<field name="equipment_status" string = "设备可用性"/>-->
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="dev_state" string="状态"/>
+                    <field name="write_date" string="时间"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="my_get_assets_management_form_view">
+            <field name="name">my_equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form"  create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!--====我归还的设备====无此需求-->
 
         <!--全部设备====备件管理员-->
         <record model="ir.ui.view" id="all_store_assets_management_tree_view">
@@ -199,7 +623,7 @@
                     <!--<field name="device_name" string = "设备名称"/>-->
                     <field name="unit_type" string = "设备型号"/>
                     <field name="firms" string = "设备厂商"/>
-                    <field name="equipment_source" string = "设备来源"/>
+                    <!--<field name="equipment_source" string = "设备来源"/>-->
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
@@ -219,39 +643,45 @@
                     </header>
                     <group>
                         <group>
-                                <field name="sn" string = "序列号D"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="firms" string = "设备厂商"/>
-                                <field name="device_type" string = "设备类型"/>
-                                <!--<field name="asset_number" string = "资产编号"/>-->
-                                <field name="unit_type" string = "设备型号"/>
-                                <field name="equipment_source" string = "设备来源"/>
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="equipment_use" string = "设备用途"/>
-                                <field name="owner" string = "归属人"/>
-                                <!--<field name="user_id" string = "createPerson"/>-->
-                                <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
                         </group>
                         <group>
-                                <field name="company" string = "公司资产" />
-                                <field name="note" string = "备注"/>
-                                <field name="floor" string = "库房楼层"/>
-                                <!--<field name="area" string = "存放区域"/>-->
-                                <field name="seat" string = "货架位置"/>
-                                <!--<field name="machine_room" string = "存放机房"/>-->
-                                <field name="cabinet_number" string = "货架编号"/>
-                                <!--<field name="start_u_post" string = "起始U位"/>-->
-                                <field name="dev_state" string="状态"/>
-                                <!--<field name="state" string="提交状态"/>-->
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
                         </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
                     </group>
                 </form>
             </field>
         </record>
-        <!--**************设备信息 END**************-->
+        <!--******************************************设备信息 END******************************************-->
 
+        <!--***************************************************我的各类请求 BEGIN******************************************-->
         <!--我的请求===所有人都看见导航==申请人只能查看到自己的请求单-->
+        <!--入库请求-->
         <record model="ir.ui.view" id="my_assets_storage_tree_view">
             <field name="name">my_equipment_storage.tree</field>
             <field name="model">assets_management.equipment_storage</field>
@@ -260,9 +690,9 @@
                     <field name="storage_id" string = "入库单号"/>
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
-                    <field name="state" string = "状态"/>
                     <field name="purpose" string="入库目的" />
                     <field name="create_date" string = "申请时间"/>
+                    <field name="state" string = "状态"/>
                 </tree>
             </field>
         </record>
@@ -291,6 +721,7 @@
                                     <field name="approver_id" string = "审批人" />
                                     <field name="result" string="审批结果" />
                                     <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
                                     <field name = "date" string = "审批时间" />
                              </tree>
                          </field>
@@ -299,8 +730,158 @@
                 </form>
             </field>
          </record>
+        <!--借用请求-->
+        <record model="ir.ui.view" id="my_assets_lent_tree_view">
+            <field name="name">my_equipment_lent.tree</field>
+            <field name="model">assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_lent'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="lend_id" string = "借用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="lend_date" string = "借用日期"/>
+                    <field name="promise_date" string = "归还日期"/>
+                    <field name="lend_purpose" string="借用目的" />
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="my_assets_lent_form_view">
+            <field name="name">my_equipment_lent.form</field>
+            <field name="model" >assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <form string="my_equipment_lent Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group >
+                        <group>
+                            <field name="lend_id" string = "借用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="lend_date" string = "借用日期"/>
+                            <field name="promise_date" string = "归还日期"/>
+                            <field name="lend_purpose" string="借用目的" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', '流程中')]" mode="tree"/>
+                        <field name="lend_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                        <!--<field name="owners" string = "归属人"  mode="tree"/>-->
+                    </group>
+                </form>
+            </field>
+         </record>
+        <!--归还请求-->
+        <record model="ir.ui.view" id="my_assets_back_to_store_tree_view">
+            <field name="name">my_equipment_back.tree</field>
+            <field name="model">assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <tree string ="back_to_store" default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="back_id" string = "归还单号"/>
+                    <field name="user_id" string = "申请人"/>
+                    <field name="approver_id" string = "审批人"/>
+                    <field name="create_date" string = "归还时间"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="my_assets_back_to_store_form_view">
+            <field name="name">my_equipment_back.form</field>
+            <field name="model" >assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <form string="back Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                             <field name="back_id" string = "归还单号" readonly="True"/>
+                             <field name="back_date" string = "归还时间"/>
+                        </group>
+                        <group>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                             <field name="approver_id" string = "当前处理人" readonly="True"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="back_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--领用请求-->
+        <record model="ir.ui.view" id="my_assets_get_tree_view">
+            <field name="name">my_equipment_get.tree</field>
+            <field name="model">assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <tree string ="get" default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="get_id" string = "领用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="get_date" string = "领用日期"/>
+                    <field name="get_purpose" string = "领用目的"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="my_assets_get_form_view">
+            <field name="name">my_equipment_get.form</field>
+            <field name="model" >assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <form string="back Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="get_id" string = "领用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="get_date" string = "领用日期"/>
+                            <field name="get_purpose" string = "领用目的"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="get_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--***************************************************我的各类请求 END  ******************************************-->
 
-        <!--入库请求 view-->
+        <!--******************************************我待处理、已处理的各类请求 BEGIN******************************************-->
+        <!--入库请求-->
         <record model="ir.ui.view" id="assets_storage_tree_view">
             <field name="name">equipment_storage.tree</field>
             <field name="model">assets_management.equipment_storage</field>
@@ -309,9 +890,9 @@
                     <field name="storage_id" string = "入库单号"/>
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
-                    <field name="state" string = "状态"/>
                     <field name="purpose" string="入库目的" />
                     <field name="create_date" string = "申请时间"/>
+                    <field name="state" string = "状态"/>
                 </tree>
             </field>
         </record>
@@ -323,7 +904,7 @@
                 <!--<form string="equipment_storage Form" create="false"  delete="false" >-->
                     <header>
                         <!--资产管理员操作-->
-                        <button name="get_todo_assets_storing" type="object" string="返回"/>
+                        <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
                         <button name="action_store_ass_admin_agree" type="object" string="同意1" class="oe_highlight"
@@ -346,7 +927,6 @@
                         <button name="action_store_admin_detec_disagree" type="object" string="退回4" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
                         <field name="state" widget="statusbar"/>
-
                     </header>
                     <group>
                         <group>
@@ -366,19 +946,19 @@
                         <field name="opinion" string="意见" colspan="4"></field>
                     </group>
                     <group>
-                        <field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.instore_assets_management_for_storing_form_view'}">
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'待入库')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.instore_assets_management_for_storing_form_view'}">
                         <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" widget="many2many_tags" readonly="1">-->
                         <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]"  widget="many2many_tags"-->
     <!--options="{'no_create_edit': True}">-->
                    <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]"  widget="many2many"-->
     <!--options="{'no_create': True}">-->
-                            <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
-                                <field name="sn" string = "序列号A"/>
+                            <tree string="设备" name="SN_Store" context="{'tree_view_ref': 'instore_assets_management_toStore_tree_view'}">
+                                <field name="sn" string = "序列号"/>
                                 <field name="bar_code" string = "条码号"/>
                                 <!--<field name="device_name" string = "设备名称"/>-->
                                 <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <field name="equipment_source" string = "设备来源"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
@@ -394,6 +974,7 @@
                                     <field name="approver_id" string = "审批人" />
                                     <field name="result" string="审批结果" />
                                     <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
                                     <field name = "date" string = "审批时间" />
                              </tree>
                         </field>
@@ -424,7 +1005,6 @@
                             <field name="approver_id" string="审批人" readonly="True"/>
                             <!--<field name="curlogUser" string="当前登录人" readonly="True"/>-->
                         </group>
-
                     </group>
                     <group>
                         <field name="SN" string = "设备">
@@ -434,7 +1014,7 @@
                                 <!--<field name="device_name" string = "设备名称"/>-->
                                 <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <field name="equipment_source" string = "设备来源"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
@@ -448,6 +1028,7 @@
                                     <field name="approver_id" string = "审批人" />
                                     <field name="result" string="审批结果" />
                                     <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
                                     <field name = "date" string = "审批时间" />
                              </tree>
                          </field>
@@ -456,5 +1037,448 @@
             </field>
          </record>
 
+        <!--借用请求-->
+        <record model="ir.ui.view" id="assets_lent_tree_view">
+            <field name="name">借用请求</field>
+            <field name="model">assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_lent'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="lend_id" string = "借用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="lend_date" string = "借用日期"/>
+                    <field name="promise_date" string = "归还日期"/>
+                    <field name="lend_purpose" string="借用目的" />
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="toDo_assets_lent_form_view">
+            <field name="name">待处理借用请求</field>
+            <field name="model" >assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <form string="equipment_lent Form" create="false" delete="false" >
+                <!--<form string="equipment_storage Form" create="false"  delete="false" >-->
+                    <header>
+                        <!--资产管理员操作-->
+                        <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
+                        <!--申请人提交-->
+                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <!--需求团队领导操作-->
+                        <button name="action_lent_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','dem_leader')]}"/>
+                        <button name="action_lent_dem_leader_disagree" type="object" string="退回1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','dem_leader')]}"/>
+                        <!--资产归属人操作-->
+                        <button name="action_lent_owners_agree" type="object" string="同意2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','owner')]}"/>
+                        <button name="action_lent_owners_disagree" type="object" string="退回2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','owner')]}"/>
+                        <!--备件管理员审核-->
+                        <button name="action_lent_ass_admin_agree" type="object" string="同意3" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+                        <button name="action_lent_ass_admin_disagree" type="object" string="退回3" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+                        <!--备件管理团队领导审批-->
+                        <button name="action_lent_ass_admin_manager_agree" type="object" string="同意4" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
+                        <button name="action_lent_ass_admin_manager_disagree" type="object" string="退回4" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
+                        <!--资产管理员检测-->
+                        <button name="action_lent_ass_admin_detection_agree" type="object" string="同意5" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
+                        <button name="action_lent_ass_admin_detection_disagree" type="object" string="退回5" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="lend_id" string = "借用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="lend_date" string = "借用日期"  attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="promise_date" string = "归还日期"  attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="lend_purpose" string="借用目的" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="lend_date_compute" string="借用日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="promise_date_compute" string="归还日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="lend_purpose_compute" string="借用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="opinion" string="意见" colspan="4"></field>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.lent_assets_management_for_lent_form_view'}">
+                            <tree string="设备" name="SN_Store">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <field name="write_date" string="时间"/>
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="lend_exam_ids" string="流程记录" >
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+         </record>
+        <record model="ir.ui.view" id="done_assets_lent_form_view">
+            <field name="name">已处理借用请求</field>
+            <field name="model" >assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <form string="equipment_lent Form" create="false" edit="false" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="lend_id" string = "借用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="lend_date" string = "借用日期"/>
+                            <field name="promise_date" string = "归还日期"/>
+                            <field name="lend_purpose" string="借用目的" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="lend_purpose_compute" string="借用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
+                            <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <field name="write_date" string="时间"/>
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="lend_exam_ids" string="流程记录" >
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                        </field>
+                        <!--<field name="owners" string = "归属人"  mode="tree"/>-->
+                    </group>
+                </form>
+            </field>
+         </record>
+
+        <!--归还请求-->
+        <record model="ir.ui.view" id="assets_back_tree_view">
+            <field name="name">归还请求</field>
+            <field name="model">assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_back'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="back_id" string = "归还单号"/>
+                    <field name="user_id" string = "申请人"/>
+                    <field name="approver_id" string = "审批人"/>
+                    <field name="create_date" string = "归还时间"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="toDo_assets_back_form_view">
+            <field name="name">待处理归还请求</field>
+            <field name="model" >assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <form string="equipment_back Form" create="false" delete="false" >
+                <!--<form string="equipment_storage Form" create="false"  delete="false" >-->
+                    <header>
+                        <!--资产管理员操作-->
+                        <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
+                        <!--申请人提交-->
+                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <!--&lt;!&ndash;备件管理员审核&ndash;&gt;-->
+                        <button name="action_back_ass_admin_agree" type="object" string="同意2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+                        <button name="action_back_ass_admin_disagree" type="object" string="退回2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="back_id" string = "归还单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "当前处理人" readonly="True"/>
+                            <field name="back_date" string = "归还时间" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="back_date_compute" string="归还日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group col="4">
+                        <field name="opinion" string="意见" colspan="4"></field>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'借用')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.back_assets_management_for_back_form_view'}">
+                            <tree string="设备" name="SN_Back">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="back_exam_ids" string="流程记录" >
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+         </record>
+        <record model="ir.ui.view" id="done_assets_back_form_view"><!---->
+            <field name="name">已处理归还请求</field><!---->
+            <field name="model" >assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <form string="equipment_back Form" create="false" edit="false" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="back_id" string = "归还单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "当前处理人" readonly="True"/>
+                            <field name="back_date" string = "归还时间"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
+                            <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="back_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+         </record>
+
+        <!--领用请求-->
+        <record model="ir.ui.view" id="assets_get_tree_view">
+            <field name="name">领用请求</field>
+            <field name="model">assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_get'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="get_id" string = "领用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="get_date" string = "领用日期"/>
+                    <field name="get_purpose" string = "领用目的"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="toDo_get_form_view">
+            <field name="name">待处理领用请求</field>
+            <field name="model" >assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <form string="equipment_get Form" create="false" delete="false" >
+                <!--<form string="equipment_storage Form" create="false"  delete="false" >-->
+                    <header>
+                        <!--资产管理员操作-->
+                        <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
+                        <!--申请人提交-->
+                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <!--需求团队领导操作-->
+                        <button name="action_get_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','dem_leader')]}"/>
+                        <button name="action_get_dem_leader_disagree" type="object" string="退回1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','dem_leader')]}"/>
+                        <!--资产归属人操作-->
+                        <button name="action_get_owners_agree" type="object" string="同意2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','owner')]}"/>
+                        <button name="action_get_owners_disagree" type="object" string="退回2" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','owner')]}"/>
+                        <!--备件管理员审核-->
+                        <button name="action_get_ass_admin_agree" type="object" string="同意3" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+                        <button name="action_get_ass_admin_disagree" type="object" string="退回3" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin')]}"/>
+                        <!--备件管理团队领导审批-->
+                        <button name="action_get_ass_admin_manager_agree" type="object" string="同意4" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
+                        <button name="action_get_ass_admin_manager_disagree" type="object" string="退回4" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
+                        <!--资产管理员检测-->
+                        <button name="action_get_ass_admin_detection_agree" type="object" string="同意5" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
+                        <button name="action_get_ass_admin_detection_disagree" type="object" string="退回5" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="get_id" string = "领用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="get_date" string = "领用日期" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="get_purpose" string = "领用目的" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="get_date_compute" string = "领用日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="get_purpose_compute" string = "领用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="opinion" string="意见" colspan="4"></field>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.get_assets_management_for_get_form_view'}">
+                            <tree string="设备" name="SN_Back">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="get_exam_ids" string="流程记录" >
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+         </record>
+        <record model="ir.ui.view" id="done_get_form_view"><!---->
+            <field name="name">已处理领用请求</field><!---->
+            <field name="model" >assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <form string="equipment_get Form" create="false" edit="false" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="get_id" string = "领用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="get_date" string = "领用日期"/>
+                            <field name="get_purpose" string = "领用目的"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
+                            <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="get_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+         </record>
+        <!--******************************************我待处理、已处理的各类请求 END  ******************************************-->
     </data>
 </openerp>
