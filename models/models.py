@@ -14,7 +14,7 @@ class equipment_info(models.Model):
     device_type = fields.Char(string=u"设备类型", required=True)
     # asset_number = fields.Char(string=u"资产编号", )
     unit_type = fields.Char(string=u"设备型号", required=True)
-    equipment_source = fields.Char(string=u"设备来源", required=True)
+    equipment_source = fields.Char(string=u"设备来源")
     equipment_use = fields.Selection([
         (u'公共备件', u"公共备件"),
         (u'专用备件', u"专用备件"),
