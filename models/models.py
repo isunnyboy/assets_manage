@@ -846,8 +846,10 @@ class equipment_lend(models.Model):
             self.equipment_use = list(set_equipment_use)[0]
 
             # 5.将下一个审批人员加入到相关字段中(需求团队领导)
-            nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
-
+            # nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            print self.user_id.employee_ids[0].id
+            nextAppuser = self.env['hr.employee'].sudo().search([('parent_id', '=', self.user_id.employee_ids[0].id)])
+            nextAppuser = nextAppuser.user_id
             # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
             self.approver_id = nextAppuser
 
