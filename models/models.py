@@ -160,6 +160,7 @@ class equipment_storage(models.Model):
 
     @api.multi
     def _default_SN(self):
+        # return self.env['assets_management.equipment_info'].browse(self._context.get('active_ids'))
         return self.env['assets_management.equipment_info'].search([('dev_state', '=', u'待入库'),('user_id', '=', self.env.uid)])
 
     storage_id = fields.Char(string=u"入库单号")
@@ -177,10 +178,10 @@ class equipment_storage(models.Model):
 
     state = fields.Selection([
         ('demander', u"提交人"),
-        ('ass_admin', u"备件管理员审核"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('ass_admin', u"资产管理员审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'完成'),
         # ('cancel',u'已作废'),
     ],string=u"状态",required=True,default='demander')
@@ -688,10 +689,10 @@ class entry_store_examine(models.Model):
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"提交人"),
-        ('ass_admin', u"备件管理员审核"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('ass_admin', u"资产管理员审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'完成'),
         # ('cancel',u'已作废'),
     ],string=u"申请单审批时状态",readonly="True")
@@ -718,11 +719,11 @@ class equipment_lend(models.Model):
                           required=True)
     state = fields.Selection([
         ('demander', u"申请人"),
-        ('dem_leader', u"需求团队领导"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin', u"备件管理员审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('dem_leader', u"上级领导审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin', u"资产管理员审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
     ], string=u"状态", required=True, default='demander')
     lend_date = fields.Date(string=u"借用日期", required=True)
@@ -845,8 +846,12 @@ class equipment_lend(models.Model):
                 set_equipment_use.add(dev.equipment_use)
             self.equipment_use = list(set_equipment_use)[0]
 
-            # 5.将下一个审批人员加入到相关字段中(需求团队领导)
+            # 5.将下一个审批人员加入到相关字段中(上级领导审批)
             nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            # res.users()
+            # print len(nextAppuser)
+            if len(nextAppuser) == 0:
+                nextAppuser = self.user_id.employee_ids[0].department_id.manager_id.user_id
             # print self.user_id.employee_ids[0].id
             # nextAppuser = self.env['hr.employee'].sudo().search([('parent_id', '=', self.user_id.employee_ids[0].id)])
             # nextAppuser = nextAppuser.user_id
@@ -877,7 +882,7 @@ class equipment_lend(models.Model):
 
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = nextleader
-
+        # print len(nextAppuser)
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
@@ -1208,11 +1213,11 @@ class lend_examine(models.Model):
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
-        ('dem_leader', u"需求团队领导"),
-        ('ass_admin', u"备件管理员审核"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('dem_leader', u"上级领导审批"),
+        ('ass_admin', u"资产管理员审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string='审批意见')
@@ -1237,7 +1242,7 @@ class equipment_back_to_store(models.Model):
                           required=True,)
     state = fields.Selection([
         ('demander', u"申请人"),
-        ('ass_admin', u"备件管理员审核"),
+        ('ass_admin', u"资产管理员审批"),
         ('done', u'已归还'),
     ], string=u"状态", required=True, default='demander')
     back_date = fields.Date(string=u"归还时间",)
@@ -1304,7 +1309,7 @@ class equipment_back_to_store(models.Model):
         self.env['assets_management.back_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'submit', 'back_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
-        # 5.将下一个审批人员加入到相关字段中(需求团队领导)
+        # 5.将下一个审批人员加入到相关字段中(上级领导审批)
         nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
@@ -1395,7 +1400,7 @@ class back_examine(models.Model):
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
-        ('ass_admin', u"备件管理员审核"),
+        ('ass_admin', u"资产管理员审批"),
         ('done', u'已归还'),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string='审批意见')
@@ -1417,11 +1422,11 @@ class equipment_get(models.Model):
     SN = fields.Many2many('assets_management.equipment_info',"i_get_equipment_ref",string=u"设备SN", default=_default_SN,required=True)
     state = fields.Selection([
         ('demander', u"申请人"),
-        ('dem_leader', u"需求团队领导"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin', u"备件管理员审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('dem_leader', u"上级领导审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin', u"资产管理员审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已领用'),
     ], string=u"状态", required=True, default='demander')
     get_date = fields.Date(string=u"领用日期",)
@@ -1527,8 +1532,10 @@ class equipment_get(models.Model):
                 set_equipment_use.add(dev.equipment_use)
             self.equipment_use = list(set_equipment_use)[0]
 
-            # 5.将下一个审批人员加入到相关字段中(需求团队领导)
+            # 5.将下一个审批人员加入到相关字段中(上级领导审批)
             nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            if len(nextAppuser) == 0:
+                nextAppuser = self.user_id.employee_ids[0].department_id.manager_id.user_id
 
             # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
             self.approver_id = nextAppuser
@@ -1888,11 +1895,11 @@ class get_examine(models.Model):
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
-        ('dem_leader', u"需求团队领导"),
-        ('ass_admin', u"备件管理员审核"),
-        ('owner', u"资产归属人审核"),
-        ('ass_admin_manager', u"备件管理团队领导审批"),
-        ('ass_admin_detection', u"备件管理员检测确认"),
+        ('dem_leader', u"上级领导审批"),
+        ('ass_admin', u"资产管理员审批"),
+        ('owner', u"资产归属人审批"),
+        ('ass_admin_manager', u"资产管理领导审批"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string='审批意见')
