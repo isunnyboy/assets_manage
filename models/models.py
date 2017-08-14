@@ -312,7 +312,7 @@ class equipment_storage(models.Model):
 
             # 4.创建审批流程日志文档
             self.env['assets_management.entry_store_examine'].create(
-                {'approver_id': self.approver_id.id, 'result': 'submit', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
+                {u'approver_id': self.approver_id.id, u'result': u'submit', u'store_id': self.id, u'app_state':pre_state, u'reason':self.opinion_bak})
 
             # 5.将下一个审批人员加入到相关字段中
             nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')],limit=1).users[0]
