@@ -5,6 +5,8 @@ import datetime
 import sys
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT,DEFAULT_SERVER_DATETIME_FORMAT
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 class equipment_info(models.Model):
     _name ='assets_management.equipment_info'
     _rec_name = 'sn'    #上标题显示信息
