@@ -312,7 +312,7 @@ class equipment_storage(models.Model):
                 {'approver_id': self.approver_id.id, 'result': u'submit', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
             # 5.将下一个审批人员加入到相关字段中
-            nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')],limit=1).users[0]
+            nextAppuser = self.env['res.groups'].search([(u'name', '=', u'备件管理员')],limit=1).users[0]
             # self.curApproveUser = str(nextAppuser.name)
             # self.curApproveUserID = str(nextAppuser.id)
             # self.user_toApproveChar = nextAppuser.id
