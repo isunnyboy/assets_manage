@@ -2,6 +2,7 @@
 from openerp import fields,api,exceptions,models
 import func
 import datetime
+import sys
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT,DEFAULT_SERVER_DATETIME_FORMAT
 
 class equipment_info(models.Model):
