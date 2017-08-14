@@ -312,10 +312,10 @@ class equipment_storage(models.Model):
 
             # 5.将下一个审批人员加入到相关字段中
             nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')],limit=1).users[0]
-            self.curApproveUser = str(nextAppuser.name)
-            self.curApproveUserID = str(nextAppuser.id)
-            self.user_toApproveChar = nextAppuser.id
-            self.user_haveApproveChar = str(self.env.uid)
+            # self.curApproveUser = str(nextAppuser.name)
+            # self.curApproveUserID = str(nextAppuser.id)
+            # self.user_toApproveChar = nextAppuser.id
+            # self.user_haveApproveChar = str(self.env.uid)
 
             # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
             self.approver_id = nextAppuser
