@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding:utf-8 -*-s = u
 from openerp import fields,api,exceptions,models
 import func
 import datetime
@@ -6,7 +6,7 @@ import sys
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT,DEFAULT_SERVER_DATETIME_FORMAT
 
 reload(sys)
-# sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding('utf-8')
 sys.setrecursionlimit(1000000)
 class equipment_info(models.Model):
     _name ='assets_management.equipment_info'
@@ -311,6 +311,7 @@ class equipment_storage(models.Model):
             self.state = 'ass_admin'
 
             # 4.创建审批流程日志文档
+            print sys.getdefaultencoding()
             self.env['assets_management.entry_store_examine'].create(
                 {'approver_id': self.approver_id.id, 'result': 'submit', 'store_id': self.id, 'app_state':pre_state.decode('utf-8'), 'reason':self.opinion_bak})
 
