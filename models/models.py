@@ -5,8 +5,8 @@ import datetime
 import sys
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT,DEFAULT_SERVER_DATETIME_FORMAT
 
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
+reload(sys)
+sys.setdefaultencoding('utf-8')
 sys.setrecursionlimit(1000000)
 class equipment_info(models.Model):
     _name ='assets_management.equipment_info'
