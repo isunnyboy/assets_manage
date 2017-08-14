@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding:utf-8 -*-s = u’示例’
 from openerp import fields,api,exceptions,models
 import func
 import datetime
