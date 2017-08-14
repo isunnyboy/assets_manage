@@ -30,7 +30,7 @@ class equipment_info(models.Model):
     # dev_state = fields.Char(string='设备状态', default=u'待入库',readonly=True)
     state = fields.Selection(
         [('toSubmit',u'待提交'),('haveSubmit',u'已提交')],
-        readonly=True,string='提交状态',default='toSubmit'
+        readonly=True,string=u'提交状态',default='toSubmit'
     )
     dev_state = fields.Selection([
         (u'待入库', u'待入库'),
@@ -40,7 +40,7 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
-    ], string='状态', default=u'待入库',readonly=True)
+    ], string=u'状态', default=u'待入库',readonly=True)
     owner = fields.Many2one('res.users', string=u"归属人", required=True)
     # owner_compute =
     company = fields.Boolean(string=u"是否公司资产")
@@ -59,17 +59,17 @@ class equipment_info(models.Model):
     lend_ids = fields.Many2many('assets_management.equipment_lend', "i_lend_equipment_ref", )
     back_ids = fields.Many2many('assets_management.back_to_store', "i_back_equipment_ref", )
 
-    user_id = fields.Many2one('res.users', string='创建人', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', string=u'创建人', default=lambda self: self.env.user)
 
     # New Add
     bar_code = fields.Char(string=u"条码号")
 
     got_count = fields.Integer(string=u"领用次数", readonly=True)
     lend_count = fields.Integer(string=u"借用次数", readonly=True)
-    devUse_user_id = fields.Many2one('res.users', string='设备使用人', default=None)  # 领用、借用
+    devUse_user_id = fields.Many2one('res.users', string=u'设备使用人', default=None)  # 领用、借用
     dev_integrality = fields.Selection(
         [('OK', u'完好'), ('Destroyed', u'损坏')],
-        string='设备完整性', default="OK"
+        string=u'设备完整性', default="OK"
     )
     #是否借用、领用成功,在借用成功后可以显示归还按钮，在领用成功后不显示任何操作按钮
     use_state =  fields.Selection(
@@ -77,11 +77,11 @@ class equipment_info(models.Model):
          ('Lending', u'借用中'), ('Getting', u'领用中'),
          ('Backing', u'归还中'), ('haveBack', u'已归还'),
          ('none',u'none')],
-        readonly=True,string='是否借用、领用成功', default="none"
+        readonly=True,string=u'是否借用、领用成功', default="none"
     )
 
     #控制非编辑人员不可编辑 主要入库用到
-    can_edit = fields.Boolean(string='button操作：当前操作人员是否是否可以编辑',default=True)
+    can_edit = fields.Boolean(string=u'button操作：当前操作人员是否是否可以编辑',default=True)
 
     # 因使用ReadOnly无效，使用如下计算字段控制用户无法编辑请求中申请的设备信息
     sn_compute = fields.Char(string=u"序列号", compute="_dev_compute")
@@ -106,10 +106,10 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
-    ], string='状态',readonly=True)
+    ], string=u'状态',readonly=True)
     dev_integrality_compute =  fields.Selection(
         [('OK', u'完好'), ('Destroyed', u'损坏')],
-        string='设备完整性', default="OK",readonly = True
+        string=u'设备完整性', default="OK",readonly = True
     )
     note_compute = fields.Char(string=u"备注")
 
@@ -145,7 +145,7 @@ class equipment_info(models.Model):
     _sql_constraints = [
         ('SN UNIQUE',
          'UNIQUE(sn)',
-         '该序列号已存在'),
+         u'该序列号已存在'),
     ]
 
     # 重写父类的create函数
@@ -190,21 +190,21 @@ class equipment_storage(models.Model):
         # ('cancel',u'已作废'),
     ],string=u"状态",required=True,default='demander')
     owners = fields.Many2many('res.users', string=u'设备归属人', ondelete='set null')
-    store_exam_ids = fields.One2many('assets_management.entry_store_examine', 'store_id', string='审批记录')
+    store_exam_ids = fields.One2many('assets_management.entry_store_examine', 'store_id', string=u'审批记录')
 
 
-    curApproveUser = fields.Char(string='当前处理人',default=lambda self: self.env.user.name,readonly=True)
-    curApproveUserID = fields.Char(string='当前处理人ID', default=lambda self: self.env.user.id)
+    curApproveUser = fields.Char(string=u'当前处理人',default=lambda self: self.env.user.name,readonly=True)
+    curApproveUserID = fields.Char(string=u'当前处理人ID', default=lambda self: self.env.user.id)
     # user_toApprove = fields.Many2many('res.users',"i_storge_equipment_toApprove_ref")       #当前环节待审批的人员
     # user_haveApprove = fields.Many2many('res.users',"i_storge_equipment_haveApprove_ref")   #所有环节已经审批的人员
     user_toApprove = fields.Many2many('res.users')  # 当前环节待审批的人员    弃用
     user_haveApprove = fields.Many2many('res.users')  # 所有环节已经审批的人员 弃用
 
-    user_toApproveChar = fields.Char(string='当前环节审批人员ID')  # 当前环节待审批的人员
-    user_haveApproveChar = fields.Char(string='所有环节审批人员ID')  # 所有环节已经审批的人员
+    user_toApproveChar = fields.Char(string=u'当前环节审批人员ID')  # 当前环节待审批的人员
+    user_haveApproveChar = fields.Char(string=u'所有环节审批人员ID')  # 所有环节已经审批的人员
 
-    if_invisible = fields.Boolean(string='当前环节审批人员是否可见')
-    curlogUser = fields.Char(string='当前登录人员',compute="_curlogUser")
+    if_invisible = fields.Boolean(string=u'当前环节审批人员是否可见')
+    curlogUser = fields.Char(string=u'当前登录人员',compute="_curlogUser")
 
     def _curlogUser(self):
         self.curlogUser = self.env.user.id
@@ -220,7 +220,7 @@ class equipment_storage(models.Model):
         # print '&&&&&&&&&&&&&&&& self.owners&&&&&&&&&&&&'
         # print self.owners
         if len(self.owners) > 1:
-            raise exceptions.ValidationError("所选取的设备归属人必须唯一!")
+            raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
 
     @api.constrains('opinion_bak')
     def _checkDisagree(self):
@@ -229,7 +229,7 @@ class equipment_storage(models.Model):
         if self.approve_flag == False:
             # self.opinion_bak = self.opinion
             if self.opinion_bak == '':
-                raise exceptions.ValidationError("请输入意见!")
+                raise exceptions.ValidationError(u"请输入意见!")
 
     # 重写父类的create函数
     def create(self, cr, uid, vals, context=None):
@@ -681,16 +681,16 @@ class entry_store_examine(models.Model):
     # _rec_name = 'exam_num'
 
     # exam_num = fields.Char(sting='审批id')
-    approver_id = fields.Many2one('res.users',required = 'True',string='审批人')
-    date = fields.Datetime(string='审批时间',default=lambda self:fields.Datetime.now())
+    approver_id = fields.Many2one('res.users',required = 'True',string=u'审批人')
+    date = fields.Datetime(string=u'审批时间',default=lambda self:fields.Datetime.now())
     result=fields.Selection([
                                (u'agree', u"通过"),
                                (u'disagree', u"拒绝"),
                                (u'submit', u"提交"),
                                (u'callback', u"收回"),
                                 ],string=u"操作")
-    store_id = fields.Many2one('assets_management.equipment_storage',string='入库单')
-    # app_state = fields.Char(string='申请单审批时状态')
+    store_id = fields.Many2one('assets_management.equipment_storage',string=u'入库单')
+    # app_state = fields.Char(string=u'申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"提交人"),
         ('ass_admin', u"资产管理员审批"),
@@ -701,7 +701,7 @@ class entry_store_examine(models.Model):
         # ('cancel',u'已作废'),
     ],string=u"申请单审批时状态",readonly="True")
 
-    reason = fields.Char(string='审批意见')
+    reason = fields.Char(string=u'审批意见')
 
 class equipment_lend(models.Model):
     _name = 'assets_management.equipment_lend'
@@ -735,7 +735,7 @@ class equipment_lend(models.Model):
     # actual_date = fields.Date(string=u"实际归还日期")
     lend_purpose = fields.Char(string=u"借用目的", required=True)
     owners = fields.Many2many('res.users', string=u"归属人们")
-    lend_exam_ids = fields.One2many('assets_management.lend_examine', 'lend_id', string='审批记录')
+    lend_exam_ids = fields.One2many('assets_management.lend_examine', 'lend_id', string=u'审批记录')
 
     #New Add
     opinion = fields.Char(string=u"审批意见")       #每次保存时清空，用于显示
@@ -759,7 +759,7 @@ class equipment_lend(models.Model):
         if self.approve_flag == False:
             # self.opinion_bak = self.opinion
             if self.opinion_bak == '':
-                raise exceptions.ValidationError("请输入意见!")
+                raise exceptions.ValidationError(u"请输入意见!")
 
     # 借出日期不能小于归还日期校验
     @api.one
@@ -768,17 +768,17 @@ class equipment_lend(models.Model):
         dateNow = fields.Date.today()
 
         if self.lend_date > self.promise_date:
-            raise exceptions.ValidationError("归还日期不能小于申请日期！")
+            raise exceptions.ValidationError(u"归还日期不能小于申请日期！")
         if self.lend_date < dateNow:
-            raise exceptions.ValidationError("借用日期不能小于当前日期！")
+            raise exceptions.ValidationError(u"借用日期不能小于当前日期！")
         if self.promise_date < dateNow:
-            raise exceptions.ValidationError("归还日期不能小于当前日期！")
+            raise exceptions.ValidationError(u"归还日期不能小于当前日期！")
 
         promise_date = datetime.datetime.strptime(self.promise_date, DEFAULT_SERVER_DATE_FORMAT)
         lend_date = datetime.datetime.strptime(self.lend_date, DEFAULT_SERVER_DATE_FORMAT)
         timedelta = promise_date - lend_date
         if int(timedelta.days) > 30:
-            raise exceptions.ValidationError("借用时间不能超过30天！")
+            raise exceptions.ValidationError(u"借用时间不能超过30天！")
 
     # 所选取的设备归属人必须唯一校验
     @api.constrains('SN')
@@ -789,7 +789,7 @@ class equipment_lend(models.Model):
         # print '&&&&&&&&&&&&&&&& self.owners&&&&&&&&&&&&'
         # print self.owners
         if len(self.owners) > 1:
-            raise exceptions.ValidationError("所选取的设备归属人必须唯一!")
+            raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
 
     # 设备用途唯一校验（所选设备）
     @api.constrains('equipment_use')
@@ -800,7 +800,7 @@ class equipment_lend(models.Model):
             set_equipment_use.add(self.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
         if set_equipment_use.__len__() > 1:
-            raise exceptions.ValidationError("所选取的设备用途必须类型统一!")
+            raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
 
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('assets_management.equipment_info')
@@ -1205,15 +1205,15 @@ class lend_examine(models.Model):
     # _rec_name = 'exam_num'
     #
     # exam_num = fields.Char(sting='审批id')
-    approver_id = fields.Many2one('res.users', required='True', string='审批人')
-    date = fields.Datetime(string='审批时间', default=lambda self: fields.Datetime.now())
+    approver_id = fields.Many2one('res.users', required='True', string=u'审批人')
+    date = fields.Datetime(string=u'审批时间', default=lambda self: fields.Datetime.now())
     result = fields.Selection([
             (u'agree', u"通过"),
             (u'disagree', u"拒绝"),
             (u'submit', u"提交"),
             (u'callback', u"收回"),
         ], string=u"操作")
-    lend_id = fields.Many2one('assets_management.equipment_lend', string='借用单')
+    lend_id = fields.Many2one('assets_management.equipment_lend', string=u'借用单')
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
@@ -1224,7 +1224,7 @@ class lend_examine(models.Model):
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
-    reason = fields.Char(string='审批意见')
+    reason = fields.Char(string=u'审批意见')
 
 class equipment_back_to_store(models.Model):
     _name = 'assets_management.back_to_store'
@@ -1250,8 +1250,8 @@ class equipment_back_to_store(models.Model):
         ('done', u'已归还'),
     ], string=u"状态", required=True, default='demander')
     back_date = fields.Date(string=u"归还时间",)
-    back_exam_ids = fields.One2many('assets_management.back_examine', 'back_id', string='审批记录')
-    lend_id = fields.Many2one('assets_management.equipment_lend',string='借用单')
+    back_exam_ids = fields.One2many('assets_management.back_examine', 'back_id', string=u'审批记录')
+    lend_id = fields.Many2one('assets_management.equipment_lend',string=u'借用单')
 
     # New Add
     opinion = fields.Char(string=u"审批意见")  # 每次保存时清空，用于显示
@@ -1265,7 +1265,7 @@ class equipment_back_to_store(models.Model):
         if self.approve_flag == False:
             # self.opinion_bak = self.opinion
             if self.opinion_bak == '':
-                raise exceptions.ValidationError("请输入意见!")
+                raise exceptions.ValidationError(u"请输入意见!")
 
     #计算字段赋值
     def _compute(self):
@@ -1392,22 +1392,22 @@ class back_examine(models.Model):
     _name = 'assets_management.back_examine'
     # _rec_name = 'exam_num'
 
-    approver_id = fields.Many2one('res.users', required='True', string='审批人')
-    date = fields.Datetime(string='审批时间', default=lambda self: fields.Datetime.now())
+    approver_id = fields.Many2one('res.users', required='True', string=u'审批人')
+    date = fields.Datetime(string=u'审批时间', default=lambda self: fields.Datetime.now())
     result = fields.Selection([
         (u'agree', u"通过"),
         (u'disagree', u"拒绝"),
         (u'submit', u"提交"),
         (u'callback', u"收回"),
     ], string=u"操作")
-    back_id = fields.Many2one('assets_management.back_to_store', string='设备归还单')
+    back_id = fields.Many2one('assets_management.back_to_store', string=u'设备归还单')
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
         ('ass_admin', u"资产管理员审批"),
         ('done', u'已归还'),
     ], string=u"审批状态", readonly="True")
-    reason = fields.Char(string='审批意见')
+    reason = fields.Char(string=u'审批意见')
 
 class equipment_get(models.Model):
     _name = 'assets_management.equipment_get'
@@ -1436,7 +1436,7 @@ class equipment_get(models.Model):
     get_date = fields.Date(string=u"领用日期",)
     get_purpose = fields.Char(string=u"领用目的",required=True)
     owners = fields.Many2many('res.users', string=u'设备归属人', ondelete = 'set null')
-    get_exam_ids = fields.One2many('assets_management.get_examine','get_id',string='审批记录')
+    get_exam_ids = fields.One2many('assets_management.get_examine','get_id',string=u'审批记录')
 
     # New Add
     opinion = fields.Char(string=u"审批意见")  # 每次保存时清空，用于显示
@@ -1458,7 +1458,7 @@ class equipment_get(models.Model):
         if self.approve_flag == False:
             # self.opinion_bak = self.opinion
             if self.opinion_bak == '':
-                raise exceptions.ValidationError("请输入意见!")
+                raise exceptions.ValidationError(u"请输入意见!")
 
     # 所选取的设备归属人必须唯一校验
     @api.constrains('SN')
@@ -1467,7 +1467,7 @@ class equipment_get(models.Model):
         for dev in self.SN:
             self.owners |= dev.owner
         if len(self.owners) > 1:
-            raise exceptions.ValidationError("所选取的设备归属人必须唯一!")
+            raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
 
     # 设备用途唯一校验（所选设备）
     @api.constrains('equipment_use')
@@ -1478,7 +1478,7 @@ class equipment_get(models.Model):
             set_equipment_use.add(self.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
         if set_equipment_use.__len__() > 1:
-            raise exceptions.ValidationError("所选取的设备用途必须类型统一!")
+            raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('assets_management.equipment_info')
         print vals['SN'][0][2]
@@ -1502,7 +1502,7 @@ class equipment_get(models.Model):
     def _check_promise_date_more_than_lend_date(self):
         dateNow = fields.Date.today()
         if self.get_date < dateNow:
-            raise exceptions.ValidationError("领用日期不能小于当前日期！")
+            raise exceptions.ValidationError(u"领用日期不能小于当前日期！")
 
     # 1.申请人【提交】操作
     @api.multi
@@ -1887,15 +1887,15 @@ class get_examine(models.Model):
     _name = 'assets_management.get_examine'
     # _rec_name = 'exam_num'
 
-    approver_id = fields.Many2one('res.users', required='True', string='审批人')
-    date = fields.Datetime(string='审批时间', default=lambda self: fields.Datetime.now())
+    approver_id = fields.Many2one('res.users', required='True', string=u'审批人')
+    date = fields.Datetime(string=u'审批时间', default=lambda self: fields.Datetime.now())
     result = fields.Selection([
         (u'agree', u"通过"),
         (u'disagree', u"拒绝"),
         (u'submit', u"提交"),
         (u'callback', u"收回"),
     ], string=u"操作")
-    get_id = fields.Many2one('assets_management.equipment_get', string='设备领用单')
+    get_id = fields.Many2one('assets_management.equipment_get', string=u'设备领用单')
     # app_state = fields.Char(string='申请单审批时状态')
     app_state = fields.Selection([
         ('demander', u"申请人"),
@@ -1906,5 +1906,5 @@ class get_examine(models.Model):
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
-    reason = fields.Char(string='审批意见')
+    reason = fields.Char(string=u'审批意见')
 
