@@ -1,4 +1,4 @@
-#-*- coding# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from openerp import fields,api,exceptions,models
 import func
 import datetime
@@ -6,7 +6,7 @@ import sys
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT,DEFAULT_SERVER_DATETIME_FORMAT
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+# sys.setdefaultencoding('utf-8')
 sys.setrecursionlimit(1000000)
 class equipment_info(models.Model):
     _name ='assets_management.equipment_info'
@@ -312,7 +312,7 @@ class equipment_storage(models.Model):
 
             # 4.创建审批流程日志文档
             self.env['assets_management.entry_store_examine'].create(
-                {u'approver_id': self.approver_id.id, u'result': u'submit', u'store_id': self.id, u'app_state':pre_state, u'reason':self.opinion_bak})
+                {'approver_id': self.approver_id.id, 'result': 'submit', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
             # 5.将下一个审批人员加入到相关字段中
             nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')],limit=1).users[0]
