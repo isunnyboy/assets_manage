@@ -391,8 +391,118 @@
             <field name="view_id" ref="done_get_form_view" />
             <field name="act_window_id" ref="done_assets_get_action" />
         </record>
-
         <!--************************我的代办、已办信息 Action END ************************************************-->
+
+        <!--******************************************管理员查看 beging  ******************************************-->
+        <!--入库请求-->
+        <record id="admin_assets_storing_action" model="ir.actions.act_window" >
+            <field name="name">所有入库请求</field>
+            <field name="res_model">assets_management.equipment_storage</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name ="domain">[('user_id','=',uid)]</field>-->
+        </record>
+        <record id="admin_assets_storing_tree_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="admin_assets_storage_tree_view" />
+            <field name="search_view_id" ref="admin_search_assets_storage_tree_view"/>
+            <field name="act_window_id" ref="admin_assets_storing_action" />
+        </record>
+        <record id="admin_assets_storing_from_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="admin_assets_storage_form_view" />
+            <field name="act_window_id" ref="admin_assets_storing_action" />
+        </record>
+        <!--借用请求-->
+        <record id="admin_assets_lent_action" model="ir.actions.act_window" >
+            <field name="name">所有借用请求</field>
+            <field name="res_model">assets_management.equipment_lend</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name ="domain">[('user_id','=',uid)]</field>-->
+        </record>
+        <record id="admin_assets_lent_tree_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="admin_assets_lent_tree_view" />
+            <field name="act_window_id" ref="admin_assets_lent_action" />
+        </record>
+        <record id="admin_assets_lent_from_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="admin_assets_lent_form_view" />
+            <field name="act_window_id" ref="admin_assets_lent_action" />
+        </record>
+        <!--归还请求-->
+        <record id="admin_assets_back_action" model="ir.actions.act_window" >
+            <field name="name">所有归还请求</field>
+            <field name="res_model">assets_management.back_to_store</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="admin_assets_back_tree_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="admin_assets_back_to_store_tree_view" />
+            <field name="act_window_id" ref="admin_assets_back_action" />
+        </record>
+        <record id="admin_assets_back_from_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="admin_assets_back_to_store_form_view" />
+            <field name="act_window_id" ref="admin_assets_back_action" />
+        </record>
+        <!--领用请求-->
+        <record id="admin_assets_get_action" model="ir.actions.act_window" >
+            <field name="name">所有领用请求</field>
+            <field name="res_model">assets_management.equipment_get</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="admin_assets_get_tree_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="admin_assets_get_tree_view" />
+            <field name="act_window_id" ref="admin_assets_get_action" />
+        </record>
+        <record id="admin_assets_get_from_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="admin_assets_get_form_view" />
+            <field name="act_window_id" ref="admin_assets_get_action" />
+        </record>
+        <!--******************************************管理员查看 end     ******************************************-->
+
+
+        <!--******************************************More Action Begin     ******************************************-->
+        <!--入库==多选-->
+        <act_window id="launch_the_multi_store"
+            name="入库"
+            src_model="assets_management.equipment_info"
+            res_model="assets_management.equipment_storage"
+            view_mode="form"
+            target="new"
+            domain="[('user_id','=',uid),('dev_state','=',u'待入库')]"
+            view_id="assets_storage_create_form_view"
+            key2="client_action_multi"
+            groups="assets_management_group_dev_responsibility,assets_management_group_dev_admin"/>
+
+        <!--借用==多选-->
+        <act_window id="launch_the_multi_lend"
+            name="借用"
+            src_model="assets_management.equipment_info"
+            res_model="assets_management.equipment_lend"
+            view_mode="form"
+            domain="[('dev_state','=',u'库存')]"
+            view_id="assets_lent_create_form_view"
+            target="new"
+            key2="client_action_multi"/>
+
+        <!--领用==多选-->
+        <act_window id="launch_the_multi_get"
+            name="领用"
+            src_model="assets_management.equipment_info"
+            res_model="assets_management.equipment_get"
+            view_mode="form"
+            domain="[('dev_state','=',u'库存')]"
+            view_id="assets_get_create_form_view"
+            target="new"
+            key2="client_action_multi"/>
+        <!--******************************************More Action End       ******************************************-->
 
         <!--*********************设备信息 Begin*********************-->
         <menuitem id="main_assets_management_menu" name="资产管理" sequence="1"/>
@@ -422,7 +532,7 @@
         <menuitem id="my_storing_menu" name="入库请求" parent="my_Request_menu" action="my_assets_storing_action" />
         <menuitem id="my_lent_menu" name="借用请求" parent="my_Request_menu" action="my_assets_lent_action" />
         <menuitem id="my_back_menu" name="归还请求" parent="my_Request_menu" action="my_assets_back_action" />
-        <menuitem id="my_back_menu" name="领用请求" parent="my_Request_menu" action="my_assets_get_action" />
+        <menuitem id="my_get_menu" name="领用请求" parent="my_Request_menu" action="my_assets_get_action" />
         <!--******************************************我的各类请求 END  ******************************************-->
 
         <!--******************************************我待处理、已处理的各类请求 BEGIN******************************************-->
@@ -446,7 +556,14 @@
         <menuitem id="toDo_get_menu" name="待处理" parent="devs_get_menu" action="toDo_assets_get_action" />
         <menuitem id="done_get_menu" name="已处理" parent="devs_get_menu" action="done_assets_get_action" />
 
-
         <!--******************************************我待处理、已处理的各类请求 END  ******************************************-->
+
+        <!--******************************************管理员查看 beging  ******************************************-->
+        <menuitem id="admin_Request_menu" name="所有请求"  parent="main_assets_management_menu" sequence="15" groups="assets_management_group_dev_admin"/>
+        <menuitem id="admin_storing_menu" name="入库请求" parent="admin_Request_menu" action="admin_assets_storing_action" />
+        <menuitem id="admin_lent_menu" name="借用请求" parent="admin_Request_menu" action="admin_assets_lent_action" />
+        <menuitem id="admin_back_menu" name="归还请求" parent="admin_Request_menu" action="admin_assets_back_action" />
+        <menuitem id="admin_get_menu" name="领用请求" parent="admin_Request_menu" action="admin_assets_get_action" />
+        <!--******************************************管理员查看 end     ******************************************-->
     </data>
 </openerp>

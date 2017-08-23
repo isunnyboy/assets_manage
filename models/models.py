@@ -62,6 +62,7 @@ class equipment_info(models.Model):
     user_id = fields.Many2one('res.users', string=u'创建人', default=lambda self: self.env.user)
 
     # New Add
+    store_flag = fields.Char(string=u"是否正在入库标识", readonly=True, default='0')   #是否正在入库标识，默认为0，正在入库标识为入库请求单的请求号，入库完毕更新为0
     bar_code = fields.Char(string=u"条码号")
 
     got_count = fields.Integer(string=u"领用次数", readonly=True)
@@ -71,7 +72,7 @@ class equipment_info(models.Model):
         [('OK', u'完好'), ('Destroyed', u'损坏')],
         string=u'设备完整性', default="OK"
     )
-    #是否借用、领用成功,在借用成功后可以显示归还按钮，在领用成功后不显示任何操作按钮
+    #是否借用、领用成功,在借用成功后可以显示归还按钮，在领用成功后显示 再入库 按钮
     use_state =  fields.Selection(
         [('haveLent',u'已借用'),('haveGet',u'已领用'),
          ('Lending', u'借用中'), ('Getting', u'领用中'),
@@ -164,14 +165,14 @@ class equipment_storage(models.Model):
 
     @api.multi
     def _default_SN(self):
-        # return self.env['assets_management.equipment_info'].browse(self._context.get('active_ids'))
-        return self.env['assets_management.equipment_info'].search([('dev_state', '=', u'待入库'),('user_id', '=', self.env.uid)])
+        return self.env['assets_management.equipment_info'].browse(self._context.get('active_ids'))
+        # return self.env['assets_management.equipment_info'].search([('dev_state', '=', u'待入库'),('user_id', '=', self.env.uid)])
 
     storage_id = fields.Char(string=u"入库单号")
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user, required=True)
     approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user,)
     # SN = fields.Char()
-    purpose = fields.Char(string=u"目的")
+    purpose = fields.Char(string=u"目的",required=True)
     purpose_compute = fields.Char(string=u"目的",compute="_purpose_compute")
     SN = fields.Many2many('assets_management.equipment_info',"i_storge_equipment_ref",string=u"设备SN",required=True,default=_default_SN,)
     # SN = fields.Many2many('assets_management.equipment_info', "storge_equipment_ref", string=u"设备SN", required=True,
@@ -215,6 +216,7 @@ class equipment_storage(models.Model):
     @api.constrains('SN')
     def _checkDevOwnersUnique(self):
         print '-----------------_checkDevOwnersUnique-----------------'
+
         for dev in self.SN:
             self.owners |= dev.owner
         # print '&&&&&&&&&&&&&&&& self.owners&&&&&&&&&&&&'
@@ -237,6 +239,19 @@ class equipment_storage(models.Model):
         # print uid
         # print vals
         # print context
+
+        #获取当前的action ，通过context方式
+        # context_1 = dict(context)
+        action_id = context.get(u'params').get(u'action')
+        action_template_model = self.pool.get('ir.actions.actions')
+        print action_template_model
+        # action_ids = action_template_model.search(cr, uid, [('id', '=', action_id)], context=None)
+        action_stores = action_template_model.browse(cr, uid, action_id, context=None)
+
+        # print action_id
+        # print action_stores
+        # print action_stores.name
+
         # 创建 设备信息对象---计算设备信息的SN号
         print '============================创建时的操作==================='
         # print   "-----create----"
@@ -244,10 +259,16 @@ class equipment_storage(models.Model):
         # print  vals['SN']
         # print  vals['SN'][0][2]
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
-        print len(devices)
+        # print len(devices)
+        #入库时所选设备状态必须为待入库状态，由于领用有再入库功能，再入库的情况特殊处理
         for device in devices:
+            if action_stores.name != u'我领用的设备':
+                if device.dev_state != '待入库':
+                    raise exceptions.ValidationError("正在入库，所选设备状态必须为【待入库】")
+                    break
             device.dev_state = u'流程中'
             device.can_edit = True
+
         #     print device.dev_state
         # print  fields.Date.today()
         dates = fields.Date.today().split('-')
@@ -266,6 +287,11 @@ class equipment_storage(models.Model):
         else:
             # print 'new lenth'
             vals['storage_id'] = 'S' + date + '001'
+        #避免入库设备被退回时显示‘待入库’状态而被再次建立入库请求时特殊处理
+        for device in devices:
+            if device.store_flag <> '0' and device.store_flag <> vals['storage_id']:
+                raise exceptions.Warning(u"所选设备正在入库中，无法再次入库")
+                break
 
         return super(equipment_storage, self).create(cr, uid, vals, context=context)
 
@@ -287,6 +313,40 @@ class equipment_storage(models.Model):
             result = []
         return result
 
+    #0-Plus 申请人关闭
+    @api.multi
+    def action_appUser_close(self):
+        pre_state = self.state
+        self.state = 'done'
+
+        # 1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = False
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        # 2.创建审批流程日志文档
+        self.env['assets_management.entry_store_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': 'close', 'store_id': self.id, 'app_state': 'done',
+             'reason': self.opinion_bak})
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        self.curApproveUser = str(nextAppuser.name)
+        self.curApproveUserID = str(nextAppuser.id)
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+            dev.dev_state = u'待入库'
+            dev.store_flag = '0'
+
+            # 4.返回到代办tree界面
+            # treeviews = self.get_todo_assets_storing()
+            # return treeviews
+
     # 1.申请人【提交】操作
     @api.multi
     def action_appUser_submit(self):
@@ -297,11 +357,18 @@ class equipment_storage(models.Model):
         self.opinion = ''
 
         #2.计算设备所有人，并进行记录
+
         for sn in(self.SN):
             # print sn.dev_state
+            # if sn.dev_state <> '待入库':
+            #     raise exceptions.ValidationError("设备状态必须为【待入库】")
+            #     break
             self.owners |= sn.owner
+            sn.can_edit = False
+            if sn.store_flag == '0':
+                sn.store_flag = self.storage_id
             sn.dev_state = u'流程中'
-            sn.can_edit = True
+
         # print self.owners
 
         #3.设备归属人只有一个的情况，多个归属人暂时没有处理
@@ -324,6 +391,7 @@ class equipment_storage(models.Model):
 
             # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
             self.approver_id = nextAppuser
+        print '=======申请人【提交】操作 End======'
 
     # 2-1.资产管理员【同意】操作
     @api.multi
@@ -549,7 +617,7 @@ class equipment_storage(models.Model):
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
-            dev.can_edit = False
+            dev.can_edit = True
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -602,6 +670,8 @@ class equipment_storage(models.Model):
         # 2.创建审批流程日志文档
         self.env['assets_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
+        self.env['assets_management.entry_store_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'store_id': self.id, 'app_state':'done', 'reason':''})
 
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
@@ -635,6 +705,10 @@ class equipment_storage(models.Model):
         devs = self.SN
         for dev in devs:
             dev.dev_state = u'库存'
+
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
+
             # 5-Plus.将入库设备可编辑状态更新为 不可编辑
             dev.can_edit = False
 
@@ -689,6 +763,7 @@ class entry_store_examine(models.Model):
                                (u'disagree', u"拒绝"),
                                (u'submit', u"提交"),
                                (u'callback', u"收回"),
+                               (u'close', u"关闭"),
                                 ],string=u"操作")
     store_id = fields.Many2one('assets_management.equipment_storage',string=u'入库单')
     # app_state = fields.Char(string=u'申请单审批时状态')
@@ -745,7 +820,7 @@ class equipment_lend(models.Model):
     lend_purpose_compute = fields.Char(string=u"借用目的", compute="_compute")
     lend_date_compute = fields.Date(string=u"借用日期",compute="_compute")
     promise_date_compute = fields.Date(string=u"归还日期", compute="_compute")
-    equipment_use = fields.Char(string=u"设备用途")
+    equipment_use = fields.Char(string=u"设备用途",default='')
 
     def _compute(self):
         self.lend_purpose_compute = self.lend_purpose
@@ -798,15 +873,20 @@ class equipment_lend(models.Model):
         print '-----------------_checkEquipment_useUnique-----------------'
         set_equipment_use = set()
         for dev in self.SN:
-            set_equipment_use.add(self.equipment_use)
+            set_equipment_use.add(dev.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
+        print set_equipment_use
         if set_equipment_use.__len__() > 1:
             raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
 
     def create(self, cr, uid, vals, context=None):
+        print '------------lend create begin------------'
         template_model = self.pool.get('assets_management.equipment_info')
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
         for device in devices:
+            if device.dev_state != '库存':
+                raise exceptions.ValidationError("正在借用，所选设备状态必须为【库存】")
+                break
             device.dev_state = u'借用'
         dates = fields.Date.today().split('-')
         date = ''.join(dates)
@@ -817,7 +897,46 @@ class equipment_lend(models.Model):
             vals['lend_id'] = 'L' + str(int(lends[-1].lend_id[1:]) + 1)
         else:
             vals['lend_id'] = 'L' + date + '001'
+
+        #避免借用设备被退回时显示‘库存’状态而被再次建立领用或者借用请求时特殊处理
+        for device in devices:
+            if device.store_flag <> '0' and device.store_flag <> vals['lend_id']:
+                raise exceptions.Warning(u"所选设备正在借用中，无法再次被借用")
+                break
+        print '------------lend create end------------'
         return super(equipment_lend, self).create(cr, uid, vals, context=context)
+    # 0-Plus 申请人关闭
+    @api.multi
+    def action_appUser_close(self):
+        pre_state = self.state
+        self.state = 'done'
+
+        # 1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = False
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        # 2.创建审批流程日志文档
+        self.env['assets_management.lend_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': 'close', 'lend_id': self.id, 'app_state': 'close',
+             'reason': self.opinion_bak})
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+            dev.dev_state = u'库存'
+            dev.use_state = u'none'
+            dev.store_flag = '0'
+
+            # 4.返回到代办tree界面
+            # treeviews = self.get_todo_assets_storing()
+            # return treeviews
 
     # 1.申请人【提交】操作
     @api.multi
@@ -833,6 +952,9 @@ class equipment_lend(models.Model):
             self.owners |= sn.owner
             sn.dev_state = u'借用'
             sn.can_edit = False
+            if sn.store_flag == '0':
+                sn.store_flag = self.lend_id
+
 
         #3.设备归属人只有一个的情况，多个归属人暂时没有处理
         int_len = len(self.owners)
@@ -1148,7 +1270,8 @@ class equipment_lend(models.Model):
         #2.创建审批流程日志文档
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
-
+        self.env['assets_management.lend_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'lend_id': self.id, 'app_state':'done', 'reason':''})
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
@@ -1164,6 +1287,8 @@ class equipment_lend(models.Model):
             dev.can_edit = False
             dev.use_state = u'haveLent'
             dev.devUse_user_id = self.user_id       #借用人记录到设备单中，设备单被归还后，清空该字段
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1213,6 +1338,7 @@ class lend_examine(models.Model):
             (u'disagree', u"拒绝"),
             (u'submit', u"提交"),
             (u'callback', u"收回"),
+            (u'close', u"关闭"),
         ], string=u"操作")
     lend_id = fields.Many2one('assets_management.equipment_lend', string=u'借用单')
     # app_state = fields.Char(string='申请单审批时状态')
@@ -1224,6 +1350,7 @@ class lend_examine(models.Model):
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已借用'),
+        ('close', u"关闭"),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string=u'审批意见')
 
@@ -1288,6 +1415,38 @@ class equipment_back_to_store(models.Model):
         else:
             vals['back_id'] = 'B' + date + '001'
         return super(equipment_back_to_store, self).create(cr, uid, vals, context=context)
+
+    # 0-Plus 申请人关闭
+    @api.multi
+    def action_appUser_close(self):
+        pre_state = self.state
+        self.state = 'done'
+
+        # 1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = False
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        # 2.创建审批流程日志文档
+        self.env['assets_management.back_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': 'close', 'store_id': self.id, 'app_state': 'close',
+             'reason': self.opinion_bak})
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 3-Plus.将归还设备可编辑状态更新为 不可编辑  标识设备为【库存】
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+            dev.dev_state = u'借用'
+            dev.use_state = u'haveLent'
+
+            # 4.返回到代办tree界面
+            # treeviews = self.get_todo_assets_storing()
+            # return treeviews
+
     # 1.申请人【提交】操作
     @api.multi
     def action_appUser_submit(self):
@@ -1336,7 +1495,8 @@ class equipment_back_to_store(models.Model):
         self.env['assets_management.back_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'back_id': self.id, 'app_state': pre_state,
              'reason': self.opinion_bak})
-
+        self.env['assets_management.back_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'back_id': self.id, 'app_state':'done', 'reason':''})
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
@@ -1400,6 +1560,7 @@ class back_examine(models.Model):
         (u'disagree', u"拒绝"),
         (u'submit', u"提交"),
         (u'callback', u"收回"),
+        (u'close', u"关闭"),
     ], string=u"操作")
     back_id = fields.Many2one('assets_management.back_to_store', string=u'设备归还单')
     # app_state = fields.Char(string='申请单审批时状态')
@@ -1407,6 +1568,7 @@ class back_examine(models.Model):
         ('demander', u"申请人"),
         ('ass_admin', u"资产管理员审批"),
         ('done', u'已归还'),
+        (u'close', u"关闭"),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string=u'审批意见')
 
@@ -1476,7 +1638,7 @@ class equipment_get(models.Model):
         print '-----------------_checkEquipment_useUnique-----------------'
         set_equipment_use = set()
         for dev in self.SN:
-            set_equipment_use.add(self.equipment_use)
+            set_equipment_use.add(dev.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
         if set_equipment_use.__len__() > 1:
             raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
@@ -1485,6 +1647,9 @@ class equipment_get(models.Model):
         print vals['SN'][0][2]
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
         for device in devices:
+            if device.dev_state != '库存':
+                raise exceptions.ValidationError("正在领用，所选设备状态必须为【库存】")
+                break
             device.dev_state = u'领用'
         dates = fields.Date.today().split('-')
         date = ''.join(dates)
@@ -1495,6 +1660,13 @@ class equipment_get(models.Model):
             vals['get_id'] = 'G' + str(int(gets[-1].get_id[1:]) + 1)
         else:
             vals['get_id'] = 'G' + date + '001'
+
+        #避免领用设备被退回时显示‘库存’状态而被再次建立库存请求时特殊处理
+        for device in devices:
+            if device.store_flag <> '0' and device.store_flag <> vals['get_id']:
+                raise exceptions.Warning(u"所选设备正在领用中，无法再次领用")
+                break
+
         return super(equipment_get, self).create(cr, uid, vals, context=context)
 
     # 借出日期不能小于当前日期校验
@@ -1504,6 +1676,39 @@ class equipment_get(models.Model):
         dateNow = fields.Date.today()
         if self.get_date < dateNow:
             raise exceptions.ValidationError(u"领用日期不能小于当前日期！")
+
+    # 0-Plus 申请人关闭
+    @api.multi
+    def action_appUser_close(self):
+        pre_state = self.state
+        self.state = 'done'
+
+        # 1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = False
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        # 2.创建审批流程日志文档
+        self.env['assets_management.get_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': 'close', 'get_id': self.id, 'app_state': 'close',
+             'reason': self.opinion_bak})
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+            dev.dev_state = u'库存'
+            dev.use_state = u'none'
+            dev.store_flag = '0'
+
+            # 4.返回到代办tree界面
+            # treeviews = self.get_todo_assets_storing()
+            # return treeviews
 
     # 1.申请人【提交】操作
     @api.multi
@@ -1519,6 +1724,8 @@ class equipment_get(models.Model):
             self.owners |= sn.owner
             sn.dev_state = u'领用'
             sn.can_edit = False
+            if sn.store_flag == '0':
+                sn.store_flag = self.get_id
 
         #3.设备归属人只有一个的情况，多个归属人暂时没有处理
         int_len = len(self.owners)
@@ -1538,6 +1745,7 @@ class equipment_get(models.Model):
             self.equipment_use = list(set_equipment_use)[0]
 
             # 5.将下一个审批人员加入到相关字段中(上级领导审批)
+
             nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
             if len(nextAppuser) == 0:
                 nextAppuser = self.user_id.employee_ids[0].department_id.manager_id.user_id
@@ -1830,7 +2038,9 @@ class equipment_get(models.Model):
         #2.创建审批流程日志文档
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
-
+        self.env['assets_management.get_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'get_id': self.id, 'app_state':'done', 'reason':''})
+        
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
@@ -1846,7 +2056,8 @@ class equipment_get(models.Model):
             dev.can_edit = False
             dev.use_state = u'haveGet'
             dev.devUse_user_id = self.user_id       #领用人记录到设备单中，设备单被归还后，清空该字段
-
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -1895,6 +2106,7 @@ class get_examine(models.Model):
         (u'disagree', u"拒绝"),
         (u'submit', u"提交"),
         (u'callback', u"收回"),
+        (u'close', u"关闭"),
     ], string=u"操作")
     get_id = fields.Many2one('assets_management.equipment_get', string=u'设备领用单')
     # app_state = fields.Char(string='申请单审批时状态')
@@ -1905,6 +2117,7 @@ class get_examine(models.Model):
         ('owner', u"资产归属人审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
+        (u'close', u"关闭"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string=u'审批意见')

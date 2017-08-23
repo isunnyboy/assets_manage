@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <openerp>
     <data>
+        <!--新建==设备入库待办专用-Form 视图-->
+        <record model="ir.ui.view" id="new_instore_assets_management_for_storing_form_view">
+            <field name="name">设备信息</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form" create="false" edit="false" delete="false">
+                    <group > <field name="can_edit" invisible="True"/></group>
+                    <group attrs="{'invisible':[('can_edit','!=',True)]}">
+                        <group >
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company" string = "公司资产" />
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="设备状态"/>
+                        </group>
+                    </group>
+                    <group col="4" attrs="{'invisible':[('can_edit','!=',True)]}">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                    <group attrs="{'invisible':[('can_edit','=',True)]}">
+                        <group >
+                            <field name="sn_compute" string = "序列号"/>
+                            <field name="bar_code_compute" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms_compute" string = "设备厂商"/>
+                            <field name="device_type_compute" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type_compute" string = "设备型号"/>
+                            <!--<field name="equipment_source_compute" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use_compute" string = "设备用途"/>
+                            <field name="dev_integrality_compute" string = "设备完整性"/>
+                            <field name="owner_compute" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <field name="company_compute" string = "公司资产" />
+                            <!--<field name="note_compute" string = "备注"/>-->
+                            <field name="floor_compute" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat_compute" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number_compute" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state_compute" string="设备状态"/>
+                        </group>
+                    </group>
+                    <group col="4" attrs="{'invisible':[('can_edit','=',True)]}">
+                        <field name="note_compute" string = "备注" colspan="4"  readonly="True"/>
+                    </group>
+                </form>
+            </field>
+        </record>
 
         <!---借用Form 视图==不可编辑==新建时使用的视图-->
         <record model="ir.ui.view" id="assets_manage.lent_assets_management_new_for_lent_form_view">
@@ -150,9 +224,29 @@
                         </group>
 
                     </group>
-                     <group>
-                        <field name="SN" string = "设备" mode="tree"/>
-                     </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', u'待入库')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.new_instore_assets_management_for_storing_form_view'}">
+                        <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" widget="many2many_tags" readonly="1">-->
+                        <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]"  widget="many2many_tags"-->
+    <!--options="{'no_create_edit': True}">-->
+                   <!--<field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]"  widget="many2many"-->
+    <!--options="{'no_create': True}">-->
+                            <tree string="设备" name="SN_Store" context="{'tree_view_ref': 'instore_assets_management_toStore_tree_view'}">
+                                <field name="sn" string = "序列号"/>
+                                <field name="bar_code" string = "条码号"/>
+                                <!--<field name="device_name" string = "设备名称"/>-->
+                                <field name="unit_type" string = "设备型号"/>
+                                <field name="firms" string = "设备厂商"/>
+                                <!--<field name="equipment_source" string = "设备来源"/>-->
+                                <!--<field name="equipment_status" string = "设备可用性"/>-->
+                                <field name="owner" string = "归属人"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="dev_state" string="状态"/>
+                                <field name="write_date" string="时间"/>
+                                <field name="user_id" string="创建人"/>
+                             </tree>
+                        </field>
+                    </group>
 
                     <footer>
                         <!--<button name="subscribe" type="object"-->
@@ -196,7 +290,7 @@
                         </group>
                     </group>
                     <group>
-                        <field name="SN" string = "设备" mode="tree" context="{'form_view_ref': 'assets_manage.lent_assets_management_new_for_lent_form_view'}">
+                        <field name="SN" string = "设备" mode="tree" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.lent_assets_management_new_for_lent_form_view'}">
                             <tree string="设备" name="SN_Back">
                                 <field name="sn" string = "序列号"/>
                                 <field name="bar_code" string = "条码号"/>
@@ -254,7 +348,7 @@
                         </group>
                     </group>
                     <group>
-                        <field name="SN" string = "设备" mode="tree" context="{'form_view_ref': 'assets_manage.back_assets_management_new_for_back_form_view'}">
+                        <field name="SN" string = "设备" mode="tree" domain="[('dev_state', '=', u'借用')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.back_assets_management_new_for_back_form_view'}">
                             <tree string="设备" name="SN_Back">
                                 <field name="sn" string = "序列号"/>
                                 <field name="bar_code" string = "条码号"/>
@@ -313,7 +407,7 @@
                         </group>
                     </group>
                     <group>
-                        <field name="SN" string = "设备" mode="tree" context="{'form_view_ref': 'assets_manage.get_assets_management_new_for_get_form_view'}">
+                        <field name="SN" string = "设备" mode="tree" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.get_assets_management_new_for_get_form_view'}">
                             <tree string="设备" name="SN_Back">
                                 <field name="sn" string = "序列号"/>
                                 <field name="bar_code" string = "条码号"/>

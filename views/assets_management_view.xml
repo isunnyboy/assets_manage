@@ -290,6 +290,7 @@
             <field name="model">assets_management.equipment_info</field>
             <field name="arch" type="xml" >
                 <tree>
+                    <!--<button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight"/>-->
                     <field name="sn" string = "序列号"/>
                     <field name="bar_code" string = "条码号"/>
                     <!--<field name="device_name" string = "设备名称"/>-->
@@ -311,7 +312,7 @@
             <field name="arch" type="xml">
                 <form string="equipment Form" >
                     <header>
-                        <button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'待入库')]}"/>
+                        <button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight" attrs="{'invisible':['|',('dev_state','!=',u'待入库'),('store_flag','!=',u'0')]}"/>
                     </header>
                     <group>
                         <group>
@@ -345,6 +346,7 @@
                     </group>
                     <group col="4">
                         <field name="note" string = "备注" colspan="4"/>
+                        <field name="store_flag" colspan="4" invisible='True'/>
                     </group>
                 </form>
             </field>
@@ -911,6 +913,8 @@
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
                         <button name="action_store_ass_admin_agree" type="object" string="同意1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
                         <button name="action_store_ass_admin_disagree" type="object" string="退回1" class="oe_highlight"
@@ -1068,6 +1072,8 @@
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <!--申请人提交-->
                         <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--需求团队领导操作-->
                         <button name="action_lent_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
@@ -1227,6 +1233,8 @@
                         <!--申请人提交-->
                         <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--&lt;!&ndash;备件管理员审核&ndash;&gt;-->
                         <button name="action_back_ass_admin_agree" type="object" string="同意2" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
@@ -1357,6 +1365,8 @@
                         <!--申请人提交-->
                         <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
+                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                         attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--需求团队领导操作-->
                         <button name="action_get_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','dem_leader')]}"/>
@@ -1484,5 +1494,220 @@
             </field>
          </record>
         <!--******************************************我待处理、已处理的各类请求 END  ******************************************-->
+
+        <!--******************************************管理员查看 beging  ******************************************-->
+
+        <!--入库请求-->
+        <record model="ir.ui.view" id="admin_assets_storage_tree_view">
+            <field name="name">admin_equipment_storage.tree</field>
+            <field name="model">assets_management.equipment_storage</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_storge'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="storage_id" string = "入库单号"/>
+                    <field name="user_id" string="申请人"/>
+                    <field name="approver_id" string = "审批人"/>
+                    <field name="purpose" string="入库目的" />
+                    <field name="create_date" string = "申请时间"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="admin_assets_storage_form_view">
+            <field name="name">admin_equipment_storage.form</field>
+            <field name="model" >assets_management.equipment_storage</field>
+            <field name="arch" type="xml">
+                <form string="my_equipment_storage Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="storage_id" string = "入库单号" readonly="True" />
+                            <field name="purpose" string="入库目的" />
+                        </group>
+                        <group>
+                            <field name="user_id" string="申请人" readonly="True"/>
+                            <field name="approver_id" string="审批人" readonly="True"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" mode="tree"/>
+                        <field name="store_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                        <!--<field name="owners" string = "归属人"  mode="tree"/>-->
+                    </group>
+                </form>
+            </field>
+         </record>
+        <record model="ir.ui.view" id="admin_search_assets_storage_tree_view">
+            <field name="name">admin_search_equipment_storage.tree</field>
+            <field name="model">assets_management.equipment_storage</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="storage_id" string = "入库单号"/>
+                    <field name="user_id" string="申请人"/>
+                    <field name="approver_id" string = "审批人"/>
+                    <field name="purpose" string="入库目的" />
+                    <!--<field name="create_date" string = "申请时间"/>-->
+                    <!--<field name="state" string = "状态"/>-->
+                </search>
+            </field>
+        </record>
+        <!--借用请求-->
+        <record model="ir.ui.view" id="admin_assets_lent_tree_view">
+            <field name="name">admin_equipment_lent.tree</field>
+            <field name="model">assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <tree string = 'equipment_lent'  default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="lend_id" string = "借用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="lend_date" string = "借用日期"/>
+                    <field name="promise_date" string = "归还日期"/>
+                    <field name="lend_purpose" string="借用目的" />
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="admin_assets_lent_form_view">
+            <field name="name">admin_equipment_lent.form</field>
+            <field name="model" >assets_management.equipment_lend</field>
+            <field name="arch" type="xml">
+                <form string="my_equipment_lent Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group >
+                        <group>
+                            <field name="lend_id" string = "借用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="lend_date" string = "借用日期"/>
+                            <field name="promise_date" string = "归还日期"/>
+                            <field name="lend_purpose" string="借用目的" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" domain="[('dev_state', '=', '流程中')]" mode="tree"/>
+                        <field name="lend_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                        <!--<field name="owners" string = "归属人"  mode="tree"/>-->
+                    </group>
+                </form>
+            </field>
+         </record>
+        <!--归还请求-->
+        <record model="ir.ui.view" id="admin_assets_back_to_store_tree_view">
+            <field name="name">admin_equipment_back.tree</field>
+            <field name="model">assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <tree string ="back_to_store" default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="back_id" string = "归还单号"/>
+                    <field name="user_id" string = "申请人"/>
+                    <field name="approver_id" string = "审批人"/>
+                    <field name="create_date" string = "归还时间"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="admin_assets_back_to_store_form_view">
+            <field name="name">admin_equipment_back.form</field>
+            <field name="model" >assets_management.back_to_store</field>
+            <field name="arch" type="xml">
+                <form string="back Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                             <field name="back_id" string = "归还单号" readonly="True"/>
+                             <field name="back_date" string = "归还时间"/>
+                        </group>
+                        <group>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                             <field name="approver_id" string = "当前处理人" readonly="True"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="back_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--领用请求-->
+        <record model="ir.ui.view" id="admin_assets_get_tree_view">
+            <field name="name">admin_equipment_get.tree</field>
+            <field name="model">assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <tree string ="get" default_order="id desc" create="false" edit="false" delete="false">
+                    <field name="get_id" string = "领用单号" readonly="True" />
+                    <field name="user_id" string = "申请人" readonly="True"/>
+                    <field name="approver_id" string = "审批人" readonly="True"/>
+                    <field name="get_date" string = "领用日期"/>
+                    <field name="get_purpose" string = "领用目的"/>
+                    <field name="state" string = "状态"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="admin_assets_get_form_view">
+            <field name="name">admin_equipment_get.form</field>
+            <field name="model" >assets_management.equipment_get</field>
+            <field name="arch" type="xml">
+                <form string="back Form" create="false" edit="false" delete="false" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                        <group>
+                            <field name="get_id" string = "领用单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="get_date" string = "领用日期"/>
+                            <field name="get_purpose" string = "领用目的"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="get_exam_ids" string="流程记录">
+                             <tree string="流程记录" edit="false" create="false" delete="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name="reason" string="审批意见" />
+                                    <field name="app_state" string="审批状态" />
+                                    <field name = "date" string = "审批时间" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--******************************************管理员查看 end     ******************************************-->
     </data>
 </openerp>
