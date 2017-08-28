@@ -40,7 +40,7 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
-    ], string=u'状态', default=u'待入库',readonly=True)
+    ], string=u'状态', default=u'待入库')
     owner = fields.Many2one('res.users', string=u"归属人", required=True)
     # owner_compute =
     company = fields.Boolean(string=u"是否公司资产")
@@ -107,7 +107,7 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
-    ], string=u'状态',readonly=True)
+    ], string=u'状态',readonly=True,compute="_dev_compute")
     dev_integrality_compute =  fields.Selection(
         [('OK', u'完好'), ('Destroyed', u'损坏')],
         string=u'设备完整性', default="OK",readonly = True
@@ -115,23 +115,41 @@ class equipment_info(models.Model):
     note_compute = fields.Char(string=u"备注")
 
     def _dev_compute(self):
-        self.sn_compute = self.sn
-        self.firms_compute = self.firms
-        self.device_type_compute = self.device_type
-        self.unit_type_compute = self.unit_type
-        self.equipment_source_compute = self.equipment_source
-        self.equipment_use_compute = self.equipment_use
-        self.company_compute = self.company
-        self.note_compute = self.note
-        self.area_compute = self.area
-        self.floor_compute = self.floor
-        self.cabinet_number_compute = self.cabinet_number
-        self.seat_compute = self.seat
-        self.bar_code_compute = self.bar_code
-        self.owner_compute = self.owner
-        self.dev_state_compute = self.dev_state
-        self.dev_integrality_compute = self.dev_integrality
-        self.note_compute = self.note
+        for dev in self:
+            dev.sn_compute = dev.sn
+            dev.firms_compute = dev.firms
+            dev.device_type_compute = dev.device_type
+            dev.unit_type_compute = dev.unit_type
+            dev.equipment_source_compute = dev.equipment_source
+            dev.equipment_use_compute = dev.equipment_use
+            dev.company_compute = dev.company
+            dev.note_compute = dev.note
+            dev.area_compute = dev.area
+            dev.floor_compute = dev.floor
+            dev.cabinet_number_compute = dev.cabinet_number
+            dev.seat_compute = dev.seat
+            dev.bar_code_compute = dev.bar_code
+            dev.owner_compute = dev.owner
+            dev.dev_state_compute = dev.dev_state
+            dev.dev_integrality_compute = dev.dev_integrality
+            dev.note_compute = dev.note
+        # self.sn_compute = self.sn
+        # self.firms_compute = self.firms
+        # self.device_type_compute = self.device_type
+        # self.unit_type_compute = self.unit_type
+        # self.equipment_source_compute = self.equipment_source
+        # self.equipment_use_compute = self.equipment_use
+        # self.company_compute = self.company
+        # self.note_compute = self.note
+        # self.area_compute = self.area
+        # self.floor_compute = self.floor
+        # self.cabinet_number_compute = self.cabinet_number
+        # self.seat_compute = self.seat
+        # self.bar_code_compute = self.bar_code
+        # self.owner_compute = self.owner
+        # self.dev_state_compute = self.dev_state
+        # self.dev_integrality_compute = self.dev_integrality
+        # self.note_compute = self.note
     # @api.constrains('user_editID')
     # def _checkCanEdit(self):
     #     print '-----------------_checkCanEdit - ----------------'
@@ -151,6 +169,7 @@ class equipment_info(models.Model):
 
     # 重写父类的create函数
     def create(self, cr, uid, vals, context=None):
+        vals['state'] = 'haveSubmit'
         vals['state'] = 'haveSubmit'
         return super(equipment_info, self).create(cr, uid, vals, context=context)
 
@@ -711,6 +730,7 @@ class equipment_storage(models.Model):
 
             # 5-Plus.将入库设备可编辑状态更新为 不可编辑
             dev.can_edit = False
+            dev.devUse_user_id = None   #入库后，讲设备使用人员字段清空（针对于领用后又入库）
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
@@ -1377,7 +1397,7 @@ class equipment_back_to_store(models.Model):
         ('ass_admin', u"资产管理员审批"),
         ('done', u'已归还'),
     ], string=u"状态", required=True, default='demander')
-    back_date = fields.Date(string=u"归还时间",)
+    back_date = fields.Date(string=u"归还时间",required=True)
     back_exam_ids = fields.One2many('assets_management.back_examine', 'back_id', string=u'审批记录')
     lend_id = fields.Many2one('assets_management.equipment_lend',string=u'借用单')
 
@@ -1404,6 +1424,14 @@ class equipment_back_to_store(models.Model):
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
         print vals['SN']
         for device in devices:
+            if device.dev_state != '借用':
+                raise exceptions.ValidationError("正在归还，所选设备状态必须为【借用】")
+                break
+            print device.devUse_user_id.id
+            print uid
+            if device.devUse_user_id.id != uid:
+                raise exceptions.ValidationError("设备借用人员与归还人员不一致，不允许归还！")
+                break
             device.dev_state = u'归还'
         dates = fields.Date.today().split('-')
         date = ''.join(dates)
@@ -1414,6 +1442,13 @@ class equipment_back_to_store(models.Model):
             vals['back_id'] = 'B' + str(int(backs[-1].back_id[1:]) + 1)
         else:
             vals['back_id'] = 'B' + date + '001'
+
+        #避免归还设备被退回时显示‘借用’状态而被再次建立归还请求时特殊处理
+        for device in devices:
+            if device.store_flag <> '0' and device.store_flag <> vals['back_id']:
+                raise exceptions.Warning(u"所选设备正在归还中，无法再次归还")
+                break
+        #查看当前人员是否与归还设备的中的所有人
         return super(equipment_back_to_store, self).create(cr, uid, vals, context=context)
 
     # 0-Plus 申请人关闭
@@ -1442,6 +1477,7 @@ class equipment_back_to_store(models.Model):
             dev.can_edit = False
             dev.dev_state = u'借用'
             dev.use_state = u'haveLent'
+            dev.store_flag = '0'
 
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
@@ -1461,6 +1497,8 @@ class equipment_back_to_store(models.Model):
             # self.owners |= sn.owner
             # sn.dev_state = u'归还'  #设备归还完毕后最终状态变为'库存'状态，是一个循环，无需将dev_state赋值
             sn.can_edit = False
+            if sn.store_flag == '0':
+                sn.store_flag = self.back_id
             sn.use_state = u'Backing'
 
         #3.设备归属人只有一个的情况，多个归属人暂时没有处理
@@ -1514,6 +1552,8 @@ class equipment_back_to_store(models.Model):
             dev.use_state = u'haveBack'
             dev.devUse_user_id = None       #借用人记录到设备单中，设备单被归还后，清空该字段
 
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -1596,7 +1636,7 @@ class equipment_get(models.Model):
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'已领用'),
     ], string=u"状态", required=True, default='demander')
-    get_date = fields.Date(string=u"领用日期",)
+    get_date = fields.Date(string=u"领用日期",required=True)
     get_purpose = fields.Char(string=u"领用目的",required=True)
     owners = fields.Many2many('res.users', string=u'设备归属人', ondelete = 'set null')
     get_exam_ids = fields.One2many('assets_management.get_examine','get_id',string=u'审批记录')

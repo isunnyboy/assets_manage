@@ -8,3 +8,4 @@ i_equipment_back_acess,i_equipment_back_acess,model_assets_management_back_to_st
 i_back_examine_acess,i_back_examine_acess,model_assets_management_back_examine,,1,1,1,1
 i_equipment_get_acess,i_equipment_get_acess,model_assets_management_equipment_get,,1,1,1,1
 i_get_get_acess,i_get_examine_acess,model_assets_management_get_examine,,1,1,1,1
+i_admin_ACL_setting,i_admin_ACL_setting,base.model_res_groups,assets_management_group_dev_admin,1,1,0,0

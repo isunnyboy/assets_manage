@@ -241,7 +241,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <field name="write_date" string="时间"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -301,7 +302,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                             </tree>
@@ -358,8 +360,10 @@
                                 <!--<field name="equipment_source" string = "设备来源"/>-->
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
+                                <field name="devUse_user_id" string = "借用人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                             </tree>
@@ -418,7 +422,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                             </tree>

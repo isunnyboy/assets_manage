@@ -17,7 +17,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -56,7 +57,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="设备状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4" attrs="{'invisible':[('can_edit','!=',True)]}">
@@ -88,7 +90,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number_compute" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state_compute" string="设备状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4" attrs="{'invisible':[('can_edit','=',True)]}">
@@ -128,7 +131,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"  readonly="True"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4">
@@ -168,7 +172,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"  readonly="True"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4">
@@ -208,7 +213,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"  readonly="True"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="设备状态"  readonly="True"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4">
@@ -233,7 +239,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -274,7 +281,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="设备状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                         </group>
                     </group>
                     <group col="4">
@@ -300,7 +308,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -340,7 +349,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -367,7 +377,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="devUse_user_id" string="借用人"/>
                     <field name="user_id" string="创建人"/>
@@ -406,7 +417,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -432,7 +444,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -473,7 +486,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -499,7 +513,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="devUse_user_id" string="领用人"/>
                     <field name="user_id" string="创建人"/>
@@ -538,7 +553,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -564,7 +580,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -605,7 +622,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -633,7 +651,8 @@
                     <!--<field name="equipment_status" string = "设备可用性"/>-->
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="dev_state" string="状态"/>
+                    <!--<field name="dev_state" string="状态" invisible='True'/>-->
+                    <field name="dev_state_compute" string="状态"/>
                     <field name="write_date" string="时间"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -673,7 +692,8 @@
                             <!--<field name="machine_room" string = "存放机房"/>-->
                             <field name="cabinet_number" string = "货架编号"/>
                             <!--<field name="start_u_post" string = "起始U位"/>-->
-                            <field name="dev_state" string="状态"/>
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
                             <!--<field name="state" string="提交状态"/>-->
                         </group>
                     </group>
@@ -911,28 +931,28 @@
                     <header>
                         <!--资产管理员操作-->
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
-                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                        <button name="action_appUser_submit" type="object" string="提交" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
-                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                        <button name="action_appUser_close" type="object" string="关闭" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
-                        <button name="action_store_ass_admin_agree" type="object" string="同意1" class="oe_highlight"
+                        <button name="action_store_ass_admin_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
-                        <button name="action_store_ass_admin_disagree" type="object" string="退回1" class="oe_highlight"
+                        <button name="action_store_ass_admin_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
                         <!--资产归属人操作-->
-                        <button name="action_store_owners_agree" type="object" string="同意2" class="oe_highlight"
+                        <button name="action_store_owners_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
-                        <button name="action_store_owners_disagree" type="object" string="退回2" class="oe_highlight"
+                        <button name="action_store_owners_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
                         <!--MA部门主管-->
-                        <button name="action_store_MA_manager_agree" type="object" string="同意3" class="oe_highlight"
+                        <button name="action_store_MA_manager_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
-                        <button name="action_store_MA_manager_disagree" type="object" string="退回3" class="oe_highlight"
+                        <button name="action_store_MA_manager_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
                         <!--资产管理员检测-->
-                        <button name="action_store_admin_detec_agree" type="object" string="同意4" class="oe_highlight"
+                        <button name="action_store_admin_detec_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
-                        <button name="action_store_admin_detec_disagree" type="object" string="退回4" class="oe_highlight"
+                        <button name="action_store_admin_detec_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -970,7 +990,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <field name="write_date" string="时间"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1026,7 +1047,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <field name="write_date" string="时间"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1071,34 +1093,34 @@
                         <!--资产管理员操作-->
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <!--申请人提交-->
-                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                        <button name="action_appUser_submit" type="object" string="提交" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
-                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                        <button name="action_appUser_close" type="object" string="关闭" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--需求团队领导操作-->
-                        <button name="action_lent_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
+                        <button name="action_lent_dem_leader_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','dem_leader')]}"/>
-                        <button name="action_lent_dem_leader_disagree" type="object" string="退回1" class="oe_highlight"
+                        <button name="action_lent_dem_leader_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','dem_leader')]}"/>
                         <!--资产归属人操作-->
-                        <button name="action_lent_owners_agree" type="object" string="同意2" class="oe_highlight"
+                        <button name="action_lent_owners_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
-                        <button name="action_lent_owners_disagree" type="object" string="退回2" class="oe_highlight"
+                        <button name="action_lent_owners_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
                         <!--备件管理员审核-->
-                        <button name="action_lent_ass_admin_agree" type="object" string="同意3" class="oe_highlight"
+                        <button name="action_lent_ass_admin_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
-                        <button name="action_lent_ass_admin_disagree" type="object" string="退回3" class="oe_highlight"
+                        <button name="action_lent_ass_admin_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
                         <!--备件管理团队领导审批-->
-                        <button name="action_lent_ass_admin_manager_agree" type="object" string="同意4" class="oe_highlight"
+                        <button name="action_lent_ass_admin_manager_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
-                        <button name="action_lent_ass_admin_manager_disagree" type="object" string="退回4" class="oe_highlight"
+                        <button name="action_lent_ass_admin_manager_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
                         <!--资产管理员检测-->
-                        <button name="action_lent_ass_admin_detection_agree" type="object" string="同意5" class="oe_highlight"
+                        <button name="action_lent_ass_admin_detection_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
-                        <button name="action_lent_ass_admin_detection_disagree" type="object" string="退回5" class="oe_highlight"
+                        <button name="action_lent_ass_admin_detection_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -1132,7 +1154,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <field name="write_date" string="时间"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1185,7 +1208,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <field name="write_date" string="时间"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1231,14 +1255,14 @@
                         <!--资产管理员操作-->
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <!--申请人提交-->
-                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                        <button name="action_appUser_submit" type="object" string="提交" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
-                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                        <button name="action_appUser_close" type="object" string="关闭" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--&lt;!&ndash;备件管理员审核&ndash;&gt;-->
-                        <button name="action_back_ass_admin_agree" type="object" string="同意2" class="oe_highlight"
+                        <button name="action_back_ass_admin_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
-                        <button name="action_back_ass_admin_disagree" type="object" string="退回2" class="oe_highlight"
+                        <button name="action_back_ass_admin_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
 
                         <field name="state" widget="statusbar"/>
@@ -1268,7 +1292,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1317,7 +1342,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1363,34 +1389,34 @@
                         <!--资产管理员操作-->
                         <!--<button name="get_todo_assets_storing" type="object" string="返回"/>-->
                         <!--申请人提交-->
-                        <button name="action_appUser_submit" type="object" string="提交1" class="oe_highlight"
+                        <button name="action_appUser_submit" type="object" string="提交" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
-                        <button name="action_appUser_close" type="object" string="关闭1" class="oe_highlight"
+                        <button name="action_appUser_close" type="object" string="关闭" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','demander')]}"/>
                         <!--需求团队领导操作-->
-                        <button name="action_get_dem_leader_agree" type="object" string="同意1" class="oe_highlight"
+                        <button name="action_get_dem_leader_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','dem_leader')]}"/>
-                        <button name="action_get_dem_leader_disagree" type="object" string="退回1" class="oe_highlight"
+                        <button name="action_get_dem_leader_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','dem_leader')]}"/>
                         <!--资产归属人操作-->
-                        <button name="action_get_owners_agree" type="object" string="同意2" class="oe_highlight"
+                        <button name="action_get_owners_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
-                        <button name="action_get_owners_disagree" type="object" string="退回2" class="oe_highlight"
+                        <button name="action_get_owners_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','owner')]}"/>
                         <!--备件管理员审核-->
-                        <button name="action_get_ass_admin_agree" type="object" string="同意3" class="oe_highlight"
+                        <button name="action_get_ass_admin_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
-                        <button name="action_get_ass_admin_disagree" type="object" string="退回3" class="oe_highlight"
+                        <button name="action_get_ass_admin_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin')]}"/>
                         <!--备件管理团队领导审批-->
-                        <button name="action_get_ass_admin_manager_agree" type="object" string="同意4" class="oe_highlight"
+                        <button name="action_get_ass_admin_manager_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
-                        <button name="action_get_ass_admin_manager_disagree" type="object" string="退回4" class="oe_highlight"
+                        <button name="action_get_ass_admin_manager_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_manager')]}"/>
                         <!--资产管理员检测-->
-                        <button name="action_get_ass_admin_detection_agree" type="object" string="同意5" class="oe_highlight"
+                        <button name="action_get_ass_admin_detection_agree" type="object" string="同意" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
-                        <button name="action_get_ass_admin_detection_disagree" type="object" string="退回5" class="oe_highlight"
+                        <button name="action_get_ass_admin_detection_disagree" type="object" string="退回" class="oe_highlight"
                          attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -1422,7 +1448,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                              </tree>
@@ -1473,7 +1500,8 @@
                                 <!--<field name="equipment_status" string = "设备可用性"/>-->
                                 <field name="owner" string = "归属人"/>
                                 <field name="equipment_use" string = "设备用途"/>
-                                <field name="dev_state" string="状态"/>
+                                <field name="dev_state" string="状态" invisible='True'/>
+                                <field name="dev_state_compute" string="状态"/>
                                 <!--<field name="write_date" string="时间"/>-->
                                 <field name="user_id" string="创建人"/>
                              </tree>

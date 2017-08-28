@@ -394,6 +394,16 @@
         <!--************************我的代办、已办信息 Action END ************************************************-->
 
         <!--******************************************管理员查看 beging  ******************************************-->
+        <record model="ir.actions.act_window" id="admin_ACL_setting_action">
+            <field name="name">Group</field>
+            <field name="res_model">res.groups</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('category_id.name','=',"assetsmanagement")]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first group</p>
+            </field>
+        </record>
         <!--入库请求-->
         <record id="admin_assets_storing_action" model="ir.actions.act_window" >
             <field name="name">所有入库请求</field>
@@ -492,6 +502,17 @@
             target="new"
             key2="client_action_multi"/>
 
+        <!--归还==多选-->
+        <act_window id="launch_the_multi_back"
+            name="归还"
+            src_model="assets_management.equipment_info"
+            res_model="assets_management.back_to_store"
+            view_mode="form"
+            domain="[('dev_state','=',u'借用'),('devUse_user_id','=',uid)]"
+            view_id="assets_back_create_form_view"
+            target="new"
+            key2="client_action_multi"/>
+
         <!--领用==多选-->
         <act_window id="launch_the_multi_get"
             name="领用"
@@ -523,7 +544,7 @@
         <!--我归还的设备==无此需求-->
 
         <!--全部设备-->
-        <menuitem id="all_device_menu" name= "所有设备" parent="device_menu" action="all_store_assets_info_action"  sequence="9"/>
+        <menuitem id="all_device_menu" name= "所有设备" parent="device_menu" action="all_store_assets_info_action"  sequence="9" groups="assets_management_group_dev_admin"/>
         <!--*********************设备信息 END*********************-->
 
         <!--******************************************我的各类请求 BEGIN******************************************-->
@@ -559,7 +580,8 @@
         <!--******************************************我待处理、已处理的各类请求 END  ******************************************-->
 
         <!--******************************************管理员查看 beging  ******************************************-->
-        <menuitem id="admin_Request_menu" name="所有请求"  parent="main_assets_management_menu" sequence="15" groups="assets_management_group_dev_admin"/>
+        <menuitem id="admin_Request_menu" name="资产管理"  parent="main_assets_management_menu" sequence="15" groups="assets_management_group_dev_admin"/>
+        <menuitem id="admin_ACL_setting_menu" name="权限配置" parent="admin_Request_menu" action="admin_ACL_setting_action"/>
         <menuitem id="admin_storing_menu" name="入库请求" parent="admin_Request_menu" action="admin_assets_storing_action" />
         <menuitem id="admin_lent_menu" name="借用请求" parent="admin_Request_menu" action="admin_assets_lent_action" />
         <menuitem id="admin_back_menu" name="归还请求" parent="admin_Request_menu" action="admin_assets_back_action" />
