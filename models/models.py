@@ -877,27 +877,34 @@ class equipment_lend(models.Model):
             raise exceptions.ValidationError(u"借用时间不能超过30天！")
 
     # 所选取的设备归属人必须唯一校验
-    @api.constrains('SN')
-    def _checkDevOwnersUnique(self):
-        print '-----------------_checkDevOwnersUnique-----------------'
-        for dev in self.SN:
-            self.owners |= dev.owner
-        # print '&&&&&&&&&&&&&&&& self.owners&&&&&&&&&&&&'
-        # print self.owners
-        if len(self.owners) > 1:
-            raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
+    # @api.constrains('SN')
+    # def _checkDevOwnersUnique(self):
+    #     print '-----------------_checkDevOwnersUnique-----------------'
+    #     for dev in self.SN:
+    #         self.owners |= dev.owner
+    #     # print '&&&&&&&&&&&&&&&& self.owners&&&&&&&&&&&&'
+    #     # print self.owners
+    #     if len(self.owners) > 1:
+    #         raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
 
     # 设备用途唯一校验（所选设备）
-    @api.constrains('equipment_use')
+    @api.constrains('equipment_use','SN')
     def _check_Equipment_Use_Unique(self):
         print '-----------------_checkEquipment_useUnique-----------------'
         set_equipment_use = set()
         for dev in self.SN:
+            self.owners |= dev.owner
             set_equipment_use.add(dev.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
         print set_equipment_use
         if set_equipment_use.__len__() > 1:
             raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
+        else:
+            equip_use_list = list(set_equipment_use)
+            if equip_use_list[0] == u'专用备件':
+                if len(self.owners) > 1:
+                    raise exceptions.ValidationError(u"专用备件，所选取的设备归属人必须唯一!")
+
 
     def create(self, cr, uid, vals, context=None):
         print '------------lend create begin------------'
@@ -1664,24 +1671,32 @@ class equipment_get(models.Model):
                 raise exceptions.ValidationError(u"请输入意见!")
 
     # 所选取的设备归属人必须唯一校验
-    @api.constrains('SN')
-    def _checkDevOwnersUnique(self):
-        print '-----------------_checkDevOwnersUnique-----------------'
-        for dev in self.SN:
-            self.owners |= dev.owner
-        if len(self.owners) > 1:
-            raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
+    # @api.constrains('SN')
+    # def _checkDevOwnersUnique(self):
+    #     print '-----------------_checkDevOwnersUnique-----------------'
+    #     for dev in self.SN:
+    #         self.owners |= dev.owner
+    #     if len(self.owners) > 1:
+    #         raise exceptions.ValidationError(u"所选取的设备归属人必须唯一!")
 
     # 设备用途唯一校验（所选设备）
-    @api.constrains('equipment_use')
+    @api.constrains('equipment_use','SN')
     def _check_Equipment_Use_Unique(self):
         print '-----------------_checkEquipment_useUnique-----------------'
         set_equipment_use = set()
         for dev in self.SN:
+            self.owners |= dev.owner
             set_equipment_use.add(dev.equipment_use)
         # self.equipment_use = list(set_equipment_use)[0]
         if set_equipment_use.__len__() > 1:
             raise exceptions.ValidationError(u"所选取的设备用途必须类型统一!")
+        else:
+            equip_use_list = list(set_equipment_use)
+            if equip_use_list[0] == u'专用备件':
+                if len(self.owners) > 1:
+                    raise exceptions.ValidationError(u"专用备件：所选取的设备归属人必须唯一!")
+
+
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('assets_management.equipment_info')
         print vals['SN'][0][2]

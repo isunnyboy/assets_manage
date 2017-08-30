@@ -289,11 +289,13 @@
         </record>
         <record id="toDo_assets_lent_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_lent_tree_view" />
             <field name="act_window_id" ref="toDo_assets_lent_action" />
         </record>
         <record id="toDo_assets_lent_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="toDo_assets_lent_form_view" />
             <field name="act_window_id" ref="toDo_assets_lent_action" />
         </record>
@@ -307,11 +309,13 @@
         </record>
         <record id="done_assets_lent_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_lent_tree_view" />
             <field name="act_window_id" ref="done_assets_lent_action" />
         </record>
         <record id="done_assets_lent_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="done_assets_lent_form_view" />
             <field name="act_window_id" ref="done_assets_lent_action" />
         </record>
@@ -327,11 +331,13 @@
         </record>
         <record id="toDo_assets_back_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_back_tree_view" />
             <field name="act_window_id" ref="toDo_assets_back_action" />
         </record>
         <record id="toDo_assets_back_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="toDo_assets_back_form_view" />
             <field name="act_window_id" ref="toDo_assets_back_action" />
         </record>
@@ -345,11 +351,13 @@
         </record>
         <record id="done_assets_back_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_back_tree_view" />
             <field name="act_window_id" ref="done_assets_back_action" />
         </record>
         <record id="done_assets_back_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="done_assets_back_form_view" />
             <field name="act_window_id" ref="done_assets_back_action" />
         </record>
@@ -365,11 +373,13 @@
         </record>
         <record id="toDo_assets_get_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_get_tree_view" />
             <field name="act_window_id" ref="toDo_assets_get_action" />
         </record>
         <record id="toDo_assets_get_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="toDo_get_form_view" />
             <field name="act_window_id" ref="toDo_assets_get_action" />
         </record>
@@ -383,11 +393,13 @@
         </record>
         <record id="done_assets_get_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="assets_get_tree_view" />
             <field name="act_window_id" ref="done_assets_get_action" />
         </record>
         <record id="done_assets_get_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="done_get_form_view" />
             <field name="act_window_id" ref="done_assets_get_action" />
         </record>
@@ -414,12 +426,14 @@
         </record>
         <record id="admin_assets_storing_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="admin_assets_storage_tree_view" />
             <field name="search_view_id" ref="admin_search_assets_storage_tree_view"/>
             <field name="act_window_id" ref="admin_assets_storing_action" />
         </record>
         <record id="admin_assets_storing_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="admin_assets_storage_form_view" />
             <field name="act_window_id" ref="admin_assets_storing_action" />
         </record>
@@ -433,11 +447,13 @@
         </record>
         <record id="admin_assets_lent_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="admin_assets_lent_tree_view" />
             <field name="act_window_id" ref="admin_assets_lent_action" />
         </record>
         <record id="admin_assets_lent_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="admin_assets_lent_form_view" />
             <field name="act_window_id" ref="admin_assets_lent_action" />
         </record>
@@ -450,11 +466,13 @@
         </record>
         <record id="admin_assets_back_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="admin_assets_back_to_store_tree_view" />
             <field name="act_window_id" ref="admin_assets_back_action" />
         </record>
         <record id="admin_assets_back_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="admin_assets_back_to_store_form_view" />
             <field name="act_window_id" ref="admin_assets_back_action" />
         </record>
@@ -467,11 +485,13 @@
         </record>
         <record id="admin_assets_get_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="admin_assets_get_tree_view" />
             <field name="act_window_id" ref="admin_assets_get_action" />
         </record>
         <record id="admin_assets_get_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="admin_assets_get_form_view" />
             <field name="act_window_id" ref="admin_assets_get_action" />
         </record>
