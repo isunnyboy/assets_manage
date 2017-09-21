@@ -40,10 +40,15 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
+        (u'报修', u'报修'),
     ], string=u'状态', default=u'待入库')
     owner = fields.Many2one('res.users', string=u"归属人", required=True)
     # owner_compute =
-    company = fields.Boolean(string=u"是否公司资产")
+    # company = fields.Boolean(string=u"是否公司资产",default=True)
+    company = fields.Selection(
+        [('Yes', u'公司资产'), ('No', u'项目资产')],
+        string=u'资产类型', default="Yes", required=True
+    )
     note = fields.Char(string=u"备注")
     area = fields.Char(string=u"存放地址")
 
@@ -91,7 +96,11 @@ class equipment_info(models.Model):
     unit_type_compute = fields.Char(string=u"设备型号", compute="_dev_compute")
     equipment_source_compute = fields.Char(string=u"设备来源", compute="_dev_compute")
     equipment_use_compute = fields.Char(string=u"设备用途", compute="_dev_compute")
-    company_compute = fields.Boolean(string=u"是否公司资产", compute="_dev_compute")
+    # company_compute = fields.Boolean(string=u"是否公司资产", compute="_dev_compute")
+    company_compute = fields.Selection(
+        [('Yes', u'公司资产'), ('No', u'非公司资产')],
+        string=u'是否公司资产', compute="_dev_compute"
+    )
     note_compute = fields.Char(string=u"备注", compute="_dev_compute")
     area_compute = fields.Char(string=u"存放地址", compute="_dev_compute")
     floor_compute = fields.Char(string=u"库房楼层", compute="_dev_compute")
@@ -107,6 +116,7 @@ class equipment_info(models.Model):
         (u'借用', u'借用'),
         # (u'IT环境', u'IT环境'),
         (u'归还', u'归还'),
+        (u'报修', u'报修'),
     ], string=u'状态',readonly=True,compute="_dev_compute")
     dev_integrality_compute =  fields.Selection(
         [('OK', u'完好'), ('Destroyed', u'损坏')],
@@ -723,7 +733,11 @@ class equipment_storage(models.Model):
         #5.将入库设备状态更新为【库存】
         devs = self.SN
         for dev in devs:
-            dev.dev_state = u'库存'
+            # [('OK', u'完好'), ('Destroyed', u'损坏')],
+            if dev.dev_integrality == 'Destroyed':
+                dev.dev_state = u'报修'
+            else:
+                dev.dev_state = u'库存'
 
             if dev.store_flag <> '0':
                 dev.store_flag = '0'
@@ -824,6 +838,7 @@ class equipment_lend(models.Model):
         ('ass_admin', u"资产管理员审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
+        ('demander_detection', u"申请人确认"),
         ('done',u'已借用'),
     ], string=u"状态", required=True, default='demander')
     lend_date = fields.Date(string=u"借用日期", required=True)
@@ -1287,7 +1302,7 @@ class equipment_lend(models.Model):
     def action_lent_ass_admin_detection_agree(self):
         print '===================备件管理员检测确认【同意】========='
         pre_state = self.state
-        self.state = 'done'
+        self.state = 'demander_detection'
 
         #1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
         self.approve_flag = True
@@ -1297,8 +1312,8 @@ class equipment_lend(models.Model):
         #2.创建审批流程日志文档
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
-        self.env['assets_management.lend_examine'].create(
-            {'approver_id': self.approver_id.id, 'result': u'close', 'lend_id': self.id, 'app_state':'done', 'reason':''})
+        # self.env['assets_management.lend_examine'].create(
+        #     {'approver_id': self.approver_id.id, 'result': u'close', 'lend_id': self.id, 'app_state':'done', 'reason':''})
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
@@ -1312,14 +1327,6 @@ class equipment_lend(models.Model):
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
-            dev.use_state = u'haveLent'
-            dev.devUse_user_id = self.user_id       #借用人记录到设备单中，设备单被归还后，清空该字段
-            if dev.store_flag <> '0':
-                dev.store_flag = '0'
-
-        #5.返回到代办tree界面
-        # treeviews = self.get_todo_assets_storing()
-        # return treeviews
 
     # 6-2.备件管理员检测确认【退回】操作
     @api.multi
@@ -1353,6 +1360,45 @@ class equipment_lend(models.Model):
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
+
+    # 7-1.申请人【确认】操作
+    @api.multi
+    def appUser_detection(self):
+        print '===================【申请人确认】========='
+        pre_state = self.state
+        self.state = 'done'
+
+        #1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = True
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        #2.创建审批流程日志文档
+        self.env['assets_management.lend_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'agree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
+        self.env['assets_management.lend_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'lend_id': self.id, 'app_state':'done', 'reason':''})
+        #3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+        lenth = len(nextAppuser)
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+            dev.use_state = u'haveLent'
+            dev.devUse_user_id = self.user_id       #借用人记录到设备单中，设备单被归还后，清空该字段
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
+
+        #5.返回到代办tree界面
+        # treeviews = self.get_todo_assets_storing()
+        # return treeviews
 class lend_examine(models.Model):
     _name = 'assets_management.lend_examine'
     # _rec_name = 'exam_num'
@@ -1376,6 +1422,7 @@ class lend_examine(models.Model):
         ('owner', u"资产归属人审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
+        ('demander_detection', u"申请人确认"),
         ('done',u'已借用'),
         ('close', u"关闭"),
     ], string=u"审批状态", readonly="True")
@@ -1641,6 +1688,7 @@ class equipment_get(models.Model):
         ('ass_admin', u"资产管理员审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
+        ('demander_detection', u"申请人确认"),
         ('done',u'已领用'),
     ], string=u"状态", required=True, default='demander')
     get_date = fields.Date(string=u"领用日期",required=True)
@@ -2083,7 +2131,7 @@ class equipment_get(models.Model):
     def action_get_ass_admin_detection_agree(self):
         print '===================备件管理员检测确认【同意】========='
         pre_state = self.state
-        self.state = 'done'
+        self.state = 'demander_detection'
 
         #1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
         self.approve_flag = True
@@ -2093,8 +2141,8 @@ class equipment_get(models.Model):
         #2.创建审批流程日志文档
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'agree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
-        self.env['assets_management.get_examine'].create(
-            {'approver_id': self.approver_id.id, 'result': u'close', 'get_id': self.id, 'app_state':'done', 'reason':''})
+        # self.env['assets_management.get_examine'].create(
+        #     {'approver_id': self.approver_id.id, 'result': u'close', 'get_id': self.id, 'app_state':'done', 'reason':''})
         
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
@@ -2109,10 +2157,7 @@ class equipment_get(models.Model):
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
-            dev.use_state = u'haveGet'
-            dev.devUse_user_id = self.user_id       #领用人记录到设备单中，设备单被归还后，清空该字段
-            if dev.store_flag <> '0':
-                dev.store_flag = '0'
+
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -2150,6 +2195,47 @@ class equipment_get(models.Model):
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
+
+    # 7-1.【申请人确认】操作
+    @api.multi
+    def appUser_detection(self):
+        print '===================【申请人确认】========='
+        pre_state = self.state
+        self.state = 'done'
+
+        # 1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
+        self.approve_flag = True
+        self.opinion_bak = self.opinion
+        self.opinion = ''
+
+        # 2.创建审批流程日志文档
+        self.env['assets_management.get_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'agree', 'get_id': self.id, 'app_state': pre_state,
+             'reason': self.opinion_bak})
+        self.env['assets_management.get_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'close', 'get_id': self.id, 'app_state': 'done',
+             'reason': ''})
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+        lenth = len(nextAppuser)
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+            dev.use_state = u'haveGet'
+            dev.devUse_user_id = self.user_id  # 领用人记录到设备单中，设备单被归还后，清空该字段
+            if dev.store_flag <> '0':
+                dev.store_flag = '0'
+                # 5.返回到代办tree界面
+                # treeviews = self.get_todo_assets_storing()
+                # return treeviews
 class get_examine(models.Model):
     _name = 'assets_management.get_examine'
     # _rec_name = 'exam_num'
@@ -2172,6 +2258,7 @@ class get_examine(models.Model):
         ('owner', u"资产归属人审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
+        ('demander_detection', u"申请人确认"),
         (u'close', u"关闭"),
         ('done',u'已借用'),
     ], string=u"审批状态", readonly="True")
