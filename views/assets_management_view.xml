@@ -231,17 +231,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -298,19 +295,15 @@
             <field name="model">assets_management.equipment_info</field>
             <field name="arch" type="xml" >
                 <tree>
-                    <!--<button name="%(new_assets_storing_action)d" type="action" string="入库" class="oe_highlight"/>-->
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -369,17 +362,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="devUse_user_id" string="借用人"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -436,17 +426,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -505,17 +492,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="devUse_user_id" string="领用人"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
@@ -572,17 +556,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -643,17 +624,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -708,17 +686,14 @@
             <field name="arch" type="xml" >
                 <tree create="false" edit="false" delete="false">
                     <field name="sn" string = "序列号"/>
-                    <field name="bar_code" string = "条码号"/>
-                    <!--<field name="device_name" string = "设备名称"/>-->
-                    <field name="unit_type" string = "设备型号"/>
-                    <field name="device_type" string = "设备类型"/>
                     <field name="firms" string = "设备厂商"/>
-                    <!--<field name="equipment_source" string = "设备来源"/>-->
-                    <!--<field name="equipment_status" string = "设备可用性"/>-->
-                    <field name="owner" string = "归属人"/>
-                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
                     <!--<field name="dev_state" string="状态" invisible='True'/>-->
-                    <field name="dev_state" string="状态"/>
+                    <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
                     <field name="user_id" string="创建人"/>
                 </tree>
             </field>
@@ -1080,16 +1055,13 @@
     <!--options="{'no_create': True}">-->
                             <tree string="设备" name="SN_Store" context="{'tree_view_ref': 'instore_assets_management_toStore_tree_view'}">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1136,16 +1108,13 @@
                         <field name="SN" string = "设备">
                             <tree string="设备" name="SN_Store" create="false" delete="false">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1245,16 +1214,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.lent_assets_management_for_lent_form_view'}">
                             <tree string="设备" name="SN_Store">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1298,16 +1264,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
                             <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1381,17 +1344,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'借用')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.back_assets_management_for_back_form_view'}">
                             <tree string="设备" name="SN_Back">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
-                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1431,17 +1390,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
                             <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
-                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1539,17 +1494,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" context="{'form_view_ref': 'assets_manage.get_assets_management_for_get_form_view'}">
                             <tree string="设备" name="SN_Back">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
-                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
@@ -1591,17 +1542,13 @@
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
                             <tree string="设备" name="SN_Store" edit="false" create="false" delete="false">
                                 <field name="sn" string = "序列号"/>
-                                <field name="bar_code" string = "条码号"/>
-                                <!--<field name="device_name" string = "设备名称"/>-->
-                                <field name="unit_type" string = "设备型号"/>
                                 <field name="firms" string = "设备厂商"/>
-                                <!--<field name="equipment_source" string = "设备来源"/>-->
-                                <!--<field name="equipment_status" string = "设备可用性"/>-->
-                                <field name="owner" string = "归属人"/>
-                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="unit_type" string = "设备型号"/>
                                 <field name="dev_state" string="状态" invisible='True'/>
                                 <field name="dev_state_compute" string="状态"/>
-                                <!--<field name="write_date" string="时间"/>-->
+                                <field name="equipment_use" string = "设备用途"/>
+                                <field name="owner" string = "归属人"/>
+                                <field name="bar_code" string = "条码号"/>
                                 <field name="user_id" string="创建人"/>
                              </tree>
                         </field>
