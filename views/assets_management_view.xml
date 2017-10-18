@@ -1638,7 +1638,7 @@
             <field name="name">admin_equipment_storage.tree</field>
             <field name="model">assets_management.equipment_storage</field>
             <field name="arch" type="xml">
-                <tree string = 'equipment_storge'  default_order="id desc" create="false" edit="false" delete="false">
+                <tree string = 'equipment_storge'  default_order="id desc" create="false" edit="false" delete="true">
                     <field name="storage_id" string = "入库单号"/>
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
