@@ -139,6 +139,28 @@
             <field name="act_window_id" ref="my_get_assets_info_action" />
         </record>
 
+        <!--====全部报修的设备-->
+        <record id="all_maintin_assets_info_action" model="ir.actions.act_window">
+            <field name="name">所有报修设备</field>
+            <field name="res_model">assets_management.equipment_info</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('dev_state','=',u'报修')]</field>
+        </record>
+        <record id="all_maintin_assets_info_action_tree" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="sequence" eval="1" />
+            <field name="view_id" ref="all_maintin_assets_management_tree_view" />
+            <field name="search_view_id" ref="search_assets_info_tree_view"/>
+            <field name="act_window_id" ref="all_maintin_assets_info_action" />
+        </record>
+        <record id="all_maintin_assets_info_action_form" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="sequence" eval="2" />
+            <field name="view_id" ref="all_maintin_assets_management_form_view" />
+            <field name="act_window_id" ref="all_maintin_assets_info_action" />
+        </record>
+
         <!--====我报修的设备-->
         <record id="my_maintin_assets_info_action" model="ir.actions.act_window">
             <field name="name">我领用的设备</field>
@@ -160,7 +182,6 @@
             <field name="view_id" ref="my_maintin_assets_management_form_view" />
             <field name="act_window_id" ref="my_maintin_assets_info_action" />
         </record>
-
 
         <!--全部设备====备件管理员-->
         <record id="all_store_assets_info_action" model="ir.actions.act_window" >
@@ -577,7 +598,7 @@
 
         <!--*********************设备信息 Begin*********************-->
         <menuitem id="main_assets_management_menu" name="资产管理" sequence="1"/>
-        <menuitem id="device_menu" name="设备信息" parent="main_assets_management_menu" sequence="2"/>
+        <menuitem id="device_menu" name="设备信息" parent="main_assets_management_menu"/>
 
         <!--库存信息===所有人都看见的导航-->
         <menuitem id="in_store_device_menu" name="库存设备" parent="device_menu" action="instore_assets_info_action"  sequence="3"/>
@@ -592,15 +613,17 @@
         <!--我领用设备====备件领用人-->
         <menuitem id="my_get_device_menu" name="我领用的设备" parent="device_menu" action="my_get_assets_info_action" sequence="8"/>
         <!--我归还的设备==无此需求-->
+        <!--全部报修的设备==-->
+        <menuitem id="all_maintin_device_menu" name="全部报修设备" parent="device_menu" action="all_maintin_assets_info_action" sequence="9" groups="assets_management_group_dev_admin"/>
         <!--我报修的设备==-->
-        <menuitem id="my_maintin_device_menu" name="我报修的设备" parent="device_menu" action="my_maintin_assets_info_action" sequence="9"/>
+        <menuitem id="my_maintin_device_menu" name="我报修的设备" parent="device_menu" action="my_maintin_assets_info_action" sequence="10"/>
         <!--全部设备-->
-        <menuitem id="all_device_menu" name= "所有设备" parent="device_menu" action="all_store_assets_info_action"  sequence="10" groups="assets_management_group_dev_admin"/>
+        <menuitem id="all_device_menu" name= "所有设备" parent="device_menu" action="all_store_assets_info_action"  sequence="11" groups="assets_management_group_dev_admin"/>
         <!--*********************设备信息 END*********************-->
 
         <!--******************************************我的各类请求 BEGIN******************************************-->
         <!--我的请求===所有人都看见的导航==申请人只能查看到自己的请求单-->
-        <menuitem id="my_Request_menu" name="我的请求"  parent="main_assets_management_menu" sequence="15"/>
+        <menuitem id="my_Request_menu" name="我的请求"  parent="main_assets_management_menu" sequence="16"/>
         <menuitem id="my_storing_menu" name="入库请求" parent="my_Request_menu" action="my_assets_storing_action" />
         <menuitem id="my_lent_menu" name="借用请求" parent="my_Request_menu" action="my_assets_lent_action" />
         <menuitem id="my_back_menu" name="归还请求" parent="my_Request_menu" action="my_assets_back_action" />
@@ -609,29 +632,29 @@
 
         <!--******************************************我待处理、已处理的各类请求 BEGIN******************************************-->
         <!--入库请求===审批人员可见的导航==审批人员只能查看到自己待处理、已处理的入库请求单-->
-        <menuitem id="devs_storing_menu" name="入库请求"  parent="main_assets_management_menu" sequence="11"/>
+        <menuitem id="devs_storing_menu" name="入库请求"  parent="main_assets_management_menu" sequence="12"/>
         <menuitem id="toDo_storing_menu" name="待处理" parent="devs_storing_menu" action="toDo_assets_storing_action" />
         <menuitem id="done_storing_menu" name="已处理" parent="devs_storing_menu" action="done_assets_storing_action" />
 
         <!--借用请求===审批人员可见的导航==审批人员只能查看到自己待处理、已处理的入库请求单-->
-        <menuitem id="devs_lent_menu" name="借用请求"  parent="main_assets_management_menu" sequence="12"/>
+        <menuitem id="devs_lent_menu" name="借用请求"  parent="main_assets_management_menu" sequence="13"/>
         <menuitem id="toDo_lent_menu" name="待处理" parent="devs_lent_menu" action="toDo_assets_lent_action" />
         <menuitem id="done_lent_menu" name="已处理" parent="devs_lent_menu" action="done_assets_lent_action" />
 
         <!--归还请求===审批人员可见的导航==审批人员只能查看到自己待处理、已处理的入库请求单-->
-        <menuitem id="devs_back_menu" name="归还请求"  parent="main_assets_management_menu" sequence="13"/>
+        <menuitem id="devs_back_menu" name="归还请求"  parent="main_assets_management_menu" sequence="14"/>
         <menuitem id="toDo_back_menu" name="待处理" parent="devs_back_menu" action="toDo_assets_back_action" />
         <menuitem id="done_back_menu" name="已处理" parent="devs_back_menu" action="done_assets_back_action" />
 
         <!--领用请求===审批人员可见的导航==审批人员只能查看到自己待处理、已处理的入库请求单-->
-        <menuitem id="devs_get_menu" name="领用请求"  parent="main_assets_management_menu" sequence="14"/>
+        <menuitem id="devs_get_menu" name="领用请求"  parent="main_assets_management_menu" sequence="15"/>
         <menuitem id="toDo_get_menu" name="待处理" parent="devs_get_menu" action="toDo_assets_get_action" />
         <menuitem id="done_get_menu" name="已处理" parent="devs_get_menu" action="done_assets_get_action" />
 
         <!--******************************************我待处理、已处理的各类请求 END  ******************************************-->
 
         <!--******************************************管理员查看 beging  ******************************************-->
-        <menuitem id="admin_Request_menu" name="资产管理"  parent="main_assets_management_menu" sequence="16" groups="assets_management_group_dev_admin"/>
+        <menuitem id="admin_Request_menu" name="资产管理"  parent="main_assets_management_menu" sequence="17" groups="assets_management_group_dev_admin"/>
         <menuitem id="admin_ACL_setting_menu" name="权限配置" parent="admin_Request_menu" action="admin_ACL_setting_action"/>
         <menuitem id="admin_storing_menu" name="入库请求" parent="admin_Request_menu" action="admin_assets_storing_action" />
         <menuitem id="admin_lent_menu" name="借用请求" parent="admin_Request_menu" action="admin_assets_lent_action" />

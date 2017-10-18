@@ -617,6 +617,68 @@
 
         <!--====我归还的设备====无此需求-->
 
+        <!--====全部报修的设备====-->
+        <record model="ir.ui.view" id="all_maintin_assets_management_tree_view">
+            <field name="name">all_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="all_maintin_assets_management_form_view">
+            <field name="name">all_equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form"  create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="company" string = "资产类型" />
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
+                            <!--<field name="state" string="提交状态"/>-->
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
         <!--====我报修的设备====-->
         <record model="ir.ui.view" id="my_maintin_assets_management_tree_view">
             <field name="name">my_equipment.tree</field>
@@ -684,13 +746,13 @@
             <field name="name">store_equipment.tree</field>
             <field name="model">assets_management.equipment_info</field>
             <field name="arch" type="xml" >
-                <tree create="false" edit="false" delete="false">
+                <tree create="false" edit="false" delete="true">
                     <field name="sn" string = "序列号"/>
                     <field name="firms" string = "设备厂商"/>
                     <field name="device_type" string = "设备类型"/>
                     <field name="unit_type" string = "设备型号"/>
-                    <!--<field name="dev_state" string="状态" invisible='True'/>-->
-                    <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_state" string="状态"/>
+                    <!--<field name="dev_state_compute" string="状态"/>-->
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
@@ -1639,7 +1701,7 @@
             <field name="name">admin_equipment_lent.tree</field>
             <field name="model">assets_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <tree string = 'equipment_lent'  default_order="id desc" create="false" edit="false" delete="false">
+                <tree string = 'equipment_lent'  default_order="id desc" create="false" edit="false" delete="true">
                     <field name="lend_id" string = "借用单号" readonly="True" />
                     <field name="user_id" string = "申请人" readonly="True"/>
                     <field name="approver_id" string = "审批人" readonly="True"/>
@@ -1691,7 +1753,7 @@
             <field name="name">admin_equipment_back.tree</field>
             <field name="model">assets_management.back_to_store</field>
             <field name="arch" type="xml">
-                <tree string ="back_to_store" default_order="id desc" create="false" edit="false" delete="false">
+                <tree string ="back_to_store" default_order="id desc" create="false" edit="false" delete="true">
                     <field name="back_id" string = "归还单号"/>
                     <field name="user_id" string = "申请人"/>
                     <field name="approver_id" string = "审批人"/>
@@ -1738,7 +1800,7 @@
             <field name="name">admin_equipment_get.tree</field>
             <field name="model">assets_management.equipment_get</field>
             <field name="arch" type="xml">
-                <tree string ="get" default_order="id desc" create="false" edit="false" delete="false">
+                <tree string ="get" default_order="id desc" create="false" edit="false" delete="true">
                     <field name="get_id" string = "领用单号" readonly="True" />
                     <field name="user_id" string = "申请人" readonly="True"/>
                     <field name="approver_id" string = "审批人" readonly="True"/>
