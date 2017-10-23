@@ -185,7 +185,7 @@
 
         <!--全部设备====备件管理员-->
         <record id="all_store_assets_info_action" model="ir.actions.act_window" >
-            <field name="name">所有设备</field>
+            <field name="name">所有的设备</field>
             <field name="res_model">assets_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
