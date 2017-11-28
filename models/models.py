@@ -69,6 +69,7 @@ class equipment_info(models.Model):
     # New Add
     store_flag = fields.Char(string=u"是否正在入库标识", readonly=True, default='0')   #是否正在入库标识，默认为0，正在入库标识为入库请求单的请求号，入库完毕更新为0
     bar_code = fields.Char(string=u"条码号")
+    bank = fields.Char(string=u"所属银行")
 
     got_count = fields.Integer(string=u"领用次数", readonly=True)
     lend_count = fields.Integer(string=u"借用次数", readonly=True)
@@ -123,6 +124,7 @@ class equipment_info(models.Model):
         string=u'设备完整性', default="OK",readonly = True
     )
     note_compute = fields.Char(string=u"备注")
+    bank_compute = fields.Char(string=u"所属银行")
 
     def _dev_compute(self):
         for dev in self:

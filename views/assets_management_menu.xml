@@ -457,6 +457,7 @@
         <!--************************我的代办、已办信息 Action END ************************************************-->
 
         <!--******************************************管理员查看 beging  ******************************************-->
+        <!--组权限配置-->
         <record model="ir.actions.act_window" id="admin_ACL_setting_action">
             <field name="name">Group</field>
             <field name="res_model">res.groups</field>
@@ -466,6 +467,28 @@
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Create the first group</p>
             </field>
+        </record>
+        <!--设备管理-->
+        <record id="admin_assets_info_DelEdt_action" model="ir.actions.act_window" >
+            <field name="name">所有设备</field>
+            <field name="res_model">assets_management.equipment_info</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name ="domain">['|','|','|',('dev_state','=',u'库存'),('dev_state','=','借用'),('dev_state','=','领用'),('dev_state','=','报修')]</field>-->
+            <field name="view_id" ref="all_store_assets_management_form_view"/>
+        </record>
+        <record id="all_store_assets_info_action_tree" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
+            <field name="view_id" ref="admin_assets_management_DelEdt_tree_view" />
+            <!--<field name="search_view_id" ref="admin_search_assets_info_tree_view"/>-->
+            <field name="act_window_id" ref="admin_assets_info_DelEdt_action" />
+        </record>
+        <record id="all_store_assets_info_action_form" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
+            <field name="view_id" ref="admin_assets_management_DelEdt_form_view" />
+            <field name="act_window_id" ref="admin_assets_info_DelEdt_action" />
         </record>
         <!--入库请求-->
         <record id="admin_assets_storing_action" model="ir.actions.act_window" >
@@ -655,11 +678,12 @@
 
         <!--******************************************管理员查看 beging  ******************************************-->
         <menuitem id="admin_Request_menu" name="资产管理"  parent="main_assets_management_menu" sequence="17" groups="assets_management_group_dev_admin"/>
-        <menuitem id="admin_ACL_setting_menu" name="权限配置" parent="admin_Request_menu" action="admin_ACL_setting_action"/>
-        <menuitem id="admin_storing_menu" name="入库请求" parent="admin_Request_menu" action="admin_assets_storing_action" />
-        <menuitem id="admin_lent_menu" name="借用请求" parent="admin_Request_menu" action="admin_assets_lent_action" />
-        <menuitem id="admin_back_menu" name="归还请求" parent="admin_Request_menu" action="admin_assets_back_action" />
-        <menuitem id="admin_get_menu" name="领用请求" parent="admin_Request_menu" action="admin_assets_get_action" />
+        <menuitem id="admin_ACL_setting_menu" name="权限配置" parent="admin_Request_menu" sequence="18" action="admin_ACL_setting_action"/>
+        <menuitem id="admin_assets_info_DelEdt_menu" name="设备管理" parent="admin_Request_menu" sequence="19"  action="admin_assets_info_DelEdt_action"/>
+        <menuitem id="admin_storing_menu" name="入库请求" parent="admin_Request_menu"  sequence="20"  action="admin_assets_storing_action" />
+        <menuitem id="admin_lent_menu" name="借用请求" parent="admin_Request_menu"   sequence="21" action="admin_assets_lent_action" />
+        <menuitem id="admin_back_menu" name="归还请求" parent="admin_Request_menu"  sequence="22"  action="admin_assets_back_action" />
+        <menuitem id="admin_get_menu" name="领用请求" parent="admin_Request_menu"  sequence="23"  action="admin_assets_get_action" />
         <!--******************************************管理员查看 end     ******************************************-->
     </data>
 </openerp>
