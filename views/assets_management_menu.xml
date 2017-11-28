@@ -469,22 +469,22 @@
             </field>
         </record>
         <!--设备管理-->
-        <record id="admin_assets_info_DelEdt_action" model="ir.actions.act_window" >
-            <field name="name">所有设备</field>
+        <record id="admin_assets_info_DelEdt_action" model="ir.actions.act_window">
+            <field name="name">管理设备</field>
             <field name="res_model">assets_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <!--<field name ="domain">['|','|','|',('dev_state','=',u'库存'),('dev_state','=','借用'),('dev_state','=','领用'),('dev_state','=','报修')]</field>-->
             <field name="view_id" ref="all_store_assets_management_form_view"/>
         </record>
-        <record id="all_store_assets_info_action_tree" model="ir.actions.act_window.view">
+        <record id="all_store_assets_info_DelEdt_action_tree" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
             <field name="sequence" eval="1"/>
             <field name="view_id" ref="admin_assets_management_DelEdt_tree_view" />
-            <!--<field name="search_view_id" ref="admin_search_assets_info_tree_view"/>-->
+            <field name="search_view_id" ref="admin_search_assets_info_tree_view"/>
             <field name="act_window_id" ref="admin_assets_info_DelEdt_action" />
         </record>
-        <record id="all_store_assets_info_action_form" model="ir.actions.act_window.view">
+        <record id="all_store_assets_info_DelEdt_action_form" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
             <field name="sequence" eval="2"/>
             <field name="view_id" ref="admin_assets_management_DelEdt_form_view" />
@@ -641,7 +641,7 @@
         <!--我报修的设备==-->
         <menuitem id="my_maintin_device_menu" name="我报修的设备" parent="device_menu" action="my_maintin_assets_info_action" sequence="10"/>
         <!--全部设备-->
-        <menuitem id="all_device_menu" name= "所有的设备" parent="device_menu" action="all_store_assets_info_action"  sequence="11" groups="assets_management_group_dev_admin"/>
+        <menuitem id="all_device_menu" name= "所有的设备" parent="device_menu" action="all_store_assets_info_action" groups="assets_management_group_dev_admin"/>
         <!--*********************设备信息 END*********************-->
 
         <!--******************************************我的各类请求 BEGIN******************************************-->
