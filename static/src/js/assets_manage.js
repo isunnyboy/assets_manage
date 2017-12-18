@@ -13,7 +13,6 @@ openerp.assets_manage=function(instance){
     instance.web.FormView.include({
         //获取当前视图中申请人的id和登陆人id做对比
         load_record:function(data){
-
             if(this.model == "assets_management.equipment_storage" || this.model == "assets_management.equipment_lend"|| this.model == "assets_management.back_to_store" || this.model == "assets_management.equipment_get"){
                 instance.assets_manage.enabled = false;
                 var user_id = data.user_id[0] || data.user_id,

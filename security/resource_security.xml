@@ -28,6 +28,19 @@
             <field name="comment">备件管理团队领导</field>
         </record>
 
+        <record model="res.groups" id="assets_management_group_dev_Company_User">
+            <field name="name">公司人员</field>
+            <field name="category_id" ref="base.module_category_assetsmanagement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">公司人员</field>
+        </record>
+
+        <record model="res.groups" id="assets_management_group_dev_Other_Users">
+            <field name="name">其它人员</field>
+            <field name="category_id" ref="base.module_category_assetsmanagement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">其它人员</field>
+        </record>
         <!--团队备件负责人 和 备件管理员 可以创建及编辑 设备的-->
         <record id="i_device_rule" model="ir.rule">
             <field name="name">设备创建及修改</field>

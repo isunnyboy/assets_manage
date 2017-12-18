@@ -289,6 +289,66 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="instore_assets_management_other_tree_view">
+            <field name="name">all_equipment.tree</field>
+            <field name="model">assets_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree create="false" edit="false" delete="false">
+                    <field name="sn" string = "序列号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <field name="device_type" string = "设备类型"/>
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="dev_state" string="状态" invisible='True'/>
+                    <field name="dev_state_compute" string="状态"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="bar_code" string = "条码号"/>
+                    <field name="user_id" string="创建人"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="instore_assets_management_other_form_view">
+            <field name="name">equipment.form</field>
+            <field name="model" >assets_management.equipment_info</field>
+            <field name="arch" type="xml">
+                <form string="equipment Form" create="false" edit="false" delete="false">
+                    <group>
+                        <group>
+                            <field name="sn" string = "序列号"/>
+                            <field name="bar_code" string = "条码号"/>
+                            <!--<field name="device_name" string = "设备名称"/>-->
+                            <field name="firms" string = "设备厂商"/>
+                            <field name="device_type" string = "设备类型"/>
+                            <!--<field name="asset_number" string = "资产编号"/>-->
+                            <field name="unit_type" string = "设备型号"/>
+                            <!--<field name="equipment_source" string = "设备来源"/>-->
+                            <!--<field name="equipment_status" string = "设备可用性"/>-->
+                            <field name="equipment_use" string = "设备用途"/>
+                            <field name="dev_integrality" string = "设备完整性"/>
+                            <field name="company" string = "资产类型" />
+                            <field name="owner" string = "归属人"/>
+                            <!--<field name="user_id" string = "createPerson"/>-->
+                            <!--<field name="cuerUser" string = "LogPersonID"/>-->
+                        </group>
+                        <group>
+                            <!--<field name="note" string = "备注"/>-->
+                            <field name="floor" string = "库房楼层"/>
+                            <!--<field name="area" string = "存放区域"/>-->
+                            <field name="seat" string = "货架位置"/>
+                            <!--<field name="machine_room" string = "存放机房"/>-->
+                            <field name="cabinet_number" string = "货架编号"/>
+                            <!--<field name="start_u_post" string = "起始U位"/>-->
+                            <field name="dev_state" string="状态" invisible='True'/>
+                            <field name="dev_state_compute" string="状态"/>
+                        </group>
+                    </group>
+                    <group col="4">
+                        <field name="note" string = "备注" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
         <!--待入库设备信息===设备提交人、备件管理员-->
         <record model="ir.ui.view" id="tostore_assets_management_tree_view">
             <field name="name">my_equipment.tree</field>
