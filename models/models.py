@@ -1018,7 +1018,8 @@ class equipment_lend(models.Model):
             self.equipment_use = list(set_equipment_use)[0]
 
             # 5.将下一个审批人员加入到相关字段中(上级领导审批)
-            nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            # nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            nextAppuser = self.user_id.employee_ids[0].leader.user_id
             # res.users()
             # print len(nextAppuser)
             if len(nextAppuser) == 0:
@@ -1851,7 +1852,8 @@ class equipment_get(models.Model):
 
             # 5.将下一个审批人员加入到相关字段中(上级领导审批)
 
-            nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            # nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
+            nextAppuser = self.user_id.employee_ids[0].leader.user_id
             if len(nextAppuser) == 0:
                 nextAppuser = self.user_id.employee_ids[0].department_id.manager_id.user_id
 
