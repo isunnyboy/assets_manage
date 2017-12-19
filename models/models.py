@@ -414,7 +414,7 @@ class equipment_storage(models.Model):
                 {'approver_id': self.approver_id.id, 'result': 'submit', 'store_id': self.id, 'app_state':pre_state.decode('utf-8'), 'reason':self.opinion_bak})
 
             # 5.将下一个审批人员加入到相关字段中
-            nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')],limit=1).users[0]
+            nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')],limit=1).users[0]
             # self.curApproveUser = str(nextAppuser.name)
             # self.curApproveUserID = str(nextAppuser.id)
             # self.user_toApproveChar = nextAppuser.id
@@ -527,7 +527,7 @@ class equipment_storage(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'agree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
         # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
 
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -615,7 +615,7 @@ class equipment_storage(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'agree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
         # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -1040,7 +1040,7 @@ class equipment_lend(models.Model):
             nextleader = self.owners
         else:
             self.state = "ass_admin"
-            nextleader = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+            nextleader = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         #1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
         self.approve_flag = True
@@ -1117,7 +1117,7 @@ class equipment_lend(models.Model):
 
         # 3.将下一个审批人员加入到相关字段中
         # nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -1183,7 +1183,7 @@ class equipment_lend(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'agree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
         #3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
 
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -1249,7 +1249,7 @@ class equipment_lend(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'agree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
         #3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -1568,7 +1568,7 @@ class equipment_back_to_store(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'submit', 'back_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
         # 5.将下一个审批人员加入到相关字段中(上级领导审批)
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         # 6.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         self.approver_id = nextAppuser
@@ -1869,7 +1869,7 @@ class equipment_get(models.Model):
             nextleader = self.owners
         else:
             self.state = "ass_admin"
-            nextleader = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+            nextleader = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         #1.审批意见 申请人可editable、其他人员readonly 的相关字段赋值
         self.approve_flag = True
@@ -1946,7 +1946,7 @@ class equipment_get(models.Model):
 
         # 3.将下一个审批人员加入到相关字段中
         # nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -2013,7 +2013,7 @@ class equipment_get(models.Model):
 
 
         #3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
 
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
@@ -2078,7 +2078,7 @@ class equipment_get(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'agree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
 
         #3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理员')], limit=1).users[0]
+        nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
