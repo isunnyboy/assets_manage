@@ -1019,7 +1019,16 @@ class equipment_lend(models.Model):
 
             # 5.将下一个审批人员加入到相关字段中(上级领导审批)
             # nextAppuser = self.user_id.employee_ids[0].parent_id.user_id
-            nextAppuser = self.user_id.employee_ids[0].leader.user_id
+            print "==============================================="
+            # print self.user_id.employee_ids[0].leader
+            # print self.user_id.employee_ids[0].leader.user_id
+            # nextAppuser = self.env['hr.employee'].sudo().search([('user_id', '=', self.user_id.employee_ids[0].leader)])
+            print self.user_id.employee_ids[0].department_id
+            print self.user_id.employee_ids[0].department_id.id
+            nextAppuser = self.env['hr.department'].sudo().search([('id', '=', self.user_id.employee_ids[0].department_id.id)])
+            print nextAppuser
+            nextAppuser = nextAppuser.manager_id.user_id
+            # nextAppuser = self.user_id.employee_ids[0].leader
             # res.users()
             # print len(nextAppuser)
             if len(nextAppuser) == 0:
