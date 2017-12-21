@@ -841,7 +841,7 @@ class equipment_lend(models.Model):
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('demander_detection', u"申请人确认"),
-        ('done',u'已借用'),
+        ('done',u'已关闭'),
     ], string=u"状态", required=True, default='demander')
     lend_date = fields.Date(string=u"借用日期", required=True)
     promise_date = fields.Date(string=u"归还日期", required=True)
@@ -1453,7 +1453,7 @@ class equipment_back_to_store(models.Model):
     state = fields.Selection([
         ('demander', u"申请人"),
         ('ass_admin', u"资产管理员审批"),
-        ('done', u'已归还'),
+        ('done', u'已关闭'),
     ], string=u"状态", required=True, default='demander')
     back_date = fields.Date(string=u"归还时间",required=True)
     back_exam_ids = fields.One2many('assets_management.back_examine', 'back_id', string=u'审批记录')
@@ -1693,7 +1693,7 @@ class equipment_get(models.Model):
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('demander_detection', u"申请人确认"),
-        ('done',u'已领用'),
+        ('done',u'已关闭'),
     ], string=u"状态", required=True, default='demander')
     get_date = fields.Date(string=u"领用日期",required=True)
     get_purpose = fields.Char(string=u"领用目的",required=True)
