@@ -218,7 +218,7 @@ class equipment_storage(models.Model):
         ('owner', u"资产归属人审批"),
         ('ass_admin_manager', u"资产管理领导审批"),
         ('ass_admin_detection', u"资产管理员检测确认"),
-        ('done',u'完成'),
+        ('done',u'关闭'),
         # ('cancel',u'已作废'),
     ],string=u"状态",required=True,default='demander')
     owners = fields.Many2many('res.users', string=u'设备归属人', ondelete='set null')
@@ -237,6 +237,10 @@ class equipment_storage(models.Model):
 
     if_invisible = fields.Boolean(string=u'当前环节审批人员是否可见')
     curlogUser = fields.Char(string=u'当前登录人员',compute="_curlogUser")
+
+    # 2018-01-03  SXG 创建时间 关闭时间
+    crtDate = fields.Datetime(string=u'创建时间',default=lambda self:fields.Datetime.now())
+    closeDate = fields.Datetime(string=u'关闭时间')
 
     def _curlogUser(self):
         self.curlogUser = self.env.user.id
@@ -377,6 +381,9 @@ class equipment_storage(models.Model):
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
+
+        #5.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -755,6 +762,8 @@ class equipment_storage(models.Model):
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
 
+        #7.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
     # 5-2.资产管理员检测【退回】操作
     @api.multi
     def action_store_admin_detec_disagree(self):
@@ -858,6 +867,10 @@ class equipment_lend(models.Model):
     lend_date_compute = fields.Date(string=u"借用日期",compute="_compute")
     promise_date_compute = fields.Date(string=u"归还日期", compute="_compute")
     equipment_use = fields.Char(string=u"设备用途",default='')
+
+    # 2018-01-03  SXG 创建时间 关闭时间
+    crtDate = fields.Datetime(string=u'创建时间',default=lambda self:fields.Datetime.now())
+    closeDate = fields.Datetime(string=u'关闭时间')
 
     def _compute(self):
         self.lend_purpose_compute = self.lend_purpose
@@ -980,7 +993,10 @@ class equipment_lend(models.Model):
 
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
-            # return treeviews
+            # return treevi
+
+        #7.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -1403,6 +1419,9 @@ class equipment_lend(models.Model):
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
+
+        #7.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 class lend_examine(models.Model):
     _name = 'assets_management.lend_examine'
     # _rec_name = 'exam_num'
@@ -1464,6 +1483,11 @@ class equipment_back_to_store(models.Model):
     opinion_bak = fields.Char(string=u"审批意见")  # 实际审批意见，用于校验
     approve_flag = fields.Boolean(string=u"同意或者不同意标识", default=True)  # False，不同意 True 同意
     back_date_compute = fields.Date(string=u"归还时间", compute="_compute")
+
+    # 2018-01-03  SXG 创建时间 关闭时间
+    crtDate = fields.Datetime(string=u'创建时间',default=lambda self:fields.Datetime.now())
+    closeDate = fields.Datetime(string=u'关闭时间')
+
     # 不同意填写意见校验
     @api.constrains('opinion_bak')
     def _checkDisagree(self):
@@ -1541,6 +1565,9 @@ class equipment_back_to_store(models.Model):
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
 
+        #5.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
     # 1.申请人【提交】操作
     @api.multi
     def action_appUser_submit(self):
@@ -1615,6 +1642,9 @@ class equipment_back_to_store(models.Model):
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
+
+        #6.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 
     # 2-2.资产管理员【退回】操作
     @api.multi
@@ -1707,6 +1737,10 @@ class equipment_get(models.Model):
     get_purpose_compute = fields.Char(string=u"领用目的", compute="_compute")
     get_date_compute = fields.Date(string=u"领用日期", compute="_compute")
     equipment_use = fields.Char(string=u"设备用途")
+
+    # 2018-01-03  SXG 创建时间 关闭时间
+    crtDate = fields.Datetime(string=u'创建时间',default=lambda self:fields.Datetime.now())
+    closeDate = fields.Datetime(string=u'关闭时间')
 
     def _compute(self):
         self.get_purpose_compute = self.get_purpose
@@ -1816,6 +1850,9 @@ class equipment_get(models.Model):
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
+
+        #6.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -2241,6 +2278,9 @@ class equipment_get(models.Model):
                 # 5.返回到代办tree界面
                 # treeviews = self.get_todo_assets_storing()
                 # return treeviews
+
+        #6.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
 class get_examine(models.Model):
     _name = 'assets_management.get_examine'
     # _rec_name = 'exam_num'
@@ -2265,7 +2305,7 @@ class get_examine(models.Model):
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('demander_detection', u"申请人确认"),
         (u'close', u"关闭"),
-        ('done',u'已借用'),
+        ('done',u'已领用'),
     ], string=u"审批状态", readonly="True")
     reason = fields.Char(string=u'审批意见')
 

@@ -224,7 +224,7 @@
             </field>
         </record>
 
-        <!--库存设备信息 所有人可见-->
+        <!--库存设备信息 所有人可见——————公司人员可见-->
         <record model="ir.ui.view" id="instore_assets_management_tree_view">
             <field name="name">all_equipment.tree</field>
             <field name="model">assets_management.equipment_info</field>
@@ -236,10 +236,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -247,7 +248,8 @@
             <field name="name">equipment.form</field>
             <field name="model" >assets_management.equipment_info</field>
             <field name="arch" type="xml">
-                <form string="equipment Form" create="false" edit="false" delete="false">
+                <!--<form string="equipment Form" create="false" edit="false" delete="false">-->
+                <form string="equipment Form" >
                     <!--<button name="%(new_assets_storing_action)d" type="action" string="领用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>-->
                     <button name="%(new_assets_lent_action)d" type="action" string="借用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>
                     <button name="%(new_assets_get_action)d" type="action" string="领用" class="oe_highlight" attrs="{'invisible':[('dev_state','!=',u'库存')]}"/>
@@ -289,6 +291,7 @@
             </field>
         </record>
 
+        <!--库存设备信息  非公司人员可见-->
         <record model="ir.ui.view" id="instore_assets_management_other_tree_view">
             <field name="name">all_equipment.tree</field>
             <field name="model">assets_management.equipment_info</field>
@@ -303,7 +306,7 @@
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -361,10 +364,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -427,11 +431,12 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
                     <field name="devUse_user_id" string="借用人"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -491,10 +496,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -557,11 +563,12 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
                     <field name="devUse_user_id" string="领用人"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -621,10 +628,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -689,10 +697,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -751,10 +760,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态" invisible='True'/>
                     <field name="dev_state_compute" string="状态"/>
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -813,10 +823,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="dev_state" string="状态"/>
                     <!--<field name="dev_state_compute" string="状态"/>-->
+                    <field name="dev_integrality" string="完整性"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="owner" string = "归属人"/>
                     <field name="bar_code" string = "条码号"/>
-                    <field name="user_id" string="创建人"/>
+                    <field name="user_id" string="创建人" invisible='True'/>
                 </tree>
             </field>
         </record>
@@ -933,6 +944,8 @@
                         <group>
                             <field name="user_id" string="申请人" readonly="True"/>
                             <field name="approver_id" string="审批人" readonly="True"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -985,6 +998,8 @@
                             <field name="lend_date" string = "借用日期"/>
                             <field name="promise_date" string = "归还日期"/>
                             <field name="lend_purpose" string="借用目的" />
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1029,6 +1044,8 @@
                         <group>
                              <field name="back_id" string = "归还单号" readonly="True"/>
                              <field name="back_date" string = "归还时间"/>
+                             <field name="crtDate" string="创建时间" readonly="True"/>
+                             <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                         <group>
                             <field name="user_id" string = "申请人" readonly="True"/>
@@ -1082,6 +1099,8 @@
                         <group>
                             <field name="get_date" string = "领用日期"/>
                             <field name="get_purpose" string = "领用目的"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1162,6 +1181,8 @@
                             <!--<field name="approver_id" string="审批人" readonly="True"/>-->
                             <field name="approver_id" string="审批人" readonly="True"/>
                             <!--<field name="curlogUser" string="当前登录人"/>-->
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
 
                     </group>
@@ -1218,6 +1239,8 @@
                         <group>
                             <field name="storage_id" string = "入库单号" readonly="True"/>
                             <field name="purpose" string="入库目的" />
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                         <group>
                             <field name="user_id" string="申请人" readonly="True"/>
@@ -1327,6 +1350,8 @@
                             <field name="lend_date_compute" string="借用日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
                             <field name="promise_date_compute" string="归还日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
                             <field name="lend_purpose_compute" string="借用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group col="4">
@@ -1380,6 +1405,8 @@
                             <field name="promise_date" string = "归还日期"/>
                             <field name="lend_purpose" string="借用目的" attrs="{'invisible':[('state','!=','demander')]}"/>
                             <field name="lend_purpose_compute" string="借用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1454,10 +1481,13 @@
                             <field name="back_id" string = "归还单号" readonly="True"/>
                             <field name="user_id" string = "申请人" readonly="True"/>
                             <field name="approver_id" string = "当前处理人" readonly="True"/>
-                            <field name="back_date" string = "归还时间" placeholder="必填项" attrs="{'invisible':[('state','!=','demander')]}"/>
-                            <field name="back_date_compute" string="归还日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
                         </group>
-                        <group></group>
+                        <group>
+                            <field name="back_date" string = "归还时间" placeholder="必填项" attrs="{'invisible':[('state','!=','demander')]}"/>
+                            <field name="back_date_compute" string="归还时间" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
+                        </group>
                     </group>
                     <group col="4">
                         <field name="opinion" string="意见" colspan="4" placeholder="备注或退回意见"></field>
@@ -1504,9 +1534,12 @@
                             <field name="back_id" string = "归还单号" readonly="True"/>
                             <field name="user_id" string = "申请人" readonly="True"/>
                             <field name="approver_id" string = "当前处理人" readonly="True"/>
-                            <field name="back_date" string = "归还时间"/>
                         </group>
-                        <group></group>
+                        <group>
+                            <field name="back_date" string = "归还时间"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
+                        </group>
                     </group>
                     <group>
                         <field name="SN" string = "设备" domain="[('dev_state', '=', u'库存')]" nolabel="0" widget="many2many" options="{'not_delete': True}" >
@@ -1607,6 +1640,8 @@
                             <field name="get_purpose" string = "领用目的" placeholder="必填项" attrs="{'invisible':[('state','!=','demander')]}"/>
                             <field name="get_date_compute" string = "领用日期" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
                             <field name="get_purpose_compute" string = "领用目的" readonly="True" attrs="{'invisible':[('state','=','demander')]}"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group col="4">
@@ -1658,6 +1693,8 @@
                         <group>
                             <field name="get_date" string = "领用日期"/>
                             <field name="get_purpose" string = "领用目的"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1783,6 +1820,8 @@
                         <group>
                             <field name="user_id" string="申请人" readonly="True"/>
                             <field name="approver_id" string="审批人" readonly="True"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1849,6 +1888,8 @@
                             <field name="lend_date" string = "借用日期"/>
                             <field name="promise_date" string = "归还日期"/>
                             <field name="lend_purpose" string="借用目的" />
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1896,7 +1937,9 @@
                         </group>
                         <group>
                             <field name="user_id" string = "申请人" readonly="True"/>
-                             <field name="approver_id" string = "当前处理人" readonly="True"/>
+                            <field name="approver_id" string = "当前处理人" readonly="True"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
@@ -1946,6 +1989,8 @@
                         <group>
                             <field name="get_date" string = "领用日期"/>
                             <field name="get_purpose" string = "领用目的"/>
+                            <field name="crtDate" string="创建时间" readonly="True"/>
+                            <field name="closeDate" string="关闭时间" readonly="True"/>
                         </group>
                     </group>
                     <group>
