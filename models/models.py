@@ -364,6 +364,9 @@ class equipment_storage(models.Model):
             {'approver_id': self.approver_id.id, 'result': 'close', 'store_id': self.id, 'app_state': 'done',
              'reason': self.opinion_bak})
 
+        #5.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         self.curApproveUser = str(nextAppuser.name)
@@ -381,9 +384,6 @@ class equipment_storage(models.Model):
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
-
-        #5.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -979,6 +979,9 @@ class equipment_lend(models.Model):
             {'approver_id': self.approver_id.id, 'result': 'close', 'lend_id': self.id, 'app_state': 'close',
              'reason': self.opinion_bak})
 
+        #7.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
@@ -996,8 +999,6 @@ class equipment_lend(models.Model):
             # treeviews = self.get_todo_assets_storing()
             # return treevi
 
-        #7.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -1405,6 +1406,9 @@ class equipment_lend(models.Model):
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
+        # 7.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
@@ -1420,9 +1424,6 @@ class equipment_lend(models.Model):
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
-
-        #7.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 class lend_examine(models.Model):
     _name = 'assets_management.lend_examine'
     # _rec_name = 'exam_num'
@@ -1549,6 +1550,10 @@ class equipment_back_to_store(models.Model):
         self.env['assets_management.back_examine'].create(
             {'approver_id': self.approver_id.id, 'result': 'close', 'store_id': self.id, 'app_state': 'close',
              'reason': self.opinion_bak})
+
+        #5.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
@@ -1566,8 +1571,6 @@ class equipment_back_to_store(models.Model):
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
 
-        #5.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -1627,6 +1630,8 @@ class equipment_back_to_store(models.Model):
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
+        self.closeDate = datetime.datetime.now()
+
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
@@ -1645,7 +1650,6 @@ class equipment_back_to_store(models.Model):
         # return treeviews
 
         #6.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 
     # 2-2.资产管理员【退回】操作
     @api.multi
@@ -1835,6 +1839,9 @@ class equipment_get(models.Model):
             {'approver_id': self.approver_id.id, 'result': 'close', 'get_id': self.id, 'app_state': 'close',
              'reason': self.opinion_bak})
 
+        #6.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
@@ -1851,9 +1858,6 @@ class equipment_get(models.Model):
             # 4.返回到代办tree界面
             # treeviews = self.get_todo_assets_storing()
             # return treeviews
-
-        #6.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 
     # 1.申请人【提交】操作
     @api.multi
@@ -2259,6 +2263,9 @@ class equipment_get(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'close', 'get_id': self.id, 'app_state': 'done',
              'reason': ''})
 
+        #6.入库申请单关闭时间 2018-01-03 SXG
+        self.closeDate = datetime.datetime.now()
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
@@ -2279,9 +2286,6 @@ class equipment_get(models.Model):
                 # 5.返回到代办tree界面
                 # treeviews = self.get_todo_assets_storing()
                 # return treeviews
-
-        #6.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
 class get_examine(models.Model):
     _name = 'assets_management.get_examine'
     # _rec_name = 'exam_num'
