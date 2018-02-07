@@ -755,6 +755,8 @@ class equipment_storage(models.Model):
             dev.can_edit = False
             dev.devUse_user_id = None   #入库后，讲设备使用人员字段清空（针对于领用后又入库）
 
+        self.closeDate = datetime.datetime.now()
+
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
 
@@ -763,7 +765,6 @@ class equipment_storage(models.Model):
         # return treeviews
 
         #7.入库申请单关闭时间 2018-01-03 SXG
-        self.closeDate = datetime.datetime.now()
     # 5-2.资产管理员检测【退回】操作
     @api.multi
     def action_store_admin_detec_disagree(self):

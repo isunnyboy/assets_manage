@@ -1182,9 +1182,11 @@
                             <field name="approver_id" string="审批人" readonly="True"/>
                             <!--<field name="curlogUser" string="当前登录人"/>-->
                             <field name="crtDate" string="创建时间" readonly="True"/>
-                            <field name="closeDate" string="关闭时间" readonly="True"/>
+                            <!--<field name="closeDate" string="关闭时间"/>-->
+                            <field name="closeDate" string="关闭时间" attrs="{'invisible':[('state','!=','ass_admin_detection')]}"/>
+                            <field name="closeDate" string="关闭时间" readonly="True" attrs="{'invisible':[('state','=','ass_admin_detection')]}"/>
                         </group>
-
+x
                     </group>
                     <group col="4">
                         <field name="opinion" string="意见" colspan="4" placeholder="备注或退回意见"></field>
