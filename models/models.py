@@ -449,38 +449,37 @@ class equipment_storage(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.owners
 
-        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
-        lenth = len(nextAppuser)
-        if lenth > 1:
-            for user in nextAppuser:
-                if strUserName == "":
-                    strUserName = str(user.name)
-                    strUserID = str(user.id)
-                else:
-                    strUserName = strUserName + ',' + str(user.name)
-                    strUserID = strUserID + ',' + str(user.id)
-
-            self.curApproveUser = str(strUserName)
-            self.curApproveUserID = str(strUserID)
-
-            self.user_toApproveChar = ''
-            self.user_toApproveChar = str(strUserID)
-            self.user_haveApproveChar = func.strPlus(self.user_haveApproveChar,str(strUserID))
-        elif lenth == 1:
-            self.curApproveUser = str(nextAppuser.name)
-            self.curApproveUserID = str(nextAppuser.id)
-            self.user_toApproveChar = str(nextAppuser.id)
-            self.user_haveApproveChar = func.strPlus(self.user_haveApproveChar,str(nextAppuser.id))
-        else:
-            self.user_toApprove = None
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
 
+            # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+            lenth = len(nextAppuser)
+            if lenth > 1:
+                for user in nextAppuser:
+                    if strUserName == "":
+                        strUserName = str(user.name)
+                        strUserID = str(user.id)
+                    else:
+                        strUserName = strUserName + ',' + str(user.name)
+                        strUserID = strUserID + ',' + str(user.id)
+
+                self.curApproveUser = str(strUserName)
+                self.curApproveUserID = str(strUserID)
+
+                self.user_toApproveChar = ''
+                self.user_toApproveChar = str(strUserID)
+                self.user_haveApproveChar = func.strPlus(self.user_haveApproveChar, str(strUserID))
+            elif lenth == 1:
+                self.curApproveUser = str(nextAppuser.name)
+                self.curApproveUserID = str(nextAppuser.id)
+                self.user_toApproveChar = str(nextAppuser.id)
+                self.user_haveApproveChar = func.strPlus(self.user_haveApproveChar, str(nextAppuser.id))
+            else:
+                self.user_toApprove = None
+            # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+            self.approver_id = nextAppuser
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -501,18 +500,18 @@ class equipment_storage(models.Model):
         self.env['assets_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = True
+            dev.dev_state = u'待入库'
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         self.curApproveUser = str(nextAppuser.name)
         self.curApproveUserID = str(nextAppuser.id)
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 3-Plus.将入库设备可编辑状态更新为 可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = True
-            dev.dev_state = u'待入库'
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -561,14 +560,13 @@ class equipment_storage(models.Model):
         else:
             self.user_toApprove = None
 
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
 
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -588,6 +586,12 @@ class equipment_storage(models.Model):
         self.env['assets_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.dev_state = u'待入库'
+            dev.can_edit = True
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         self.curApproveUser = str(nextAppuser.name)
@@ -595,12 +599,6 @@ class equipment_storage(models.Model):
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 3-Plus.将入库设备可编辑状态更新为 可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.dev_state = u'待入库'
-            dev.can_edit = True
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -649,13 +647,13 @@ class equipment_storage(models.Model):
         else:
             self.user_toApprove = None
 
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -676,6 +674,12 @@ class equipment_storage(models.Model):
         self.env['assets_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
+        # 3-Plus.将入库设备可编辑状态更新为 可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.dev_state = u'待入库'
+            dev.can_edit = True
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         self.curApproveUser = str(nextAppuser.name)
@@ -683,12 +687,6 @@ class equipment_storage(models.Model):
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 3-Plus.将入库设备可编辑状态更新为 可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.dev_state = u'待入库'
-            dev.can_edit = True
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -780,6 +778,12 @@ class equipment_storage(models.Model):
         self.env['assets_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'store_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
+        # # 3-Plus.将入库设备可编辑状态更新为 编辑
+        devs = self.SN
+        for dev in devs:
+            dev.dev_state = u'待入库'
+            dev.can_edit = True
+
         # 3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
         self.curApproveUser = str(nextAppuser.name)
@@ -787,12 +791,6 @@ class equipment_storage(models.Model):
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # # 3-Plus.将入库设备可编辑状态更新为 编辑
-        devs = self.SN
-        for dev in devs:
-            dev.dev_state = u'待入库'
-            dev.can_edit = True
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1074,16 +1072,17 @@ class equipment_lend(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = nextleader
         # print len(nextAppuser)
-        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
-        lenth = len(nextAppuser)
-
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
 
         # 4-Plus.将借用设备可编辑状态更新为 不可编辑   此段目前可以不用，因为设备所有字段在对应的XML中都为 readOnly
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
+
+        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+        lenth = len(nextAppuser)
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1104,17 +1103,18 @@ class equipment_lend(models.Model):
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'lend_id': self.id, 'app_state':pre_state, 'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
+
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1139,16 +1139,16 @@ class equipment_lend(models.Model):
         # nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
         nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1169,18 +1169,18 @@ class equipment_lend(models.Model):
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1205,16 +1205,16 @@ class equipment_lend(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1236,17 +1236,17 @@ class equipment_lend(models.Model):
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'lend_id': self.id, 'app_state':pre_state, 'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1271,16 +1271,16 @@ class equipment_lend(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1302,18 +1302,18 @@ class equipment_lend(models.Model):
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1339,16 +1339,16 @@ class equipment_lend(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
     # 6-2.备件管理员检测确认【退回】操作
     @api.multi
@@ -1366,12 +1366,6 @@ class equipment_lend(models.Model):
         self.env['assets_management.lend_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'lend_id': self.id, 'app_state':pre_state, 'reason':self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
@@ -1379,6 +1373,11 @@ class equipment_lend(models.Model):
             dev.dev_state = u'库存'
             dev.use_state = u'none'
 
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -1409,9 +1408,6 @@ class equipment_lend(models.Model):
         # 7.入库申请单关闭时间 2018-01-03 SXG
         self.closeDate = datetime.datetime.now()
 
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
@@ -1420,6 +1416,9 @@ class equipment_lend(models.Model):
             dev.devUse_user_id = self.user_id       #借用人记录到设备单中，设备单被归还后，清空该字段
             if dev.store_flag <> '0':
                 dev.store_flag = '0'
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1627,14 +1626,6 @@ class equipment_back_to_store(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
-        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
-        lenth = len(nextAppuser)
-
-        self.closeDate = datetime.datetime.now()
-
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
@@ -1650,6 +1641,15 @@ class equipment_back_to_store(models.Model):
         # return treeviews
 
         #6.入库申请单关闭时间 2018-01-03 SXG
+
+
+        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+        lenth = len(nextAppuser)
+
+        self.closeDate = datetime.datetime.now()
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
     # 2-2.资产管理员【退回】操作
     @api.multi
@@ -1667,10 +1667,6 @@ class equipment_back_to_store(models.Model):
         self.env['assets_management.back_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'back_id': self.id, 'app_state': pre_state,
              'reason': self.opinion_bak})
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
 
         # 3-Plus.将归还设备可编辑状态更新为 不可编辑  标识设备为【库存】
         devs = self.SN
@@ -1678,6 +1674,11 @@ class equipment_back_to_store(models.Model):
             dev.can_edit = False
             dev.dev_state = u'借用'
             dev.use_state = u'haveLent'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1928,16 +1929,16 @@ class equipment_get(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = nextleader
 
+        # 4-Plus.将借用设备可编辑状态更新为 不可编辑   此段目前可以不用，因为设备所有字段在对应的XML中都为 readOnly
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将借用设备可编辑状态更新为 不可编辑   此段目前可以不用，因为设备所有字段在对应的XML中都为 readOnly
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1958,17 +1959,17 @@ class equipment_get(models.Model):
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -1993,16 +1994,16 @@ class equipment_get(models.Model):
         # nextAppuser = self.env['res.groups'].search([('name', '=', u'备件管理团队领导')],limit=1).users[0]
         nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理员')], limit=1).users[0]
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         # 4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2023,18 +2024,18 @@ class equipment_get(models.Model):
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2060,17 +2061,17 @@ class equipment_get(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.env['res.groups'].sudo().search([('name', '=', u'备件管理团队领导')], limit=1).users[0]
 
-        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
-        lenth = len(nextAppuser)
-
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
 
+
+        #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
+        lenth = len(nextAppuser)
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -2091,17 +2092,17 @@ class equipment_get(models.Model):
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 不可编辑  标识设备为【库存】
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2128,13 +2129,13 @@ class equipment_get(models.Model):
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
-        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 4-Plus.将入库设备可编辑状态更新为 不可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = False
+
+        #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2156,18 +2157,18 @@ class equipment_get(models.Model):
         self.env['assets_management.get_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'get_id': self.id, 'app_state': pre_state,              'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
             dev.dev_state = u'库存'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2194,16 +2195,16 @@ class equipment_get(models.Model):
         #3.将下一个审批人员加入到相关字段中
         nextAppuser = self.user_id
 
+        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
+        devs = self.SN
+        for dev in devs:
+            dev.can_edit = False
+
         #4.设备归属人不止一个情况处理，暂时只处理只有一个人情况，并增加了py 的constrains
         lenth = len(nextAppuser)
 
         #审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
         self.approver_id = nextAppuser
-
-        # 4-Plus.将入库设备可编辑状态更新为 不可编辑
-        devs = self.SN
-        for dev in devs:
-            dev.can_edit = False
 
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
@@ -2226,18 +2227,18 @@ class equipment_get(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'disagree', 'get_id': self.id, 'app_state': pre_state,
              'reason': self.opinion_bak})
 
-        # 3.将下一个审批人员加入到相关字段中
-        nextAppuser = self.user_id
-
-        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-        self.approver_id = nextAppuser
-
         # 3-Plus.将入库设备可编辑状态更新为 可编辑
         devs = self.SN
         for dev in devs:
             dev.can_edit = True
             dev.dev_state = u'领用'
             dev.use_state = u'none'
+
+        # 3.将下一个审批人员加入到相关字段中
+        nextAppuser = self.user_id
+
+        # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+        self.approver_id = nextAppuser
 
         #4.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
