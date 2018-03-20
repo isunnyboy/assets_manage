@@ -479,7 +479,8 @@ class equipment_storage(models.Model):
             else:
                 self.user_toApprove = None
             # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
-            self.approver_id = nextAppuser
+
+        self.approver_id = nextAppuser
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()
         # return treeviews
@@ -566,6 +567,7 @@ class equipment_storage(models.Model):
             dev.can_edit = False
 
         # 审批人员字段更新，因为constrains的缘故，必须在所有逻辑完毕后才层新approver_id 字段
+
         self.approver_id = nextAppuser
         #5.返回到代办tree界面
         # treeviews = self.get_todo_assets_storing()

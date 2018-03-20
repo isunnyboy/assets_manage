@@ -62,6 +62,18 @@
             <field name="perm_create" eval="1"/>
             <field name="perm_unlink" eval="0"/>
         </record>
+
+        <record id="i_admin_device_store_rule" model="ir.rule">
+            <field name="name">管理员入库申请</field>
+            <field name="model_id" ref="model_assets_management_equipment_storage"/>
+            <field name="groups" eval="[(4,ref('assets_management_group_dev_admin'))]"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+
         <record id="i_device_store_examin_rule" model="ir.rule">
             <field name="name">入库流程记录</field>
             <field name="model_id" ref="model_assets_management_entry_store_examine"/>
@@ -71,6 +83,7 @@
             <field name="perm_create" eval="1"/>
             <field name="perm_unlink" eval="0"/>
         </record>
+
         <record id="device_lend_rule" model="ir.rule">
             <field name="name">借用申请</field>
             <field name="model_id" ref="model_assets_management_equipment_lend"/>

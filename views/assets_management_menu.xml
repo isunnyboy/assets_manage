@@ -336,7 +336,7 @@
             <field name="res_model">assets_management.equipment_storage</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name ="domain">[('store_exam_ids.approver_id','=',uid)]</field>
+            <field name ="domain">[('store_exam_ids.approver_id','in',[uid])]</field>
             <!--<field name ="domain">[('user_id','=',uid),('state','!=','demander'),('state','in',[user_haveApproveChar.split()])]</field>-->
         </record>
         <record id="done_assets_storing_tree_action" model="ir.actions.act_window.view">
