@@ -609,6 +609,7 @@ class equipment_storage(models.Model):
     # 4-1.MA部门主管【同意】操作
     @api.multi
     def action_store_MA_manager_agree(self):
+        #2018-04-18 SXG 增加注释，便于git更新
         pre_state = self.state
         self.state = 'ass_admin_detection'
 

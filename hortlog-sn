@@ -1,0 +1,216 @@
+[33mcommit de3380132c95df40b11cc9d91cf2aaed4c9b0af1[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Mar 20 17:49:09 2018 +0800
+
+            modified:   models/models.py
+            modified:   security/resource_security.xml
+            modified:   views/assets_management_menu.xml
+
+ models/models.py                 |  4 [32m+++[m[31m-[m
+ security/resource_security.xml   | 13 [32m+++++++++++++[m
+ views/assets_management_menu.xml |  2 [32m+[m[31m-[m
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+[33mcommit aae78f7b04e6bd605e7c5ce97928107609bada67[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Mon Mar 19 16:54:37 2018 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 355 [32m++++++++++++++++++++++++++++[m[31m---------------------------[m
+ 1 file changed, 178 insertions(+), 177 deletions(-)
+
+[33mcommit d06021c06819526b220d2150bb9fc06015ba481c[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Feb 7 13:34:50 2018 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 38 [32m+++++++++++++++++++++[m[31m-----------------[m
+ 1 file changed, 21 insertions(+), 17 deletions(-)
+
+[33mcommit 61a149535cabb396f14a31bffee1ad7a87b7bc17[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Feb 7 13:30:30 2018 +0800
+
+            modified:   models/models.py
+            modified:   views/assets_management_view.xml
+
+ models/models.py                 | 3 [32m++[m[31m-[m
+ views/assets_management_view.xml | 6 [32m++++[m[31m--[m
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+[33mcommit 6a7d891b28170e4cd56d56e0b9ceed5603a8e786[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Jan 10 10:13:32 2018 +0800
+
+            modified:   models/models.py
+            modified:   views/assets_management_menu.xml
+            modified:   views/assets_management_view.xml
+
+ models/models.py                 | 46 [32m++++++++++++++++++++++[m[31m--[m
+ views/assets_management_menu.xml | 54 [32m++++++++++++++[m[31m--------------[m
+ views/assets_management_view.xml | 77 [32m+++++++++++++++++++++++++++++++[m[31m---------[m
+ 3 files changed, 132 insertions(+), 45 deletions(-)
+
+[33mcommit e3f331a5a742b10222687e17513430a8548f50c1[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Thu Dec 21 17:05:13 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 6 [32m+++[m[31m---[m
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+[33mcommit f40c3946f4410c860ce4d82f140e81de56de6133[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Dec 19 18:59:34 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 28 [32m+++++++[m[31m---------------------[m
+ 1 file changed, 7 insertions(+), 21 deletions(-)
+
+[33mcommit 285e5315e01016a4b74e6be12c9fec2ae8338edc[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Dec 19 18:46:18 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 8 [32m+++++++[m[31m-[m
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+[33mcommit 52f822711aa0b883d3762b716614cdf142e5cc5d[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Dec 19 18:29:08 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 11 [32m++++++++++[m[31m-[m
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+[33mcommit 39417b12e9366297a1460e5d7e2278920fab500b[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Dec 19 17:23:32 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 6 [32m++++[m[31m--[m
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+[33mcommit 7c968d77da447883da6784ed829926df79dc7e5a[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Dec 19 15:18:58 2017 +0800
+
+            modified:   models/models.py
+
+ models/models.py | 24 [32m++++++++++++[m[31m------------[m
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+[33mcommit 0c6f3d5405d31fe1c083231a66f16d2a6394ac90[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Mon Dec 18 17:28:22 2017 +0800
+
+            modified:   security/resource_security.xml
+            modified:   static/src/js/assets_manage.js
+            modified:   views/assets_management_menu.xml
+            modified:   views/assets_management_view.xml
+
+ security/resource_security.xml   | 13 [32m+++++++++[m
+ static/src/js/assets_manage.js   |  1 [31m-[m
+ views/assets_management_menu.xml | 45 [32m++++++++++++++++++++++[m[31m--------[m
+ views/assets_management_view.xml | 60 [32m++++++++++++++++++++++++++++++++++++++++[m
+ 4 files changed, 107 insertions(+), 12 deletions(-)
+
+[33mcommit 92355eedb5aea6517aa5f81582052a647d874437[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Nov 28 13:03:56 2017 +0800
+
+            modified:   views/assets_management_menu.xml
+
+ views/assets_management_menu.xml | 12 [32m++++++[m[31m------[m
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+[33mcommit 3238cfe2f9371c82d681b04ea8c3a59db0f4941d[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Tue Nov 28 12:10:16 2017 +0800
+
+            modified:   models/models.py
+            modified:   views/assets_management_menu.xml
+            modified:   views/assets_management_view.xml
+
+ models/models.py                 |  2 [32m++[m
+ views/assets_management_menu.xml | 34 [32m++++++++++++++++++[m[31m----[m
+ views/assets_management_view.xml | 61 [32m+++++++++++++++++++++++++++++++++++++++[m[31m-[m
+ 3 files changed, 91 insertions(+), 6 deletions(-)
+
+[33mcommit 277b96ffb60e7fbdf5b6736794841abef0d4a6f2[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Mon Oct 23 12:14:06 2017 +0800
+
+            modified:   views/assets_management_menu.xml
+
+ views/assets_management_menu.xml | 4 [32m++[m[31m--[m
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+[33mcommit a29b3883768f0affffafb63aef04e75722279b61[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Mon Oct 23 12:08:05 2017 +0800
+
+            modified:   views/assets_management_menu.xml
+
+ views/assets_management_menu.xml | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[33mcommit 04d55a3627783539e14e390c0ca42c84706bb6c3[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Oct 18 16:39:33 2017 +0800
+
+            modified:   views/assets_management_view.xml
+
+ views/assets_management_view.xml | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[33mcommit 1d3666c4574eb044491f6968c7fedd757e828798[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Oct 18 16:28:10 2017 +0800
+
+            modified:   views/assets_management_menu.xml
+            modified:   views/assets_management_view.xml
+
+ views/assets_management_menu.xml | 43 [32m+++++++++++++++++[m[31m------[m
+ views/assets_management_view.xml | 74 [32m++++++++++++++++++++++++++++++++++++[m[31m----[m
+ 2 files changed, 101 insertions(+), 16 deletions(-)
+
+[33mcommit 903270830b2ec74f059ffaeb3b5756917277bf0d[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Sep 27 16:48:43 2017 +0800
+
+            modified:   views/assets_management_view.xml
+
+ views/assets_management_view.xml | 199 [32m++++++++++++++[m[31m-------------------------[m
+ 1 file changed, 73 insertions(+), 126 deletions(-)
+
+[33mcommit 007e8360a386d5630cffc1d8076bfbf3d64fae3a[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Wed Sep 27 16:02:44 2017 +0800
+
+            modified:   views/assets_management_newRequest.xml
+            modified:   views/assets_management_view.xml
+
+ views/assets_management_newRequest.xml |  1 [31m-[m
+ views/assets_management_view.xml       | 24 [32m+++++++++++[m[31m-------------[m
+ 2 files changed, 11 insertions(+), 14 deletions(-)
+
+[33mcommit fd05ab6e4340f1946b2bd8e6c3ec2f5defa02b3d[m
+Author: isunnyboy <isongxiugong@163.com>
+Date:   Thu Sep 21 10:06:54 2017 +0800
+
+            modified:   models/models.py
+            modified:   views/assets_management_menu.xml
+            modified:   views/assets_management_newRequest.xml
+            modified:   views/assets_management_view.xml
+
+ models/models.py                       | 129 [32m++++++++++++++++++++[m[31m----[m
+ views/assets_management_menu.xml       |  49 [32m+++++++[m[31m--[m
+ views/assets_management_newRequest.xml |  32 [32m
